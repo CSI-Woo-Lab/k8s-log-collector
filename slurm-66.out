@@ -1,0 +1,83 @@
+gpu02
+GPU 0: NVIDIA GeForce RTX 4090 (UUID: GPU-8d4f1f49-8fec-335c-e99a-8090e8c2d615)
+/home/shjeong/deepops/workloads/examples/slurm/examples
+Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/train-images-idx3-ubyte.gz to ../data/MNIST/raw/train-images-idx3-ubyte.gz
+  0%|          | 0/9912422 [00:00<?, ?it/s]  1%|          | 65536/9912422 [00:00<00:18, 522647.15it/s]  1%|▏         | 131072/9912422 [00:00<00:19, 506590.27it/s]  3%|▎         | 327680/9912422 [00:00<00:10, 937956.74it/s]  5%|▌         | 524288/9912422 [00:00<00:07, 1271230.92it/s]  9%|▉         | 917504/9912422 [00:00<00:04, 2085675.77it/s] 15%|█▌        | 1507328/9912422 [00:00<00:02, 3244830.24it/s] 26%|██▌       | 2555904/9912422 [00:00<00:01, 5443927.74it/s] 44%|████▎     | 4325376/9912422 [00:00<00:00, 9120340.49it/s] 68%|██████▊   | 6782976/9912422 [00:01<00:00, 13763275.56it/s] 94%|█████████▍| 9306112/9912422 [00:01<00:00, 17208081.89it/s]100%|██████████| 9912422/9912422 [00:01<00:00, 8703845.55it/s] 
+Extracting ../data/MNIST/raw/train-images-idx3-ubyte.gz to ../data/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz to ../data/MNIST/raw/train-labels-idx1-ubyte.gz
+  0%|          | 0/28881 [00:00<?, ?it/s]100%|██████████| 28881/28881 [00:00<00:00, 5193384.52it/s]
+Extracting ../data/MNIST/raw/train-labels-idx1-ubyte.gz to ../data/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/t10k-images-idx3-ubyte.gz to ../data/MNIST/raw/t10k-images-idx3-ubyte.gz
+  0%|          | 0/1648877 [00:00<?, ?it/s]  4%|▍         | 65536/1648877 [00:00<00:03, 497416.64it/s]  8%|▊         | 131072/1648877 [00:00<00:03, 485206.41it/s] 20%|█▉        | 327680/1648877 [00:00<00:01, 915136.49it/s] 40%|███▉      | 655360/1648877 [00:00<00:00, 1639669.66it/s] 60%|█████▉    | 983040/1648877 [00:00<00:00, 2120755.34it/s] 97%|█████████▋| 1605632/1648877 [00:00<00:00, 3345851.49it/s]100%|██████████| 1648877/1648877 [00:00<00:00, 2266621.02it/s]
+Extracting ../data/MNIST/raw/t10k-images-idx3-ubyte.gz to ../data/MNIST/raw
+
+Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz
+Downloading http://yann.lecun.com/exdb/mnist/t10k-labels-idx1-ubyte.gz to ../data/MNIST/raw/t10k-labels-idx1-ubyte.gz
+  0%|          | 0/4542 [00:00<?, ?it/s]100%|██████████| 4542/4542 [00:00<00:00, 56030966.96it/s]
+Extracting ../data/MNIST/raw/t10k-labels-idx1-ubyte.gz to ../data/MNIST/raw
+
+Train Epoch: 1 [0/60000 (0%)]	Loss: 550.513916
+Train Epoch: 1 [1280/60000 (2%)]	Loss: 310.610535
+Train Epoch: 1 [2560/60000 (4%)]	Loss: 240.650436
+Train Epoch: 1 [3840/60000 (6%)]	Loss: 219.223083
+Train Epoch: 1 [5120/60000 (9%)]	Loss: 215.092911
+Train Epoch: 1 [6400/60000 (11%)]	Loss: 208.449554
+Train Epoch: 1 [7680/60000 (13%)]	Loss: 203.374908
+Train Epoch: 1 [8960/60000 (15%)]	Loss: 193.757950
+Train Epoch: 1 [10240/60000 (17%)]	Loss: 194.696915
+Train Epoch: 1 [11520/60000 (19%)]	Loss: 192.928940
+Train Epoch: 1 [12800/60000 (21%)]	Loss: 179.951340
+Train Epoch: 1 [14080/60000 (23%)]	Loss: 174.077133
+Train Epoch: 1 [15360/60000 (26%)]	Loss: 182.598541
+Train Epoch: 1 [16640/60000 (28%)]	Loss: 168.180420
+Train Epoch: 1 [17920/60000 (30%)]	Loss: 166.461121
+Train Epoch: 1 [19200/60000 (32%)]	Loss: 161.455475
+Train Epoch: 1 [20480/60000 (34%)]	Loss: 162.512863
+Train Epoch: 1 [21760/60000 (36%)]	Loss: 151.457321
+Train Epoch: 1 [23040/60000 (38%)]	Loss: 157.297943
+Train Epoch: 1 [24320/60000 (41%)]	Loss: 154.487442
+Train Epoch: 1 [25600/60000 (43%)]	Loss: 155.967148
+Train Epoch: 1 [26880/60000 (45%)]	Loss: 150.698685
+Train Epoch: 1 [28160/60000 (47%)]	Loss: 153.060669
+Train Epoch: 1 [29440/60000 (49%)]	Loss: 146.371140
+Train Epoch: 1 [30720/60000 (51%)]	Loss: 141.643585
+Train Epoch: 1 [32000/60000 (53%)]	Loss: 144.779434
+Train Epoch: 1 [33280/60000 (55%)]	Loss: 144.691696
+Train Epoch: 1 [34560/60000 (58%)]	Loss: 145.819168
+Train Epoch: 1 [35840/60000 (60%)]	Loss: 137.385223
+Train Epoch: 1 [37120/60000 (62%)]	Loss: 142.408615
+Train Epoch: 1 [38400/60000 (64%)]	Loss: 139.313309
+Train Epoch: 1 [39680/60000 (66%)]	Loss: 135.058060
+Train Epoch: 1 [40960/60000 (68%)]	Loss: 141.488708
+Train Epoch: 1 [42240/60000 (70%)]	Loss: 141.948334
+Train Epoch: 1 [43520/60000 (72%)]	Loss: 140.133163
+Train Epoch: 1 [44800/60000 (75%)]	Loss: 135.158447
+Train Epoch: 1 [46080/60000 (77%)]	Loss: 140.398575
+Train Epoch: 1 [47360/60000 (79%)]	Loss: 133.058853
+Train Epoch: 1 [48640/60000 (81%)]	Loss: 131.658493
+Train Epoch: 1 [49920/60000 (83%)]	Loss: 130.645157
+Train Epoch: 1 [51200/60000 (85%)]	Loss: 131.359436
+Train Epoch: 1 [52480/60000 (87%)]	Loss: 130.997849
+Train Epoch: 1 [53760/60000 (90%)]	Loss: 132.637405
+Train Epoch: 1 [55040/60000 (92%)]	Loss: 126.305420
+Train Epoch: 1 [56320/60000 (94%)]	Loss: 137.521912
+Train Epoch: 1 [57600/60000 (96%)]	Loss: 129.577133
+Train Epoch: 1 [58880/60000 (98%)]	Loss: 132.283417
+====> Epoch: 1 Average loss: 164.4015
+Traceback (most recent call last):
+  File "/home/shjeong/deepops/workloads/examples/slurm/examples/vae/main.py", line 135, in <module>
+    test(epoch)
+  File "/home/shjeong/deepops/workloads/examples/slurm/examples/vae/main.py", line 126, in test
+    save_image(comparison.cpu(),
+  File "/home/shjeong/torch_env/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/shjeong/torch_env/lib/python3.10/site-packages/torchvision/utils.py", line 151, in save_image
+    im.save(fp, format=format)
+  File "/home/shjeong/torch_env/lib/python3.10/site-packages/PIL/Image.py", line 2410, in save
+    fp = builtins.open(filename, "w+b")
+FileNotFoundError: [Errno 2] No such file or directory: 'results/reconstruction_1.png'

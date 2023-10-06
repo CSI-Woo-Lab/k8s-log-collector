@@ -1,0 +1,3 @@
+gpu01
+GPU 0: NVIDIA GeForce RTX 3090 (UUID: GPU-ca261c32-ce8e-9486-ae51-c2674ac7d500)
+/home/shjeong/deepops/workloads/examples/slurm/examples

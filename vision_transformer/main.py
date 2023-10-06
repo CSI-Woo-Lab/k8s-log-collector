@@ -7,8 +7,12 @@ from torchvision.transforms import Compose, ToTensor, Resize
 from torch import optim
 import numpy as np
 from torch.hub import tqdm
+import sys
 
-
+import schedule
+import time
+path = '/home/shjeong/deepops/workloads/examples/slurm/examples/vision_transformer'
+log_collect = None
 class PatchExtractor(nn.Module):
     def __init__(self, patch_size=16):
         super().__init__()
@@ -126,7 +130,7 @@ class ViT(nn.Module):
 
 class TrainEval:
 
-    def __init__(self, args, model, train_dataloader, val_dataloader, optimizer, criterion, device):
+    def __init__(self, args, model, train_dataloader, val_dataloader, optimizer, criterion, log_collect, device):
         self.model = model
         self.train_dataloader = train_dataloader
         self.val_dataloader = val_dataloader
@@ -135,13 +139,16 @@ class TrainEval:
         self.epoch = args.epochs
         self.device = device
         self.args = args
+        self.log_collect = log_collect
 
     def train_fn(self, current_epoch):
         self.model.train()
         total_loss = 0.0
-        tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch))
-
+        tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
+        # tk = tqdm(self.train_dataloader)
+        self.log_collect.change_epoch(current_epoch + 1) #######################################
         for t, data in enumerate(tk):
+            self.log_collect.change_iteration(t + 1) #################
             images, labels = data
             images, labels = images.to(self.device), labels.to(self.device)
             self.optimizer.zero_grad()
@@ -160,8 +167,8 @@ class TrainEval:
     def eval_fn(self, current_epoch):
         self.model.eval()
         total_loss = 0.0
-        tk = tqdm(self.val_dataloader, desc="EPOCH" + "[VALID]" + str(current_epoch + 1) + "/" + str(self.epoch))
-
+        tk = tqdm(self.val_dataloader, desc="EPOCH" + "[VALID]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
+        # tk = tqdm(self.train_dataloader)
         for t, data in enumerate(tk):
             images, labels = data
             images, labels = images.to(self.device), labels.to(self.device)
@@ -181,15 +188,15 @@ class TrainEval:
         best_train_loss = np.inf
         for i in range(self.epoch):
             train_loss = self.train_fn(i)
-            val_loss = self.eval_fn(i)
+            # val_loss = self.eval_fn(i)
 
-            if val_loss < best_valid_loss:
-                torch.save(self.model.state_dict(), "best-weights.pt")
-                print("Saved Best Weights")
-                best_valid_loss = val_loss
-                best_train_loss = train_loss
+            # if val_loss < best_valid_loss:
+            #     torch.save(self.model.state_dict(), "best-weights.pt")
+            #     print("Saved Best Weights")
+            #     best_valid_loss = val_loss
+            #     best_train_loss = train_loss
         print(f"Training Loss : {best_train_loss}")
-        print(f"Valid Loss : {best_valid_loss}")
+        # print(f"Valid Loss : {best_valid_loss}")
 
     '''
         On default settings:
@@ -206,8 +213,82 @@ class TrainEval:
         patch size,
     '''
 
+class JobLogging:
+    def __init__(self, batch_size, total_epoch, total_iteration):
+        import socket
+        self.total_epoch = total_epoch
+        self.current_epoch = 1
+        self.total_iteration = total_iteration
+        self.current_iteration = 1
+        self.gpu_memory = 0
+        self.gpu_memory2 = 0
+        self.gpu_usage = 0
+        self.batch_size = batch_size
+        self.job_name = 'vision_transformer'
+        self.hostname = socket.gethostname()
+        self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
+        file = path+'/out.txt'
+        f = open(file, 'w').close()
+
+    def logging(self):
+        import nvidia_smi
+
+        nvidia_smi.nvmlInit()
+        deviceCount = nvidia_smi.nvmlDeviceGetCount()
+        handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
+        info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+        res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
+        self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
+        self.gpu_memory2 = res.memory
+        self.gpu_usage = res.gpu
+        nvidia_smi.nvmlShutdown()
+
+        file = path+'/out.txt'
+        f = open(file, 'a')
+        hostname = 'server : ' + self.hostname
+        job_name = 'job : ' + self.job_name
+        gpu = 'gpu : ' + self.gpu
+        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "%"
+        gpu_memory2 = "gpu_memory2 :" + str(self.gpu_memory2) + "%"
+        gpu_usage = "gpu_usage : " + str(self.gpu_usage) + "%"
+
+        batch_size = "batch_size : " + str(self.batch_size)
+
+        total_epoch = 'total_epoch : ' + str(self.total_epoch)
+        current_epoch = 'current_epoch : ' + str(self.current_epoch)
+
+        total_iteration = 'total_iteration : ' + str(self.total_iteration)
+        current_iteration = 'current_iteration: ' + str(self.current_iteration) + '\n'
+
+        data = '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' \
+            %(hostname, job_name, gpu, gpu_memory, gpu_memory2, gpu_usage, batch_size, total_epoch, current_epoch, total_iteration, current_iteration)
+
+        f.write(data)
+        f.close()
+    
+    def change_epoch(self, epoch):
+        self.current_epoch = epoch
+    def change_iteration(self, iteration):
+        self.current_iteration = iteration
+    
+def start_schedule():
+    import os
+    import signal
+    while True:
+        schedule.run_pending()
+        time.sleep(5)
+    #     break
+    # time.sleep(6)
+    # schedule.run_pending()
+    # os.kill(os.getpid(), signal.SIGUSR1)
+
+def logger():
+    log_collect.logging()
+
+
 
 def main():
+    import threading
     parser = argparse.ArgumentParser(description='Vision Transformer in PyTorch')
     parser.add_argument('--no-cuda', action='store_true', default=False,
                         help='disables CUDA training')
@@ -251,12 +332,20 @@ def main():
     train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
     valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 
+    
+
     model = ViT(args).to(device)
+    log_collect = JobLogging(args.batch_size, args.epochs, len(train_loader)) ####################
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
-    TrainEval(args, model, train_loader, valid_loader, optimizer, criterion, device).train()
+    s = sys.stdin.readline()
+
+    schedule.every(10).seconds.do(log_collect.logging)
+    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
+    schedule_thread.start()
+    TrainEval(args, model, train_loader, valid_loader, optimizer, criterion, log_collect, device).train()
 
 
 if __name__ == "__main__":
