@@ -12,7 +12,6 @@ import sys
 import schedule
 import time
 path = '/home/shjeong/deepops/workloads/examples/slurm/examples/vision_transformer'
-log_collect = None
 class PatchExtractor(nn.Module):
     def __init__(self, patch_size=16):
         super().__init__()
@@ -144,6 +143,7 @@ class TrainEval:
     def train_fn(self, current_epoch):
         self.model.train()
         total_loss = 0.0
+        # tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch))
         tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
         # tk = tqdm(self.train_dataloader)
         self.log_collect.change_epoch(current_epoch + 1) #######################################
@@ -274,13 +274,9 @@ class JobLogging:
 def start_schedule():
     import os
     import signal
-    while True:
-        schedule.run_pending()
-        time.sleep(5)
-    #     break
-    # time.sleep(6)
-    # schedule.run_pending()
-    # os.kill(os.getpid(), signal.SIGUSR1)
+    time.sleep(10)
+    schedule.run_pending()
+    os.kill(os.getpid(), signal.SIGUSR1)
 
 def logger():
     log_collect.logging()
@@ -340,7 +336,9 @@ def main():
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
+    print('ready', flush = True)
     s = sys.stdin.readline()
+    print(s, flush = True)
 
     schedule.every(10).seconds.do(log_collect.logging)
     schedule_thread = threading.Thread(target= start_schedule, daemon=True)

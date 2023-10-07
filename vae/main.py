@@ -7,9 +7,9 @@ from torch.nn import functional as F
 from torchvision import datasets, transforms
 from torchvision.utils import save_image
 import sys
-
+import schedule
+import time
 path = '/home/shjeong/deepops/workloads/examples/slurm/examples/vae/'
-
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
@@ -130,6 +130,65 @@ def test(epoch):
 
     test_loss /= len(test_loader.dataset)
     print('====> Test set loss: {:.4f}'.format(test_loss))
+
+
+class JobLogging:
+    def __init__(self, batch_size, total_epoch, total_iteration):
+        import socket
+        self.total_epoch = total_epoch
+        self.current_epoch = 1
+        self.total_iteration = total_iteration
+        self.current_iteration = 1
+        self.gpu_memory = 0
+        self.gpu_memory2 = 0
+        self.gpu_usage = 0
+        self.batch_size = batch_size
+        self.job_name = 'vision_transformer'
+        self.hostname = socket.gethostname()
+        self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
+        file = path+'/out.txt'
+        f = open(file, 'w').close()
+
+    def logging(self):
+        import nvidia_smi
+
+        nvidia_smi.nvmlInit()
+        deviceCount = nvidia_smi.nvmlDeviceGetCount()
+        handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
+        info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+        res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
+        self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
+        self.gpu_memory2 = res.memory
+        self.gpu_usage = res.gpu
+        nvidia_smi.nvmlShutdown()
+
+        file = path+'/out.txt'
+        f = open(file, 'a')
+        hostname = 'server : ' + self.hostname
+        job_name = 'job : ' + self.job_name
+        gpu = 'gpu : ' + self.gpu
+        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "%"
+        gpu_memory2 = "gpu_memory2 :" + str(self.gpu_memory2) + "%"
+        gpu_usage = "gpu_usage : " + str(self.gpu_usage) + "%"
+
+        batch_size = "batch_size : " + str(self.batch_size)
+
+        total_epoch = 'total_epoch : ' + str(self.total_epoch)
+        current_epoch = 'current_epoch : ' + str(self.current_epoch)
+
+        total_iteration = 'total_iteration : ' + str(self.total_iteration)
+        current_iteration = 'current_iteration: ' + str(self.current_iteration) + '\n'
+
+        data = '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' \
+            %(hostname, job_name, gpu, gpu_memory, gpu_memory2, gpu_usage, batch_size, total_epoch, current_epoch, total_iteration, current_iteration)
+
+        f.write(data)
+        f.close()
+    
+    def change_epoch(self, epoch):
+        self.current_epoch = epoch
+    def change_iteration(self, iteration):
+        self.current_iteration = iteration
 
 if __name__ == "__main__":
     s = sys.stdin.readline()
