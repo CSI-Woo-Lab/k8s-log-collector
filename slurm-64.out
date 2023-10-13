@@ -1,4 +1,0 @@
-gpu01
-GPU 0: NVIDIA GeForce RTX 3090 (UUID: GPU-ca261c32-ce8e-9486-ae51-c2674ac7d500)
-/home/shjeong/deepops/workloads/examples/slurm/examples
-python3: can't open file '/home/shjeong/deepops/workloads/examples/slurm/examples/main.py': [Errno 2] No such file or directory

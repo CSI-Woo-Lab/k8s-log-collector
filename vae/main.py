@@ -9,7 +9,7 @@ from torchvision.utils import save_image
 import sys
 import schedule
 import time
-path = '/home/shjeong/deepops/workloads/examples/slurm/examples/vae/'
+path = './vae/'
 parser = argparse.ArgumentParser(description='VAE MNIST Example')
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                     help='input batch size for training (default: 128)')
@@ -44,6 +44,8 @@ train_loader = torch.utils.data.DataLoader(
 test_loader = torch.utils.data.DataLoader(
     datasets.MNIST('../data', train=False, transform=transforms.ToTensor()),
     batch_size=args.batch_size, shuffle=False, **kwargs)
+
+
 
 
 class VAE(nn.Module):
@@ -92,10 +94,11 @@ def loss_function(recon_x, x, mu, logvar):
     return BCE + KLD
 
 
-def train(epoch):
+def train(epoch, log_collect):
     model.train()
     train_loss = 0
     for batch_idx, (data, _) in enumerate(train_loader):
+        log_collect.change_iteration((epoch - 1) * len(train_loader) + batch_idx + 1) #################
         data = data.to(device)
         optimizer.zero_grad()
         recon_batch, mu, logvar = model(data)
@@ -133,21 +136,20 @@ def test(epoch):
 
 
 class JobLogging:
-    def __init__(self, batch_size, total_epoch, total_iteration):
+    def __init__(self, batch_size):
         import socket
-        self.total_epoch = total_epoch
-        self.current_epoch = 1
-        self.total_iteration = total_iteration
+        # self.total_epoch = total_epoch
+        # self.current_epoch = 1
+        # self.total_iteration = total_iteration
         self.current_iteration = 1
         self.gpu_memory = 0
-        self.gpu_memory2 = 0
         self.gpu_usage = 0
         self.batch_size = batch_size
-        self.job_name = 'vision_transformer'
+        self.job_name = 'vae'
         self.hostname = socket.gethostname()
         self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
-        file = path+'/out.txt'
-        f = open(file, 'w').close()
+        self.file = './out.txt'
+        # f = open(file, 'a').close()
 
     def logging(self):
         import nvidia_smi
@@ -157,43 +159,59 @@ class JobLogging:
         handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
         info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
         res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
-        self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
-        self.gpu_memory2 = res.memory
+        self.gpu_memory = "{}".format(info.used)
+        # self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
         self.gpu_usage = res.gpu
         nvidia_smi.nvmlShutdown()
 
-        file = path+'/out.txt'
-        f = open(file, 'a')
+        f = open(self.file, 'a')
         hostname = 'server : ' + self.hostname
         job_name = 'job : ' + self.job_name
         gpu = 'gpu : ' + self.gpu
-        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "%"
-        gpu_memory2 = "gpu_memory2 :" + str(self.gpu_memory2) + "%"
-        gpu_usage = "gpu_usage : " + str(self.gpu_usage) + "%"
+        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "MiB"
+        gpu_usage = "gpu_util : " + str(self.gpu_usage) + "%"
 
         batch_size = "batch_size : " + str(self.batch_size)
-
-        total_epoch = 'total_epoch : ' + str(self.total_epoch)
-        current_epoch = 'current_epoch : ' + str(self.current_epoch)
-
-        total_iteration = 'total_iteration : ' + str(self.total_iteration)
         current_iteration = 'current_iteration: ' + str(self.current_iteration) + '\n'
 
-        data = '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' \
-            %(hostname, job_name, gpu, gpu_memory, gpu_memory2, gpu_usage, batch_size, total_epoch, current_epoch, total_iteration, current_iteration)
+        data = '%s, %s, %s, %s, %s, %s, %s' \
+            %(hostname, job_name, gpu, gpu_memory, gpu_usage, batch_size, current_iteration)
 
         f.write(data)
         f.close()
-    
-    def change_epoch(self, epoch):
-        self.current_epoch = epoch
+
     def change_iteration(self, iteration):
         self.current_iteration = iteration
 
-if __name__ == "__main__":
+def input_start_signal():
+    import sys
+    print('ready', flush = True)
     s = sys.stdin.readline()
+
+def init_schedule(log_collect):
+    import schedule
+    import threading
+    schedule.every(10).seconds.do(log_collect.logging)
+    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
+    schedule_thread.start()
+    
+def start_schedule():
+    import os
+    import signal
+    time.sleep(10)
+    schedule.run_pending()
+    os.kill(os.getpid(), signal.SIGUSR1)
+
+
+
+if __name__ == "__main__":
+    import threading
+    log_collect = JobLogging(args.batch_size) ####################
+    
+    input_start_signal()
+    init_schedule(log_collect)
     for epoch in range(1, args.epochs + 1):
-        train(epoch)
+        train(epoch, log_collect)
         # test(epoch)
         with torch.no_grad():
             sample = torch.randn(64, 20).to(device)

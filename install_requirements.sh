@@ -24,3 +24,5 @@ function install_deps() {
 }
 
 install_deps
+pip install schedule
+pip install nvidia-ml-py3

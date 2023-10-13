@@ -9,9 +9,6 @@ import numpy as np
 from torch.hub import tqdm
 import sys
 
-import schedule
-import time
-path = '/home/shjeong/deepops/workloads/examples/slurm/examples/vision_transformer'
 class PatchExtractor(nn.Module):
     def __init__(self, patch_size=16):
         super().__init__()
@@ -146,9 +143,8 @@ class TrainEval:
         # tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch))
         tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
         # tk = tqdm(self.train_dataloader)
-        self.log_collect.change_epoch(current_epoch + 1) #######################################
         for t, data in enumerate(tk):
-            self.log_collect.change_iteration(t + 1) #################
+            self.log_collect.change_iteration(current_epoch * len(self.train_dataloader) + t + 1) #################
             images, labels = data
             images, labels = images.to(self.device), labels.to(self.device)
             self.optimizer.zero_grad()
@@ -214,21 +210,20 @@ class TrainEval:
     '''
 
 class JobLogging:
-    def __init__(self, batch_size, total_epoch, total_iteration):
+    def __init__(self, batch_size):
         import socket
-        self.total_epoch = total_epoch
+        # self.total_epoch = total_epoch
         self.current_epoch = 1
-        self.total_iteration = total_iteration
+        # self.total_iteration = total_iteration
         self.current_iteration = 1
         self.gpu_memory = 0
-        self.gpu_memory2 = 0
         self.gpu_usage = 0
         self.batch_size = batch_size
         self.job_name = 'vision_transformer'
         self.hostname = socket.gethostname()
         self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
-        file = path+'/out.txt'
-        f = open(file, 'w').close()
+        self.file = './out.txt'
+        # f = open(file, 'a').close()
 
     def logging(self):
         import nvidia_smi
@@ -238,48 +233,51 @@ class JobLogging:
         handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
         info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
         res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
-        self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
-        self.gpu_memory2 = res.memory
+        self.gpu_memory = "{}".format(info.used)
+        # self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
         self.gpu_usage = res.gpu
         nvidia_smi.nvmlShutdown()
 
-        file = path+'/out.txt'
-        f = open(file, 'a')
+        f = open(self.file, 'a')
         hostname = 'server : ' + self.hostname
         job_name = 'job : ' + self.job_name
         gpu = 'gpu : ' + self.gpu
-        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "%"
-        gpu_memory2 = "gpu_memory2 :" + str(self.gpu_memory2) + "%"
-        gpu_usage = "gpu_usage : " + str(self.gpu_usage) + "%"
+        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "MiB"
+        gpu_usage = "gpu_util : " + str(self.gpu_usage) + "%"
 
         batch_size = "batch_size : " + str(self.batch_size)
-
-        total_epoch = 'total_epoch : ' + str(self.total_epoch)
-        current_epoch = 'current_epoch : ' + str(self.current_epoch)
-
-        total_iteration = 'total_iteration : ' + str(self.total_iteration)
         current_iteration = 'current_iteration: ' + str(self.current_iteration) + '\n'
 
-        data = '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s' \
-            %(hostname, job_name, gpu, gpu_memory, gpu_memory2, gpu_usage, batch_size, total_epoch, current_epoch, total_iteration, current_iteration)
-
+        data = '%s, %s, %s, %s, %s, %s, %s' \
+            %(hostname, job_name, gpu, gpu_memory, gpu_usage, batch_size, current_iteration)
+    
+        print(data, flush=True)
         f.write(data)
         f.close()
-    
-    def change_epoch(self, epoch):
-        self.current_epoch = epoch
+
     def change_iteration(self, iteration):
         self.current_iteration = iteration
+
+def input_start_signal():
+    import sys
+    print('ready', flush = True)
     
+
+def init_schedule(log_collect):
+    import schedule
+    import threading
+    schedule.every(10).seconds.do(log_collect.logging)
+    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
+    schedule_thread.start()
+
 def start_schedule():
     import os
     import signal
+    import schedule
+    import time
     time.sleep(10)
     schedule.run_pending()
     os.kill(os.getpid(), signal.SIGUSR1)
-
-def logger():
-    log_collect.logging()
 
 
 
@@ -328,21 +326,16 @@ def main():
     train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
     valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 
-    
-
     model = ViT(args).to(device)
-    log_collect = JobLogging(args.batch_size, args.epochs, len(train_loader)) ####################
+    log_collect = JobLogging(args.batch_size) ####################
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
-    print('ready', flush = True)
+    input_start_signal()
+    # print(s, flush = True)
     s = sys.stdin.readline()
-    print(s, flush = True)
-
-    schedule.every(10).seconds.do(log_collect.logging)
-    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
-    schedule_thread.start()
+    init_schedule(log_collect)
     TrainEval(args, model, train_loader, valid_loader, optimizer, criterion, log_collect, device).train()
 
 

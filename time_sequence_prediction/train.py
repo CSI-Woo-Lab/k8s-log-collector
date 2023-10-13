@@ -36,6 +36,74 @@ class Sequence(nn.Module):
         return outputs
 
 
+class JobLogging:
+    def __init__(self, batch_size):
+        import socket
+        # self.total_epoch = total_epoch
+        # self.current_epoch = 1
+        # self.total_iteration = total_iteration
+        self.current_iteration = 1
+        self.gpu_memory = 0
+        self.gpu_usage = 0
+        self.batch_size = batch_size
+        self.job_name = 'time_sequence_prediction'
+        self.hostname = socket.gethostname()
+        self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
+        self.file = './out.txt'
+        # f = open(file, 'a').close()
+
+    def logging(self):
+        import nvidia_smi
+
+        nvidia_smi.nvmlInit()
+        deviceCount = nvidia_smi.nvmlDeviceGetCount()
+        handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
+        info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+        res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
+        self.gpu_memory = "{}".format(info.used)
+        # self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
+        self.gpu_usage = res.gpu
+        nvidia_smi.nvmlShutdown()
+
+        f = open(self.file, 'a')
+        hostname = 'server : ' + self.hostname
+        job_name = 'job : ' + self.job_name
+        gpu = 'gpu : ' + self.gpu
+        gpu_memory = "gpu_memory : " + str(self.gpu_memory) + "MiB"
+        gpu_usage = "gpu_util : " + str(self.gpu_usage) + "%"
+
+        batch_size = "batch_size : " + str(self.batch_size)
+        current_iteration = 'current_iteration: ' + str(self.current_iteration) + '\n'
+
+        data = '%s, %s, %s, %s, %s, %s, %s' \
+            %(hostname, job_name, gpu, gpu_memory, gpu_usage, batch_size, current_iteration)
+
+        f.write(data)
+        f.close()
+
+    def change_iteration(self, iteration):
+        self.current_iteration = iteration
+
+def input_start_signal():
+    import sys
+    print('ready', flush = True)
+    s = sys.stdin.readline()
+
+def init_schedule(log_collect):
+    import schedule
+    import threading
+    schedule.every(10).seconds.do(log_collect.logging)
+    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
+    schedule_thread.start()
+
+def start_schedule():
+    import os
+    import signal
+    import schedule
+    time.sleep(10)
+    schedule.run_pending()
+    os.kill(os.getpid(), signal.SIGUSR1)
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--steps', type=int, default=15, help='steps to run')
@@ -55,6 +123,10 @@ if __name__ == '__main__':
     criterion = nn.MSELoss()
     # use LBFGS as optimizer since we can load the whole data to train
     optimizer = optim.LBFGS(seq.parameters(), lr=0.8)
+    log_collect = JobLogging(args.batch_size) ####################
+    input_start_signal()
+    init_schedule(log_collect)
+
     #begin to train
     for i in range(opt.steps):
         print('STEP: ', i)

@@ -3,9 +3,9 @@
 . ~/torch_env/bin/activate
 
 nvidia-smi -L
-DIR=/home/shjeong/deepops/workloads/examples/slurm/examples
-echo $DIR
-pythonscript="$DIR/vae/main.py"
+# DIR=/home/shjeong/deepops/workloads/examples/slurm/examples
+# echo $DIR
+pythonscript="./vae/main.py"
 python3 "$pythonscript"
 
 # DIR=$PWD
