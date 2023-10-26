@@ -16,7 +16,9 @@ gcn/cora/
 gat/cora/
 docs/build
 docs/venv
-
+*.pt
+Yolov8/datasets/VisDrone/
+dataset/
 # vi backups
 *~
 

@@ -1,3 +1,2 @@
-gpu01
-GPU 0: NVIDIA GeForce RTX 3090 (UUID: GPU-ca261c32-ce8e-9486-ae51-c2674ac7d500)
-/home/shjeong/deepops/workloads/examples/slurm/examples
+Device 0: b'NVIDIA GeForce RTX 3070 Ti', Memory : (90.43% free): 8589934592(total), 7767916544 (free), 822018048 (used)
+sent

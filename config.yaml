@@ -1,0 +1,41 @@
+jobs : [
+  "vae",
+  # "vision_transformer",
+  # "yolov8n",
+  # "yolov8s",
+  # "yolov8m",
+  # "mnist",
+  # "mnist_rnn",
+]
+
+node_and_gpu : [
+  ["gpu01", "gpu:gpu0:1"],
+  ["gpu01", "gpu:gpu1:1"],
+  ["gpu02", "gpu:gpu0:1"],
+  ["gpu03", "gpu:gpu0:1"],
+]
+
+batch_size : {
+    "vae":[128, 256, 512, 1024, 2048, 4096], 
+    "vision_transformer":[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 
+    "yolov8n":[4, 8, 16],
+    "yolov8m":[4, 8],
+    "yolov8s":[4, 8, 16],
+    "mnist":[32, 64, 128, 256, 512],
+    "mnist_rnn":[32, 64, 128, 256, 512],
+}
+
+train_file : {
+  "vae" : "models/vae/main.py",
+  # "vision_transformer" : "models/vision_transformer/main.py",
+  # "yolov8n": "models/Yolov8/yolov8n/main.py --model yolov8n.pt",
+  # "yolov8s": "models/Yolov8/yolov8s/",
+  # "yolov8m": "models/Yolov8/yolov8m/",
+  # "mnist" : "models/mnist/",
+  # "mnist_rnn" : "models/mnist_rnn",
+}
+
+
+# possible_jobs : {
+
+# }

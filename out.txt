@@ -1180,3 +1180,240 @@ server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_mem
 server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 7255490560MiB, gpu_util : 77%, batch_size : 29, current_iteration: 72
 server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6986661888MiB, gpu_util : 89%, batch_size : 30, current_iteration: 44
 server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 7400194048MiB, gpu_util : 77%, batch_size : 30, current_iteration: 70
+################# start ###################
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4320722944MiB, gpu_util : 47%, batch_size : 4, current_iteration: 77
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4130013184MiB, gpu_util : 90%, batch_size : 4, current_iteration: 95
+54
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4180344832MiB, gpu_util : 88%, batch_size : 5, current_iteration: 196
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3955163136MiB, gpu_util : 89%, batch_size : 5, current_iteration: 118
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4371054592MiB, gpu_util : 62%, batch_size : 5, current_iteration: 187
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4276813824MiB, gpu_util : 89%, batch_size : 6, current_iteration: 175
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4051632128MiB, gpu_util : 85%, batch_size : 6, current_iteration: 105
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4467523584MiB, gpu_util : 54%, batch_size : 6, current_iteration: 180
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4071292928MiB, gpu_util : 90%, batch_size : 7, current_iteration: 155
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3846111232MiB, gpu_util : 90%, batch_size : 7, current_iteration: 94
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4262002688MiB, gpu_util : 60%, batch_size : 7, current_iteration: 176
+################# start ###################
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 4, current_iteration: 180
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 5, current_iteration: 160
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 6, current_iteration: 147
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 7, current_iteration: 131
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 8, current_iteration: 121
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 9, current_iteration: 112
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 10, current_iteration: 104
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 11, current_iteration: 95
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 12, current_iteration: 90
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 13, current_iteration: 83
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 14, current_iteration: 79
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 15, current_iteration: 75
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 16, current_iteration: 72
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 17, current_iteration: 67
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 18, current_iteration: 62
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 232718336MiB, gpu_util : 0%, batch_size : 19, current_iteration: 59
+################# start ###################
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4129488896MiB, gpu_util : 75%, batch_size : 4, current_iteration: 174
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3904831488MiB, gpu_util : 85%, batch_size : 4, current_iteration: 133
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4179820544MiB, gpu_util : 79%, batch_size : 5, current_iteration: 157
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3955163136MiB, gpu_util : 89%, batch_size : 5, current_iteration: 117
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4276289536MiB, gpu_util : 80%, batch_size : 6, current_iteration: 145
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4051632128MiB, gpu_util : 88%, batch_size : 6, current_iteration: 103
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4070768640MiB, gpu_util : 80%, batch_size : 7, current_iteration: 129
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3846111232MiB, gpu_util : 88%, batch_size : 7, current_iteration: 94
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4177723392MiB, gpu_util : 85%, batch_size : 8, current_iteration: 120
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3950968832MiB, gpu_util : 87%, batch_size : 8, current_iteration: 85
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4706205696MiB, gpu_util : 88%, batch_size : 9, current_iteration: 110
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4513005568MiB, gpu_util : 91%, batch_size : 9, current_iteration: 78
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4519559168MiB, gpu_util : 87%, batch_size : 10, current_iteration: 103
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4294901760MiB, gpu_util : 90%, batch_size : 10, current_iteration: 72
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4341301248MiB, gpu_util : 86%, batch_size : 11, current_iteration: 94
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4131323904MiB, gpu_util : 89%, batch_size : 11, current_iteration: 67
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4561502208MiB, gpu_util : 85%, batch_size : 12, current_iteration: 88
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4315873280MiB, gpu_util : 92%, batch_size : 12, current_iteration: 62
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4639096832MiB, gpu_util : 84%, batch_size : 13, current_iteration: 82
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4401856512MiB, gpu_util : 89%, batch_size : 13, current_iteration: 58
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4735565824MiB, gpu_util : 92%, batch_size : 14, current_iteration: 77
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4483645440MiB, gpu_util : 93%, batch_size : 14, current_iteration: 54
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4842520576MiB, gpu_util : 82%, batch_size : 15, current_iteration: 73
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4557045760MiB, gpu_util : 91%, batch_size : 15, current_iteration: 51
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4997709824MiB, gpu_util : 85%, batch_size : 16, current_iteration: 70
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4714332160MiB, gpu_util : 90%, batch_size : 16, current_iteration: 49
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5117247488MiB, gpu_util : 93%, batch_size : 17, current_iteration: 65
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4825481216MiB, gpu_util : 90%, batch_size : 17, current_iteration: 44
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5240979456MiB, gpu_util : 92%, batch_size : 18, current_iteration: 61
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4951310336MiB, gpu_util : 99%, batch_size : 18, current_iteration: 43
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5398265856MiB, gpu_util : 91%, batch_size : 19, current_iteration: 59
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5100208128MiB, gpu_util : 89%, batch_size : 19, current_iteration: 40
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5679284224MiB, gpu_util : 86%, batch_size : 20, current_iteration: 56
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5387517952MiB, gpu_util : 100%, batch_size : 20, current_iteration: 39
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5838667776MiB, gpu_util : 88%, batch_size : 21, current_iteration: 54
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5553192960MiB, gpu_util : 88%, batch_size : 21, current_iteration: 37
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5985468416MiB, gpu_util : 89%, batch_size : 22, current_iteration: 52
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5687410688MiB, gpu_util : 87%, batch_size : 22, current_iteration: 36
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6098714624MiB, gpu_util : 90%, batch_size : 23, current_iteration: 51
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5800656896MiB, gpu_util : 87%, batch_size : 23, current_iteration: 35
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6214057984MiB, gpu_util : 88%, batch_size : 24, current_iteration: 49
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5932777472MiB, gpu_util : 87%, batch_size : 24, current_iteration: 34
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6325207040MiB, gpu_util : 90%, batch_size : 25, current_iteration: 47
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6031343616MiB, gpu_util : 87%, batch_size : 25, current_iteration: 32
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6451036160MiB, gpu_util : 89%, batch_size : 26, current_iteration: 46
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6226378752MiB, gpu_util : 85%, batch_size : 26, current_iteration: 31
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6560088064MiB, gpu_util : 96%, batch_size : 27, current_iteration: 44
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6335430656MiB, gpu_util : 86%, batch_size : 27, current_iteration: 30
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4129488896MiB, gpu_util : 80%, batch_size : 4, current_iteration: 177
+                                                                                                                                                            server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3904831488MiB, gpu_util : 84%, batch_size : 4, current_iteration: 132
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4130013184MiB, gpu_util : 90%, batch_size : 4, current_iteration: 229
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4180344832MiB, gpu_util : 90%, batch_size : 5, current_iteration: 196
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4371054592MiB, gpu_util : 54%, batch_size : 5, current_iteration: 190
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4179820544MiB, gpu_util : 76%, batch_size : 5, current_iteration: 157
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3955163136MiB, gpu_util : 87%, batch_size : 5, current_iteration: 116
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4276813824MiB, gpu_util : 91%, batch_size : 6, current_iteration: 175
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4467523584MiB, gpu_util : 54%, batch_size : 6, current_iteration: 180
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4276289536MiB, gpu_util : 80%, batch_size : 6, current_iteration: 144
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4051632128MiB, gpu_util : 88%, batch_size : 6, current_iteration: 103
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4071292928MiB, gpu_util : 89%, batch_size : 7, current_iteration: 155
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4262002688MiB, gpu_util : 60%, batch_size : 7, current_iteration: 175
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4070768640MiB, gpu_util : 79%, batch_size : 7, current_iteration: 128
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3846111232MiB, gpu_util : 91%, batch_size : 7, current_iteration: 94
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4178247680MiB, gpu_util : 90%, batch_size : 8, current_iteration: 142
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4368957440MiB, gpu_util : 65%, batch_size : 8, current_iteration: 171
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4177723392MiB, gpu_util : 78%, batch_size : 8, current_iteration: 119
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 3950968832MiB, gpu_util : 90%, batch_size : 8, current_iteration: 86
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4706729984MiB, gpu_util : 92%, batch_size : 9, current_iteration: 125
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4897439744MiB, gpu_util : 62%, batch_size : 9, current_iteration: 163
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4706205696MiB, gpu_util : 84%, batch_size : 9, current_iteration: 110
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4513005568MiB, gpu_util : 94%, batch_size : 9, current_iteration: 78
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4520083456MiB, gpu_util : 89%, batch_size : 10, current_iteration: 116
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4710793216MiB, gpu_util : 70%, batch_size : 10, current_iteration: 155
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4519559168MiB, gpu_util : 87%, batch_size : 10, current_iteration: 102
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4294901760MiB, gpu_util : 92%, batch_size : 10, current_iteration: 72
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4341825536MiB, gpu_util : 87%, batch_size : 11, current_iteration: 108
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4532535296MiB, gpu_util : 70%, batch_size : 11, current_iteration: 147
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4341301248MiB, gpu_util : 86%, batch_size : 11, current_iteration: 94
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4131323904MiB, gpu_util : 93%, batch_size : 11, current_iteration: 67
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4562026496MiB, gpu_util : 90%, batch_size : 12, current_iteration: 100
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4752736256MiB, gpu_util : 70%, batch_size : 12, current_iteration: 141
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4561502208MiB, gpu_util : 91%, batch_size : 12, current_iteration: 88
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4315873280MiB, gpu_util : 93%, batch_size : 12, current_iteration: 62
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4639621120MiB, gpu_util : 88%, batch_size : 13, current_iteration: 93
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4830330880MiB, gpu_util : 69%, batch_size : 13, current_iteration: 133
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4639096832MiB, gpu_util : 93%, batch_size : 13, current_iteration: 82
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4401856512MiB, gpu_util : 92%, batch_size : 13, current_iteration: 58
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4736090112MiB, gpu_util : 88%, batch_size : 14, current_iteration: 88
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 4910022656MiB, gpu_util : 77%, batch_size : 14, current_iteration: 121
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4735565824MiB, gpu_util : 89%, batch_size : 14, current_iteration: 77
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4483645440MiB, gpu_util : 91%, batch_size : 14, current_iteration: 54
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4843044864MiB, gpu_util : 87%, batch_size : 15, current_iteration: 82
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5031657472MiB, gpu_util : 66%, batch_size : 15, current_iteration: 121
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4842520576MiB, gpu_util : 91%, batch_size : 15, current_iteration: 72
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4557045760MiB, gpu_util : 91%, batch_size : 15, current_iteration: 51
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4998234112MiB, gpu_util : 92%, batch_size : 16, current_iteration: 79
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5209915392MiB, gpu_util : 72%, batch_size : 16, current_iteration: 119
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 4997709824MiB, gpu_util : 93%, batch_size : 16, current_iteration: 70
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4714332160MiB, gpu_util : 90%, batch_size : 16, current_iteration: 49
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5117771776MiB, gpu_util : 86%, batch_size : 17, current_iteration: 72
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5325258752MiB, gpu_util : 71%, batch_size : 17, current_iteration: 109
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5117247488MiB, gpu_util : 92%, batch_size : 17, current_iteration: 66
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4825481216MiB, gpu_util : 90%, batch_size : 17, current_iteration: 44
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5241503744MiB, gpu_util : 86%, batch_size : 18, current_iteration: 67
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5453185024MiB, gpu_util : 79%, batch_size : 18, current_iteration: 104
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5240979456MiB, gpu_util : 91%, batch_size : 18, current_iteration: 61
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 4951310336MiB, gpu_util : 96%, batch_size : 18, current_iteration: 43
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5398790144MiB, gpu_util : 84%, batch_size : 19, current_iteration: 64
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5610471424MiB, gpu_util : 79%, batch_size : 19, current_iteration: 97
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5398265856MiB, gpu_util : 83%, batch_size : 19, current_iteration: 59
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5100208128MiB, gpu_util : 90%, batch_size : 19, current_iteration: 41
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5679808512MiB, gpu_util : 90%, batch_size : 20, current_iteration: 62
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 5899878400MiB, gpu_util : 78%, batch_size : 20, current_iteration: 94
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5679284224MiB, gpu_util : 91%, batch_size : 20, current_iteration: 56
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5387517952MiB, gpu_util : 88%, batch_size : 20, current_iteration: 39
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5839192064MiB, gpu_util : 91%, batch_size : 21, current_iteration: 59
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6078136320MiB, gpu_util : 81%, batch_size : 21, current_iteration: 92
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5838667776MiB, gpu_util : 91%, batch_size : 21, current_iteration: 54
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5553192960MiB, gpu_util : 88%, batch_size : 21, current_iteration: 37
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5985992704MiB, gpu_util : 91%, batch_size : 22, current_iteration: 57
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6208159744MiB, gpu_util : 77%, batch_size : 22, current_iteration: 90
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 5985468416MiB, gpu_util : 90%, batch_size : 22, current_iteration: 52
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5687410688MiB, gpu_util : 100%, batch_size : 22, current_iteration: 37
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6099238912MiB, gpu_util : 90%, batch_size : 23, current_iteration: 55
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6317211648MiB, gpu_util : 85%, batch_size : 23, current_iteration: 88
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6098714624MiB, gpu_util : 91%, batch_size : 23, current_iteration: 51
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5800656896MiB, gpu_util : 87%, batch_size : 23, current_iteration: 35
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6214582272MiB, gpu_util : 87%, batch_size : 24, current_iteration: 54
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6447235072MiB, gpu_util : 79%, batch_size : 24, current_iteration: 86
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6214057984MiB, gpu_util : 90%, batch_size : 24, current_iteration: 49
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 5932777472MiB, gpu_util : 87%, batch_size : 24, current_iteration: 34
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6325731328MiB, gpu_util : 85%, batch_size : 25, current_iteration: 52
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6537412608MiB, gpu_util : 74%, batch_size : 25, current_iteration: 84
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6325207040MiB, gpu_util : 89%, batch_size : 25, current_iteration: 47
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6031343616MiB, gpu_util : 100%, batch_size : 25, current_iteration: 32
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6451560448MiB, gpu_util : 89%, batch_size : 26, current_iteration: 51
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6728253440MiB, gpu_util : 79%, batch_size : 26, current_iteration: 83
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6451036160MiB, gpu_util : 89%, batch_size : 26, current_iteration: 46
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6226378752MiB, gpu_util : 86%, batch_size : 26, current_iteration: 31
+server : gpu03, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6560612352MiB, gpu_util : 89%, batch_size : 27, current_iteration: 48
+server : gpu02, job : vision_transformer, gpu : NVIDIA GeForce RTX 4090, gpu_memory : 6851985408MiB, gpu_util : 78%, batch_size : 27, current_iteration: 80
+server : gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3090, gpu_memory : 6560088064MiB, gpu_util : 89%, batch_size : 27, current_iteration: 44
+gpu01, job : vision_transformer, gpu : NVIDIA GeForce RTX 3070 Ti, gpu_memory : 6335430656MiB, gpu_util : 86%, batch_size : 27, current_iteration: 30
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4130013184MiB, 91%, 4, 227
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4129488896MiB, 74%, 4, 175
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4320722944MiB, 47%, 4, 195
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3904831488MiB, 88%, 4, 133
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4180344832MiB, 90%, 5, 195
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4179820544MiB, 75%, 5, 157
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3955163136MiB, 85%, 5, 116
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4371054592MiB, 54%, 5, 186
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4276813824MiB, 91%, 6, 174
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4467523584MiB, 55%, 6, 184
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4276289536MiB, 80%, 6, 144
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 4051632128MiB, 88%, 6, 103
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4071292928MiB, 88%, 7, 155
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4262002688MiB, 59%, 7, 185
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4070768640MiB, 82%, 7, 128
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3846111232MiB, 90%, 7, 94
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3904831488MiB, 86%, 4, 132
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4320722944MiB, 47%, 4, 192
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4129488896MiB, 73%, 4, 179
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4180344832MiB, 89%, 5, 195
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4371054592MiB, 54%, 5, 187
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4179820544MiB, 79%, 5, 157
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3955163136MiB, 89%, 5, 117
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4276813824MiB, 89%, 6, 173
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4467523584MiB, 55%, 6, 180
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4276289536MiB, 80%, 6, 144
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 4051632128MiB, 88%, 6, 103
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4071292928MiB, 90%, 7, 154
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4262002688MiB, 64%, 7, 180
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4070768640MiB, 79%, 7, 128
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3846111232MiB, 89%, 7, 94
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4178247680MiB, 89%, 8, 142
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4368957440MiB, 71%, 8, 174
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4177723392MiB, 83%, 8, 118
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 3950968832MiB, 88%, 8, 86
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4706729984MiB, 88%, 9, 125
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4897439744MiB, 67%, 9, 162
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4706205696MiB, 88%, 9, 110
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 4513005568MiB, 94%, 9, 78
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4520083456MiB, 87%, 10, 116
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4710793216MiB, 70%, 10, 155
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4519559168MiB, 84%, 10, 102
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 4294901760MiB, 94%, 10, 72
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4341825536MiB, 91%, 11, 107
+gpu02, vision_transformer, NVIDIA GeForce RTX 4090, 4532535296MiB, 71%, 11, 147
+gpu01, vision_transformer, NVIDIA GeForce RTX 3090, 4341301248MiB, 87%, 11, 94
+gpu01, vision_transformer, NVIDIA GeForce RTX 3070 Ti, 4131323904MiB, 93%, 11, 66
+gpu03, vision_transformer, NVIDIA GeForce RTX 3090, 4562026496MiB, 90%, 12, 100
+gpu03,vision_transformer,NVIDIA GeForce RTX 3090,4130013184MiB,91%,4,228
+gpu01,vision_transformer,NVIDIA GeForce RTX 3090,4129488896MiB,75%,4,177
+gpu01,vision_transformer,NVIDIA GeForce RTX 3070 Ti,3904831488MiB,85%,4,132
+gpu03,vision_transformer,NVIDIA GeForce RTX 3090,4180344832MiB,90%,5,196
+gpu02,vision_transformer,NVIDIA GeForce RTX 4090,4371054592MiB,54%,5,198
+gpu01,vision_transformer,NVIDIA GeForce RTX 3090,4179820544MiB,77%,5,158
+gpu01,vision_transformer,NVIDIA GeForce RTX 3070 Ti,3955163136MiB,82%,5,117
+gpu03,vision_transformer,NVIDIA GeForce RTX 3090,4276813824MiB,91%,6,174
+gpu02,vision_transformer,NVIDIA GeForce RTX 4090,4467523584MiB,55%,6,192
+gpu01,vision_transformer,NVIDIA GeForce RTX 3090,4276289536MiB,81%,6,145
+gpu01,vision_transformer,NVIDIA GeForce RTX 3070 Ti,4051632128MiB,89%,6,103
+gpu03,vision_transformer,NVIDIA GeForce RTX 3090,4071292928MiB,90%,7,155
+gpu02,vision_transformer,NVIDIA GeForce RTX 4090,4262002688MiB,62%,7,180
+gpu01,vision_transformer,NVIDIA GeForce RTX 3090,4070768640MiB,82%,7,129
+gpu01,vision_transformer,NVIDIA GeForce RTX 3070 Ti,3846111232MiB,90%,7,93
