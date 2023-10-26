@@ -1,7 +1,8 @@
 jobs : [
-  "vae",
+  "dcgan"
+  #"vae",
   # "vision_transformer",
-   "yolov8n",
+  #  "yolov8n",
   # "yolov8s",
   # "yolov8m",
   # "yolov8l",
@@ -11,13 +12,14 @@ jobs : [
 ]
 
 node_and_gpu : [
-  ["gpu01", "gpu:gpu0:1"],
-  ["gpu01", "gpu:gpu1:1"],
-  ["gpu02", "gpu:gpu0:1"],
-  #["gpu03", "gpu:gpu0:1"],
+  # ["gpu01", "gpu:gpu0:1"],
+  # ["gpu01", "gpu:gpu1:1"],
+  # ["gpu02", "gpu:gpu0:1"],
+  ["gpu03", "gpu:gpu0:1"],
 ]
 
 batch_size : {
+    "dcgan":[32, 64, 128, 256, 512, 1024],
     "vae":[128, 256, 512, 1024, 2048, 4096], 
     "vision_transformer":[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 
     "yolov8n":[4, 8, 16],
@@ -30,6 +32,7 @@ batch_size : {
 }
 
 train_file : {
+  "dcgan": "models/dcgan/main.py",
   "vae" : "models/vae/main.py",
   # "vision_transformer" : "models/vision_transformer/main.py",
   "yolov8n": "models/Yolov8/main.py yolov8n.pt",

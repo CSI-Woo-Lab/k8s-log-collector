@@ -24,7 +24,7 @@ class Logger():
 
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.DEALER)
-        self.socket.connect("tcp://115.145.175.74:9000")
+        self.socket.connect("tcp://115.145.175.74:9001")
 
     def ready_for_training(self):
         self.socket.send_string(f"ready")

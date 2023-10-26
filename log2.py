@@ -9,21 +9,21 @@ from threading import Thread
 
 
 #################### CONFIGURATION ####################
-with open("config.yaml") as f:
+with open("config2.yaml") as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 num_of_jobs = len(cfg["node_and_gpu"])
 times = 2
 communication_interval = 10.0
 logging_interval = 0.1
-filename = "out.csv"
+filename = "out2.csv"
 #################### CONFIGURATION ####################
 
 
 def collecting(num_of_jobs):
     context = zmq.Context()
     socket = context.socket(zmq.ROUTER)
-    socket.bind("tcp://115.145.175.74:9000")
+    socket.bind("tcp://115.145.175.74:9001")
 
     logs = []
     while True:     # Entire logging loop
@@ -79,8 +79,8 @@ while True:
 
     process_list = []
     for j in range(num_of_jobs):
-        # _cmd = "srun --nodelist={} --gres={} ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
-        _cmd = "srun --nodelist={} --gres={} -o /dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
+        _cmd = "srun --nodelist={} --gres={} ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
+        # _cmd = "srun --nodelist={} --gres={} -o=/dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
         _proc = subprocess.Popen(_cmd, shell=True, text=True)
         process_list.append(_proc)
     

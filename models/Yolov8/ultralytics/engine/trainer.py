@@ -34,6 +34,8 @@ from ultralytics.utils.files import get_latest_run
 from ultralytics.utils.torch_utils import (EarlyStopping, ModelEMA, de_parallel, init_seeds, one_cycle, select_device,
                                            strip_optimizer)
 
+from logger import Logger
+
 
 class BaseTrainer:
     """
@@ -93,10 +95,10 @@ class BaseTrainer:
         self.save_dir = get_save_dir(self.args)
         self.args.name = self.save_dir.name  # update name for loggers
         self.wdir = self.save_dir / 'weights'  # weights dir
-        if RANK in (-1, 0):
-            self.wdir.mkdir(parents=True, exist_ok=True)  # make dir
-            self.args.save_dir = str(self.save_dir)
-            yaml_save(self.save_dir / 'args.yaml', vars(self.args))  # save run args
+        # if RANK in (-1, 0):
+        #     self.wdir.mkdir(parents=True, exist_ok=True)  # make dir
+        #     self.args.save_dir = str(self.save_dir)
+        #     yaml_save(self.save_dir / 'args.yaml', vars(self.args))  # save run args
         self.last, self.best = self.wdir / 'last.pt', self.wdir / 'best.pt'  # checkpoint paths
         self.save_period = self.args.save_period
 
@@ -135,7 +137,7 @@ class BaseTrainer:
         self.loss = None
         self.tloss = None
         self.loss_names = ['Loss']
-        self.csv = self.save_dir / 'results.csv'
+        # self.csv = self.save_dir / 'results.csv'
         self.plot_idx = [0, 1, 2]
 
         # Callbacks
@@ -189,7 +191,11 @@ class BaseTrainer:
                 ddp_cleanup(self, str(file))
 
         else:
-            self._do_train(world_size)
+            ############ MINGEUN ##############
+            x = Logger(self.args.project, self.args.batch) 
+            ############ MINGEUN ##############
+            
+            self._do_train(world_size, x)
 
     def _setup_ddp(self, world_size):
         """Initializes and sets the DistributedDataParallel parameters for training."""
@@ -281,7 +287,7 @@ class BaseTrainer:
         self.scheduler.last_epoch = self.start_epoch - 1  # do not move
         self.run_callbacks('on_pretrain_routine_end')
 
-    def _do_train(self, world_size=1):
+    def _do_train(self, world_size=1, logger=None):
         """Train completed, evaluate and plot if specified by arguments."""
         if world_size > 1:
             self._setup_ddp(world_size)
@@ -294,14 +300,19 @@ class BaseTrainer:
         nw = max(round(self.args.warmup_epochs * nb), 100) if self.args.warmup_epochs > 0 else -1  # warmup iterations
         last_opt_step = -1
         self.run_callbacks('on_train_start')
-        LOGGER.info(f'Image sizes {self.args.imgsz} train, {self.args.imgsz} val\n'
-                    f'Using {self.train_loader.num_workers * (world_size or 1)} dataloader workers\n'
-                    f"Logging results to {colorstr('bold', self.save_dir)}\n"
-                    f'Starting training for {self.epochs} epochs...')
+        # LOGGER.info(f'Image sizes {self.args.imgsz} train, {self.args.imgsz} val\n'
+        #             f'Using {self.train_loader.num_workers * (world_size or 1)} dataloader workers\n'
+        #             f"Logging results to {colorstr('bold', self.save_dir)}\n"
+                    # f'Starting training for {self.epochs} epochs...')
         if self.args.close_mosaic:
             base_idx = (self.epochs - self.args.close_mosaic) * nb
             self.plot_idx.extend([base_idx, base_idx + 1, base_idx + 2])
         epoch = self.epochs  # predefine for resume fully trained model edge cases
+        
+        ############ MINGEUN ##############
+        logger.ready_for_training()
+        ############ MINGEUN ##############
+
         for epoch in range(self.start_epoch, self.epochs):
             self.epoch = epoch
             self.run_callbacks('on_train_epoch_start')
@@ -309,24 +320,29 @@ class BaseTrainer:
             if RANK != -1:
                 self.train_loader.sampler.set_epoch(epoch)
             pbar = enumerate(self.train_loader)
-            # Update dataloader attributes (optional)
-            if epoch == (self.epochs - self.args.close_mosaic):
-                LOGGER.info('Closing dataloader mosaic')
-                if hasattr(self.train_loader.dataset, 'mosaic'):
-                    self.train_loader.dataset.mosaic = False
-                if hasattr(self.train_loader.dataset, 'close_mosaic'):
-                    self.train_loader.dataset.close_mosaic(hyp=self.args)
-                self.train_loader.reset()
+            # # Update dataloader attributes (optional)
+            # if epoch == (self.epochs - self.args.close_mosaic):
+            #     LOGGER.info('Closing dataloader mosaic')
+            #     if hasattr(self.train_loader.dataset, 'mosaic'):
+            #         self.train_loader.dataset.mosaic = False
+            #     if hasattr(self.train_loader.dataset, 'close_mosaic'):
+            #         self.train_loader.dataset.close_mosaic(hyp=self.args)
+            #     self.train_loader.reset()
 
             if RANK in (-1, 0):
-                LOGGER.info(self.progress_string())
-                pbar = TQDM(enumerate(self.train_loader), total=nb)
+                # LOGGER.info(self.progress_string())
+                pbar = TQDM(enumerate(self.train_loader), total=nb, disable=True)
             self.tloss = None
             self.optimizer.zero_grad()
             for i, batch in pbar:
                 self.run_callbacks('on_train_batch_start')
                 # Warmup
                 ni = i + nb * epoch
+
+                ############ MINGEUN ##############
+                logger.every_iteration()
+                ############ MINGEUN ##############
+                
                 if ni <= nw:
                     xi = [0, nw]  # x interp
                     self.accumulate = max(1, np.interp(ni, xi, [1, self.args.nbs / self.batch_size]).round())
@@ -355,18 +371,18 @@ class BaseTrainer:
                     last_opt_step = ni
 
                 # Log
-                mem = f'{torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0:.3g}G'  # (GB)
-                loss_len = self.tloss.shape[0] if len(self.tloss.size()) else 1
-                losses = self.tloss if loss_len > 1 else torch.unsqueeze(self.tloss, 0)
-                if RANK in (-1, 0):
-                    pbar.set_description(
-                        ('%11s' * 2 + '%11.4g' * (2 + loss_len)) %
-                        (f'{epoch + 1}/{self.epochs}', mem, *losses, batch['cls'].shape[0], batch['img'].shape[-1]))
-                    self.run_callbacks('on_batch_end')
-                    if self.args.plots and ni in self.plot_idx:
-                        self.plot_training_samples(batch, ni)
+                # mem = f'{torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0:.3g}G'  # (GB)
+                # loss_len = self.tloss.shape[0] if len(self.tloss.size()) else 1
+                # losses = self.tloss if loss_len > 1 else torch.unsqueeze(self.tloss, 0)
+                # if RANK in (-1, 0):
+                #     pbar.set_description(
+                #         ('%11s' * 2 + '%11.4g' * (2 + loss_len)) %
+                #         (f'{epoch + 1}/{self.epochs}', mem, *losses, batch['cls'].shape[0], batch['img'].shape[-1]))
+                #     self.run_callbacks('on_batch_end')
+                #     if self.args.plots and ni in self.plot_idx:
+                #         self.plot_training_samples(batch, ni)
 
-                self.run_callbacks('on_train_batch_end')
+                # self.run_callbacks('on_train_batch_end')
 
             self.lr = {f'lr/pg{ir}': x['lr'] for ir, x in enumerate(self.optimizer.param_groups)}  # for loggers
 
@@ -406,14 +422,14 @@ class BaseTrainer:
             # if self.stop:
             #     break  # must break all DDP ranks
 
-        if RANK in (-1, 0):
-            # Do final val with best.pt
-            LOGGER.info(f'\n{epoch - self.start_epoch + 1} epochs completed in '
-                        f'{(time.time() - self.train_time_start) / 3600:.3f} hours.')
-            self.final_eval()
-            if self.args.plots:
-                self.plot_metrics()
-            self.run_callbacks('on_train_end')
+        # if RANK in (-1, 0):
+        #     # Do final val with best.pt
+        #     LOGGER.info(f'\n{epoch - self.start_epoch + 1} epochs completed in '
+        #                 f'{(time.time() - self.train_time_start) / 3600:.3f} hours.')
+        #     self.final_eval()
+        #     if self.args.plots:
+        #         self.plot_metrics()
+        #     self.run_callbacks('on_train_end')
         torch.cuda.empty_cache()
         self.run_callbacks('teardown')
 
