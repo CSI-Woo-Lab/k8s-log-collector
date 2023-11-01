@@ -20,6 +20,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import Subset
+import wget
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -81,8 +82,14 @@ parser.add_argument('--dummy', action='store_true', help="use fake data to bench
 best_acc1 = 0
 
 
+
 def main():
     args = parser.parse_args()
+
+    ######### MINGEUN ###########
+    from logger import Logger
+    x = Logger("image_net", args.batch_size) 
+    ######### MINGEUN ###########
 
     if args.seed is not None:
         random.seed(args.seed)
@@ -114,13 +121,13 @@ def main():
         args.world_size = ngpus_per_node * args.world_size
         # Use torch.multiprocessing.spawn to launch distributed processes: the
         # main_worker process function
-        mp.spawn(main_worker, nprocs=ngpus_per_node, args=(ngpus_per_node, args))
+        mp.spawn(main_worker, nprocs=ngpus_per_node, args=(ngpus_per_node, args, x))
     else:
         # Simply call main_worker function
-        main_worker(args.gpu, ngpus_per_node, args)
+        main_worker(args.gpu, ngpus_per_node, args, x)
 
 
-def main_worker(gpu, ngpus_per_node, args):
+def main_worker(gpu, ngpus_per_node, args, x):
     global best_acc1
     args.gpu = gpu
 
@@ -223,13 +230,23 @@ def main_worker(gpu, ngpus_per_node, args):
 
 
     # Data loading code
+    # Load the dataset
+    img_url = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Socks-clinton.jpg"
+
     if args.dummy:
         print("=> Dummy data is used!")
         train_dataset = datasets.FakeData(1281167, (3, 224, 224), 1000, transforms.ToTensor())
         val_dataset = datasets.FakeData(50000, (3, 224, 224), 1000, transforms.ToTensor())
     else:
+        if os.path.isfile(os.path.join(args.data, 'train', 'n', "Socks-clinton.jpg")):
+            print("dataset already downloaded")
+        else:
+            print('Downloading dataset...')
+            os.makedirs(os.path.join(args.data, 'train', 'n'))
+            wget.download(img_url, out=os.path.join(args.data, 'train', 'n'))
+
         traindir = os.path.join(args.data, 'train')
-        valdir = os.path.join(args.data, 'val')
+        # valdir = os.path.join(args.data, 'val')
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
@@ -242,72 +259,77 @@ def main_worker(gpu, ngpus_per_node, args):
                 normalize,
             ]))
 
-        val_dataset = datasets.ImageFolder(
-            valdir,
-            transforms.Compose([
-                transforms.Resize(256),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                normalize,
-            ]))
+        # val_dataset = datasets.ImageFolder(
+        #     valdir,
+        #     transforms.Compose([
+        #         transforms.Resize(256),
+        #         transforms.CenterCrop(224),
+        #         transforms.ToTensor(),
+        #         normalize,
+        #     ]))
 
     if args.distributed:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
-        val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset, shuffle=False, drop_last=True)
+        # val_sampler = torch.utils.data.distributed.DistributedSampler(val_dataset, shuffle=False, drop_last=True)
     else:
         train_sampler = None
-        val_sampler = None
+        # val_sampler = None
 
     train_loader = torch.utils.data.DataLoader(
         train_dataset, batch_size=args.batch_size, shuffle=(train_sampler is None),
         num_workers=args.workers, pin_memory=True, sampler=train_sampler)
 
-    val_loader = torch.utils.data.DataLoader(
-        val_dataset, batch_size=args.batch_size, shuffle=False,
-        num_workers=args.workers, pin_memory=True, sampler=val_sampler)
+    # val_loader = torch.utils.data.DataLoader(
+    #     val_dataset, batch_size=args.batch_size, shuffle=False,
+    #     num_workers=args.workers, pin_memory=True, sampler=val_sampler)
 
-    if args.evaluate:
-        validate(val_loader, model, criterion, args)
-        return
+    # if args.evaluate:
+    #     validate(val_loader, model, criterion, args)
+    #     return
+
+
+    ######### MINGEUN ###########
+    x.ready_for_training()
+    ######### MINGEUN ###########
 
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             train_sampler.set_epoch(epoch)
 
         # train for one epoch
-        train(train_loader, model, criterion, optimizer, epoch, device, args)
+        train(train_loader, model, criterion, optimizer, epoch, device, args, x)
 
         # evaluate on validation set
-        acc1 = validate(val_loader, model, criterion, args)
+        # acc1 = validate(val_loader, model, criterion, args)
         
         scheduler.step()
         
         # remember best acc@1 and save checkpoint
-        is_best = acc1 > best_acc1
-        best_acc1 = max(acc1, best_acc1)
+        # is_best = acc1 > best_acc1
+        # best_acc1 = max(acc1, best_acc1)
 
-        if not args.multiprocessing_distributed or (args.multiprocessing_distributed
-                and args.rank % ngpus_per_node == 0):
-            save_checkpoint({
-                'epoch': epoch + 1,
-                'arch': args.arch,
-                'state_dict': model.state_dict(),
-                'best_acc1': best_acc1,
-                'optimizer' : optimizer.state_dict(),
-                'scheduler' : scheduler.state_dict()
-            }, is_best)
+        # if not args.multiprocessing_distributed or (args.multiprocessing_distributed
+        #         and args.rank % ngpus_per_node == 0):
+        #     save_checkpoint({
+        #         'epoch': epoch + 1,
+        #         'arch': args.arch,
+        #         'state_dict': model.state_dict(),
+        #         'best_acc1': best_acc1,
+        #         'optimizer' : optimizer.state_dict(),
+        #         'scheduler' : scheduler.state_dict()
+        #     }, is_best)
 
 
-def train(train_loader, model, criterion, optimizer, epoch, device, args):
+def train(train_loader, model, criterion, optimizer, epoch, device, args, x):
     batch_time = AverageMeter('Time', ':6.3f')
     data_time = AverageMeter('Data', ':6.3f')
     losses = AverageMeter('Loss', ':.4e')
     top1 = AverageMeter('Acc@1', ':6.2f')
     top5 = AverageMeter('Acc@5', ':6.2f')
-    progress = ProgressMeter(
-        len(train_loader),
-        [batch_time, data_time, losses, top1, top5],
-        prefix="Epoch: [{}]".format(epoch))
+    # progress = ProgressMeter(
+    #     len(train_loader),
+    #     [batch_time, data_time, losses, top1, top5],
+    #     prefix="Epoch: [{}]".format(epoch))
 
     # switch to train mode
     model.train()
@@ -315,6 +337,11 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args):
     end = time.time()
     for i, (images, target) in enumerate(train_loader):
         # measure data loading time
+        
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
+
         data_time.update(time.time() - end)
 
         # move data to the same device as model
@@ -340,8 +367,8 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if i % args.print_freq == 0:
-            progress.display(i + 1)
+        # if i % args.print_freq == 0:
+        #     progress.display(i + 1)
 
 
 def validate(val_loader, model, criterion, args):

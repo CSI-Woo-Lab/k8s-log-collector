@@ -15,6 +15,8 @@ from torch.optim import Adam
 ###  GAT LAYER DEFINITION    ###
 ################################
 
+
+
 class GraphAttentionLayer(nn.Module):
     """
     Graph Attention Layer (GAT) as described in the paper `"Graph Attention Networks" <https://arxiv.org/pdf/1710.10903.pdf>`.
@@ -253,7 +255,12 @@ def load_cora(path='./cora', device='cpu'):
 ### TRAIN AND TEST FUNCTIONS  ###
 #################################
 
-def train_iter(epoch, model, optimizer, criterion, input, target, mask_train, mask_val, print_every=10):
+def train_iter(epoch, model, optimizer, criterion, input, target, mask_train, mask_val, x, print_every=10):
+    
+    ######### MINGEUN ###########
+    x.every_iteration()
+    ######### MINGEUN ###########
+
     start_t = time.time()
     model.train()
     optimizer.zero_grad()
@@ -269,9 +276,9 @@ def train_iter(epoch, model, optimizer, criterion, input, target, mask_train, ma
     loss_train, acc_train = test(model, criterion, input, target, mask_train)
     loss_val, acc_val = test(model, criterion, input, target, mask_val)
 
-    if epoch % print_every == 0:
-        # Print the training progress at specified intervals
-        print(f'Epoch: {epoch:04d} ({(time.time() - start_t):.4f}s) loss_train: {loss_train:.4f} acc_train: {acc_train:.4f} loss_val: {loss_val:.4f} acc_val: {acc_val:.4f}')
+    # if epoch % print_every == 0:
+    #     # Print the training progress at specified intervals
+    #     print(f'Epoch: {epoch:04d} ({(time.time() - start_t):.4f}s) loss_train: {loss_train:.4f} acc_train: {acc_train:.4f} loss_val: {loss_val:.4f} acc_val: {acc_val:.4f}')
 
 
 def test(model, criterion, input, target, mask):
@@ -291,7 +298,7 @@ if __name__ == '__main__':
     # All defalut values are the same as in the config used in the main paper
 
     parser = argparse.ArgumentParser(description='PyTorch Graph Attention Network')
-    parser.add_argument('--epochs', type=int, default=300,
+    parser.add_argument('--epochs', type=int, default=2000,
                         help='number of epochs to train (default: 300)')
     parser.add_argument('--lr', type=float, default=0.005,
                         help='learning rate (default: 0.005)')
@@ -301,7 +308,7 @@ if __name__ == '__main__':
                         help='dropout probability (default: 0.6)')
     parser.add_argument('--hidden-dim', type=int, default=64,
                         help='dimension of the hidden representation (default: 64)')
-    parser.add_argument('--num-heads', type=int, default=8,
+    parser.add_argument('--batch-size', type=int, default=8,
                         help='number of the attention heads (default: 4)')
     parser.add_argument('--concat-heads', action='store_true', default=False,
                         help='wether to concatinate attention heads, or average over them (default: False)')
@@ -320,6 +327,11 @@ if __name__ == '__main__':
     torch.manual_seed(args.seed)
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
+
+    ######### MINGEUN ###########
+    from logger import Logger
+    x = Logger("gat", args.batch_size) 
+    ######### MINGEUN ###########
 
     # Set the device to run on
     if use_cuda:
@@ -355,7 +367,7 @@ if __name__ == '__main__':
     gat_net = GAT(
         in_features=features.shape[1],          # Number of input features per node  
         n_hidden=args.hidden_dim,               # Output size of the first Graph Attention Layer
-        n_heads=args.num_heads,                 # Number of attention heads in the first Graph Attention Layer
+        n_heads=args.batch_size,                 # Number of attention heads in the first Graph Attention Layer
         num_classes=labels.max().item() + 1,    # Number of classes to predict for each node
         concat=args.concat_heads,               # Wether to concatinate attention heads
         dropout=args.dropout_p,                 # Dropout rate
@@ -366,10 +378,15 @@ if __name__ == '__main__':
     optimizer = Adam(gat_net.parameters(), lr=args.lr, weight_decay=args.l2)
     criterion = nn.NLLLoss()
 
+    ######### MINGEUN ###########
+    x.ready_for_training()
+    ######### MINGEUN ###########
+
     # Train and evaluate the model
     for epoch in range(args.epochs):
-        train_iter(epoch + 1, gat_net, optimizer, criterion, (features, adj_mat), labels, idx_train, idx_val, args.val_every)
+        train_iter(epoch + 1, gat_net, optimizer, criterion, (features, adj_mat), labels, idx_train, idx_val, x, args.val_every)
+        
         if args.dry_run:
             break
-    loss_test, acc_test = test(gat_net, criterion, (features, adj_mat), labels, idx_test)
-    print(f'Test set results: loss {loss_test:.4f} accuracy {acc_test:.4f}')
+    # loss_test, acc_test = test(gat_net, criterion, (features, adj_mat), labels, idx_test)
+    # print(f'Test set results: loss {loss_test:.4f} accuracy {acc_test:.4f}')

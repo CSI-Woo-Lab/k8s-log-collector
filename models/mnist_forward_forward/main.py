@@ -178,6 +178,6 @@ if __name__ == "__main__":
     print("train error:", 1.0 - net.predict(x).eq(y).float().mean().item())
     x_te, y_te = next(iter(test_loader))
     x_te, y_te = x_te.to(device), y_te.to(device)
-    if args.save_model:
-        torch.save(net.state_dict(), "mnist_ff.pt")
-    print("test error:", 1.0 - net.predict(x_te).eq(y_te).float().mean().item())
+    # if args.save_model:
+    #     torch.save(net.state_dict(), "mnist_ff.pt")
+    # print("test error:", 1.0 - net.predict(x_te).eq(y_te).float().mean().item())

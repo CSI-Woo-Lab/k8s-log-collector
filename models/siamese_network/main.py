@@ -187,25 +187,30 @@ class APP_MATCHER(Dataset):
         return image_1, image_2, target
 
 
-def train(args, model, device, train_loader, optimizer, epoch):
+def train(args, model, device, train_loader, optimizer, epoch, x):
     model.train()
 
     # we aren't using `TripletLoss` as the MNIST dataset is simple, so `BCELoss` can do the trick.
     criterion = nn.BCELoss()
 
     for batch_idx, (images_1, images_2, targets) in enumerate(train_loader):
+        
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
+        
         images_1, images_2, targets = images_1.to(device), images_2.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = model(images_1, images_2).squeeze()
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
-        if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(images_1), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader), loss.item()))
-            if args.dry_run:
-                break
+        # if batch_idx % args.log_interval == 0:
+        #     print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+        #         epoch, batch_idx * len(images_1), len(train_loader.dataset),
+        #         100. * batch_idx / len(train_loader), loss.item()))
+        #     if args.dry_run:
+        #         break
 
 
 def test(model, device, test_loader):
@@ -229,9 +234,9 @@ def test(model, device, test_loader):
     # for the 1st epoch, the average loss is 0.0001 and the accuracy 97-98%
     # using default settings. After completing the 10th epoch, the average
     # loss is 0.0000 and the accuracy 99.5-100% using default settings.
-    print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
-        test_loss, correct, len(test_loader.dataset),
-        100. * correct / len(test_loader.dataset)))
+    # print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
+    #     test_loss, correct, len(test_loader.dataset),
+    #     100. * correct / len(test_loader.dataset)))
 
 
 def main():
@@ -266,6 +271,11 @@ def main():
 
     torch.manual_seed(args.seed)
 
+    ######### MINGEUN ###########
+    from logger import Logger
+    x = Logger("siamese_net", args.batch_size) 
+    ######### MINGEUN ###########
+
     if use_cuda:
         device = torch.device("cuda")
     elif use_mps:
@@ -291,13 +301,18 @@ def main():
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
+
+    ######### MINGEUN ###########
+    x.ready_for_training()
+    ######### MINGEUN ##########
+
     for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch)
-        test(model, device, test_loader)
+        train(args, model, device, train_loader, optimizer, epoch, x)
+        # test(model, device, test_loader)
         scheduler.step()
 
-    if args.save_model:
-        torch.save(model.state_dict(), "siamese_network.pt")
+    # if args.save_model:
+    #     torch.save(model.state_dict(), "siamese_network.pt")
 
 
 if __name__ == '__main__':

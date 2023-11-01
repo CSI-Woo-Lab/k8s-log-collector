@@ -39,7 +39,7 @@ parser.add_argument('--mps', action='store_true', default=False, help='enables m
 opt = parser.parse_args()
 
 ######### MINGEUN ###########
-from logger2 import Logger
+from logger import Logger
 x = Logger("dcgan", opt.batch_size) 
 ######### MINGEUN ###########
 

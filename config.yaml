@@ -1,25 +1,53 @@
 jobs : [
-  "vae",
-  # "vision_transformer",
-   "yolov8n",
-  # "yolov8s",
-  # "yolov8m",
-  # "yolov8l",
-  # "yolov8x",
-  # "mnist",
-  # "mnist_rnn",
+  "vae",              # works
+  "yolov8n",          # works
+  "yolov8s",          # works
+  "yolov8m",          # works
+  "yolov8l",          # works
+  "yolov8x",          # works
+  "mnist",            # works
+  "mnist_rnn",        # works
+  "dcgan",            # works
+  "imagenet",         # works
+  "vision_transformer", # works
+  "siamese_net",        # works
+  "super_resolution",   # works
+  "word_language", # work
+  "gat", # works
 ]
 
 node_and_gpu : [
-  ["gpu01", "gpu:gpu0:1"],
-  ["gpu01", "gpu:gpu1:1"],
-  ["gpu02", "gpu:gpu0:1"],
-  #["gpu03", "gpu:gpu0:1"],
+  ["gpu01", "gpu:gpu0:1", "8"],
+  ["gpu01", "gpu:gpu1:1", "24"],
+  ["gpu02", "gpu:gpu0:1", "24"],
+  ["gpu03", "gpu:gpu0:1", "24"],
 ]
 
-batch_size : {
+batch_size_for_8 : {
+    "dcgan":[32, 64, 128, 256, 512, 1024],
+    "imagenet":[128, 256, 512, 1024, 2048, 4096],
     "vae":[128, 256, 512, 1024, 2048, 4096], 
-    "vision_transformer":[4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], 
+    "vision_transformer":[4, 8, 12, 16], 
+    "yolov8n":[2, 4, 8, 16],
+    "yolov8s":[2, 4, 8, 16],
+    "yolov8m":[2, 4, 8],
+    "yolov8l":[2, 4, 8],
+    "yolov8x":[2, 4],
+    "mnist":[32, 64, 128, 256, 512],
+    "mnist_rnn":[32, 64, 128, 256, 512],
+    "siamese_net":[32, 64, 128, 256],
+    "super_resolution":[32, 64, 128, 256, 512],
+    "word_language" :[20,40,60,80],
+    "gat":[4,8,12,16,20]
+}
+
+
+batch_size_for_24 : {
+    "dcgan":[32, 64, 128, 256, 512, 1024],
+    "imagenet":[128, 256, 512, 1024, 2048, 4096],
+    "vae":[128, 256, 512, 1024, 2048, 4096], 
+    "vision_transformer":[4, 8, 12, 16, 32], 
+    # "vision_transformer":[32], 
     "yolov8n":[4, 8, 16],
     "yolov8m":[2, 4, 8],
     "yolov8s":[4, 8, 16],
@@ -27,18 +55,28 @@ batch_size : {
     "yolov8x":[2, 4, 8],
     "mnist":[32, 64, 128, 256, 512],
     "mnist_rnn":[32, 64, 128, 256, 512],
+    "siamese_net":[32, 64, 128, 256, 512],
+    "super_resolution":[32, 64, 128, 256, 512],
+    "word_language" :[20,40,60,80,100],
+    "gat":[4,8,12,16,20,24]
 }
 
 train_file : {
+  "dcgan": "models/dcgan/main.py",
+  "imagenet":"models/imagenet/main.py",
   "vae" : "models/vae/main.py",
-  # "vision_transformer" : "models/vision_transformer/main.py",
+  "vision_transformer" : "models/vision_transformer/main.py",
   "yolov8n": "models/Yolov8/main.py yolov8n.pt",
   "yolov8s": "models/Yolov8/main.py yolov8s.pt",
   "yolov8m": "models/Yolov8/main.py yolov8m.pt",
   "yolov8l": "models/Yolov8/main.py yolov8l.pt",
   "yolov8x": "models/Yolov8/main.py yolov8x.pt",
-  # "mnist" : "models/mnist/",
-  # "mnist_rnn" : "models/mnist_rnn",
+  "mnist" : "models/mnist/main.py",
+  "mnist_rnn" : "models/mnist_rnn/main.py",
+  "siamese_net": "models/siamese_network/main.py",
+  "super_resolution": "models/super_resolution/main.py",
+  "word_language": "models/word_language_model/main.py",
+  "gat": "models/gat/main.py",
 }
 
 

@@ -1,6 +1,9 @@
 dcgan/data
-data
+data/
+cora/
 *.pyc
+PyTorch-NLP/
+*.out
 OpenNMT/data
 cpp/mnist/build
 cpp/dcgan/build
@@ -17,11 +20,12 @@ gat/cora/
 docs/build
 docs/venv
 *.pt
-Yolov8/datasets/VisDrone/
+Yolov8/datasets/
 dataset/
 # vi backups
 *~
-
+yolo8*/
+models/
 # development
 .vscode
 **/.DS_Store

@@ -11,18 +11,25 @@ from data import get_training_set, get_test_set
 
 # Training settings
 parser = argparse.ArgumentParser(description='PyTorch Super Res Example')
-parser.add_argument('--upscale_factor', type=int, required=True, help="super resolution upscale factor")
-parser.add_argument('--batchSize', type=int, default=64, help='training batch size')
+parser.add_argument('--upscale_factor', type=int, default=3, help="super resolution upscale factor")
+parser.add_argument('--batch-size', type=int, default=64, help='training batch size')
 parser.add_argument('--testBatchSize', type=int, default=10, help='testing batch size')
-parser.add_argument('--nEpochs', type=int, default=2, help='number of epochs to train for')
+parser.add_argument('--nEpochs', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.01, help='Learning Rate. Default=0.01')
-parser.add_argument('--cuda', action='store_true', help='use cuda?')
-parser.add_argument('--mps', action='store_true', default=False, help='enables macOS GPU training')
+parser.add_argument('--cuda', action='store_true', default=True, help='use cuda?')
+parser.add_argument('--mps', action='store_true', default=True, help='enables macOS GPU training')
 parser.add_argument('--threads', type=int, default=4, help='number of threads for data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 opt = parser.parse_args()
 
-print(opt)
+# print(opt)
+
+######### MINGEUN ###########
+from logger import Logger
+x = Logger("super_resolution", opt.batch_size) 
+######### MINGEUN ###########
+
+
 
 if opt.cuda and not torch.cuda.is_available():
     raise Exception("No GPU found, please run without --cuda")
@@ -34,6 +41,7 @@ use_mps = opt.mps and torch.backends.mps.is_available()
 
 if opt.cuda:
     device = torch.device("cuda")
+    print("cuda_true!!!!")
 elif use_mps:
     device = torch.device("mps")
 else:
@@ -42,19 +50,25 @@ else:
 print('===> Loading datasets')
 train_set = get_training_set(opt.upscale_factor)
 test_set = get_test_set(opt.upscale_factor)
-training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batchSize, shuffle=True)
-testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.threads, batch_size=opt.testBatchSize, shuffle=False)
+training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batch_size, shuffle=True)
+# testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.threads, batch_size=opt.testBatchSize, shuffle=False)
 
 print('===> Building model')
+print('device:', device)
 model = Net(upscale_factor=opt.upscale_factor).to(device)
 criterion = nn.MSELoss()
 
 optimizer = optim.Adam(model.parameters(), lr=opt.lr)
 
 
-def train(epoch):
+def train(epoch, x):
     epoch_loss = 0
     for iteration, batch in enumerate(training_data_loader, 1):
+        
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
+
         input, target = batch[0].to(device), batch[1].to(device)
 
         optimizer.zero_grad()
@@ -63,9 +77,9 @@ def train(epoch):
         loss.backward()
         optimizer.step()
 
-        print("===> Epoch[{}]({}/{}): Loss: {:.4f}".format(epoch, iteration, len(training_data_loader), loss.item()))
+        # print("===> Epoch[{}]({}/{}): Loss: {:.4f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
-    print("===> Epoch {} Complete: Avg. Loss: {:.4f}".format(epoch, epoch_loss / len(training_data_loader)))
+    # print("===> Epoch {} Complete: Avg. Loss: {:.4f}".format(epoch, epoch_loss / len(training_data_loader)))
 
 
 def test():
@@ -86,7 +100,11 @@ def checkpoint(epoch):
     torch.save(model, model_out_path)
     print("Checkpoint saved to {}".format(model_out_path))
 
+######### MINGEUN ###########
+x.ready_for_training()
+######### MINGEUN ###########
+
 for epoch in range(1, opt.nEpochs + 1):
-    train(epoch)
-    test()
-    checkpoint(epoch)
+    train(epoch, x)
+    # test()
+    # checkpoint(epoch)

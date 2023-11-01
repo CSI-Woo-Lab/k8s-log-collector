@@ -59,6 +59,7 @@ def collecting(num_of_jobs):
                             wr = csv.writer(f)
                             for line in logs[-1]:
                                 wr.writerow(line.decode("utf-8").split(','))
+                            wr.writerow([])
                         break
 
 
@@ -67,22 +68,29 @@ while True:
     # initialization
     # data format : node, gpu, job, batch_size, gpu_name, gpu_utilization, gpu_memory_utilization, iteration, 
     log = []
-    for node, gpu in cfg['node_and_gpu']:
-        log.append([node, gpu])
+    for node, gpu, mem in cfg['node_and_gpu']:
+        log.append([node, gpu, mem])
 
     # select job and hyper parameters
     # TODO : Organize executable jobs separately by gpu
     for j in range(num_of_jobs):
         _job = random.choice(cfg['jobs'])
-        _batch_size = random.choice(cfg['batch_size'][_job])
+        # if j == 0 : 
+        #     _job = "vision_transformer"
+        # if j == 1 :
+        #     _job = "vision_transformer"
+        # _batch_size = max(cfg['batch_size_for_{}'.format(log[j][2])][_job])
+        _batch_size = random.choice(cfg['batch_size_for_{}'.format(log[j][2])][_job])
         log[j] += [_job, _batch_size]
 
     process_list = []
     for j in range(num_of_jobs):
-        # _cmd = "srun --nodelist={} --gres={} ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
-        _cmd = "srun --nodelist={} --gres={} -o /dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
+        # _cmd = "srun --nodelist={} --gres={} ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][3]], log[j][4])
+        _cmd = "srun --nodelist={} --gres={} --mem=16000 -o /dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][3]], log[j][4])
         _proc = subprocess.Popen(_cmd, shell=True, text=True)
         process_list.append(_proc)
-    
+        
     for proc in process_list:
         proc.wait()
+    
+    time.sleep(3)

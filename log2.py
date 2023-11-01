@@ -80,7 +80,7 @@ while True:
     process_list = []
     for j in range(num_of_jobs):
         _cmd = "srun --nodelist={} --gres={} ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
-        # _cmd = "srun --nodelist={} --gres={} -o=/dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
+        # _cmd = "srun --nodelist={} --gres={} -o /dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
         _proc = subprocess.Popen(_cmd, shell=True, text=True)
         process_list.append(_proc)
     

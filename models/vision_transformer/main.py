@@ -130,7 +130,7 @@ class ViT(nn.Module):
 
 class TrainEval:
 
-    def __init__(self, args, model, train_dataloader, val_dataloader, optimizer, criterion, log_collect, device):
+    def __init__(self, args, model, train_dataloader, val_dataloader, optimizer, criterion, x, device):
         self.model = model
         self.train_dataloader = train_dataloader
         self.val_dataloader = val_dataloader
@@ -139,7 +139,7 @@ class TrainEval:
         self.epoch = args.epochs
         self.device = device
         self.args = args
-        self.log_collect = log_collect
+        self.x = x
 
     def train_fn(self, current_epoch):
         self.model.train()
@@ -148,7 +148,9 @@ class TrainEval:
         tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
         # tk = tqdm(self.train_dataloader)
         for t, data in enumerate(tk):
-            self.log_collect.change_iteration(current_epoch * len(self.train_dataloader) + t + 1) #################
+            ######### MINGEUN ###########
+            self.x.every_iteration()
+            ######### MINGEUN ###########
             images, labels = data
             images, labels = images.to(self.device), labels.to(self.device)
             self.optimizer.zero_grad()
@@ -246,6 +248,13 @@ def main():
                         help='quickly check a single pass')
     args = parser.parse_args()
 
+    ######### MINGEUN ###########
+    from logger import Logger
+    x = Logger("vision_transformer", args.batch_size) 
+    ######### MINGEUN ###########
+
+
+
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
 
@@ -259,16 +268,20 @@ def main():
     valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 
     model = ViT(args).to(device)
-    log_collect = JobLogging(args.batch_size, 'vision_tranformer') ####################
+    # log_collect = JobLogging(args.batch_size, 'vision_tranformer') ####################
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
-    input_start_signal()
+    # input_start_signal()
     # print(s, flush = True)
     
-    init_schedule(log_collect)
-    TrainEval(args, model, train_loader, valid_loader, optimizer, criterion, log_collect, device).train()
+    # init_schedule(log_collect)
+    ######### MINGEUN ###########
+    x.ready_for_training()
+    ######### MINGEUN ###########
+
+    TrainEval(args, model, train_loader, valid_loader, optimizer, criterion, x, device).train()
 
 
 if __name__ == "__main__":

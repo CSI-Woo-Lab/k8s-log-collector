@@ -16,7 +16,7 @@ job_name = (args.model).strip(".pt")
 # Display model information (optional)
 
 # Train the model on the COCO8 example dataset for 100 epochs
-results = model.train(data='VisDrone.yaml', epochs=100, imgsz=640, batch=args.batch_size, project=job_name)
+results = model.train(data='VOC.yaml', epochs=100, imgsz=320, batch=args.batch_size, project=job_name)
 
 # Run inference with the YOLOv8n model on the 'bus.jpg' image
 # results = model('path/to/bus.jpg')

@@ -40,12 +40,14 @@ class Net(nn.Module):
         return output
 
 
-def train(args, model, device, train_loader, optimizer, epoch, log_collect):
+def train(args, model, device, train_loader, optimizer, epoch, x):
     model.train()
     length = len(train_loader)
     for batch_idx, (data, target) in enumerate(train_loader):
 
-        log_collect.change_iteration(batch_idx + length * (epoch - 1)) #################
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
 
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
@@ -81,76 +83,6 @@ def test(args, model, device, test_loader):
     #     test_loss, correct, len(test_loader.dataset),
     #     100. * correct / len(test_loader.dataset)))
 
-class JobLogging:
-    def __init__(self, batch_size):
-        import socket
-        # self.total_epoch = total_epoch
-        self.current_epoch = 1
-        # self.total_iteration = total_iteration
-        self.current_iteration = 1
-        self.gpu_memory = 0
-        self.gpu_usage = 0
-        self.batch_size = batch_size
-        self.job_name = 'mnist_rnn'
-        self.hostname = socket.gethostname()
-        self.gpu = torch.cuda.get_device_name(torch.cuda.current_device())
-        self.file = './out.txt'
-        # f = open(file, 'a').close()
-
-    def logging(self):
-        import nvidia_smi
-
-        nvidia_smi.nvmlInit()
-        deviceCount = nvidia_smi.nvmlDeviceGetCount()
-        handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
-        info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
-        res = nvidia_smi.nvmlDeviceGetUtilizationRates(handle)
-        self.gpu_memory = "{}".format(info.used)
-        # self.gpu_memory = "{:.3f}".format(100 * (info.used / info.total))
-        self.gpu_usage = res.gpu
-        nvidia_smi.nvmlShutdown()
-
-        f = open(self.file, 'a')
-        hostname = self.hostname
-        job_name = self.job_name
-        gpu = self.gpu
-        gpu_memory = str(self.gpu_memory) + "MiB"
-        gpu_usage = str(self.gpu_usage) + "%"
-
-        batch_size = str(self.batch_size)
-        current_iteration = self.current_iteration
-
-        data = '%s,%s,%s,%s,%s,%s,%d' \
-            %(hostname, job_name, gpu, gpu_memory, gpu_usage, batch_size, current_iteration)
-    
-        print(data, flush=True)
-        f.write(data)
-        f.close()
-
-    def change_iteration(self, iteration):
-        self.current_iteration = iteration
-
-def input_start_signal():
-    import sys
-    print('ready', flush = True)
-    s = sys.stdin.readline()
-
-def init_schedule(log_collect):
-    import schedule
-    import threading
-    schedule.every(10).seconds.do(log_collect.logging)
-    schedule_thread = threading.Thread(target= start_schedule, daemon=True)
-    schedule_thread.start()
-
-def start_schedule():
-    import os
-    import signal
-    import schedule
-    import time
-    time.sleep(10)
-    schedule.run_pending()
-    os.kill(os.getpid(), signal.SIGUSR1)
-
 
 def main():
     # Training settings
@@ -180,6 +112,11 @@ def main():
 
     torch.manual_seed(args.seed)
 
+    ######### MINGEUN ###########
+    from logger import Logger
+    x = Logger("mnist_rnn", args.batch_size) 
+    ######### MINGEUN ###########
+
     device = torch.device("cuda" if use_cuda else "cpu")
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
@@ -202,13 +139,12 @@ def main():
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
 
-    log_collect = JobLogging(args.batch_size) ####################
-    input_start_signal()
-    # print(s, flush = True)
-    init_schedule(log_collect)
+    ######### MINGEUN ###########
+    x.ready_for_training()
+    ######### MINGEUN ###########
 
     for epoch in range(1, args.epochs + 1):
-        train(args, model, device, train_loader, optimizer, epoch, log_collect)
+        train(args, model, device, train_loader, optimizer, epoch, x)
         # test(args, model, device, test_loader)
         scheduler.step()
 
