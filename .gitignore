@@ -25,7 +25,6 @@ dataset/
 # vi backups
 *~
 yolo8*/
-models/
 # development
 .vscode
 **/.DS_Store
