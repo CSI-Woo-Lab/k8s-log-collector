@@ -208,7 +208,7 @@ class GAT(nn.Module):
 ### LOADING THE CORA DATASET ###
 ################################
 
-def load_cora(path='./cora', device='cpu'):
+def load_cora(path='../datasets/cora', device='cpu'):
     """
     Loads the Cora dataset. The dataset is downloaded from https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz.
 
@@ -344,7 +344,7 @@ if __name__ == '__main__':
 
     # Load the dataset
     cora_url = 'https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz'
-    path = './cora'
+    path = '../datasets/cora'
 
     if os.path.isfile(os.path.join(path, 'cora.content')) and os.path.isfile(os.path.join(path, 'cora.cites')):
         print('Dataset already downloaded...')

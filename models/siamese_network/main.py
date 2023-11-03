@@ -292,8 +292,8 @@ def main():
         train_kwargs.update(cuda_kwargs)
         test_kwargs.update(cuda_kwargs)
 
-    train_dataset = APP_MATCHER('../data', train=True, download=True)
-    test_dataset = APP_MATCHER('../data', train=False)
+    train_dataset = APP_MATCHER('../datasets', train=True, download=True)
+    test_dataset = APP_MATCHER('../datasets', train=False)
     train_loader = torch.utils.data.DataLoader(train_dataset,**train_kwargs)
     test_loader = torch.utils.data.DataLoader(test_dataset, **test_kwargs)
 

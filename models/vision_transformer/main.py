@@ -262,8 +262,8 @@ def main():
         Resize((args.img_size, args.img_size)),
         ToTensor()
     ])
-    train_data = torchvision.datasets.CIFAR10(root='./dataset', train=True, download=True, transform=transforms)
-    valid_data = torchvision.datasets.CIFAR10(root='./dataset', train=False, download=True, transform=transforms)
+    train_data = torchvision.datasets.CIFAR10(root='../datasets', train=True, download=True, transform=transforms)
+    valid_data = torchvision.datasets.CIFAR10(root='../datasets', train=False, download=True, transform=transforms)
     train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
     valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 

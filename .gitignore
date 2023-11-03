@@ -23,7 +23,6 @@ docs/venv
 Yolov8/datasets/
 dataset/
 # vi backups
-*~
 yolo8*/
 # development
 .vscode

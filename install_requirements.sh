@@ -29,4 +29,5 @@ pip install schedule
 pip install nvidia-ml-py3
 pip install wget
 pip install fiftyone
+pip install zmq
 # pip install pytorch-nlp

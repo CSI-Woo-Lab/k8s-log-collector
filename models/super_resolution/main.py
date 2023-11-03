@@ -41,7 +41,7 @@ use_mps = opt.mps and torch.backends.mps.is_available()
 
 if opt.cuda:
     device = torch.device("cuda")
-    print("cuda_true!!!!")
+    # print("cuda_true!!!!")
 elif use_mps:
     device = torch.device("mps")
 else:
