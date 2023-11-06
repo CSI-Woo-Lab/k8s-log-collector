@@ -26,8 +26,9 @@ with open("out.csv", "r") as f:
     for row in reader:
         if len(row) < 1:
             continue
-            
-        node_and_gpu = row[0] + "_" + row[1].replace(" ","_")
+        node_name_split = row[0].split("-")
+        node_name = node_name_split[0]
+        node_and_gpu = node_name + "_" + row[1].replace(" ","_")
         job, batch_size, gpu_util, iteration = row[2], int(row[3]), float(row[4]), int(row[7])
         mem_util = float(row[6]) / (1024*1024*1024)       # change unit to GB
 
