@@ -102,7 +102,7 @@ for node_and_gpu in logs.keys():
         ax3.set_xticklabels(x_labels)
         ax3.set_ylim([0, 300])
 
-        plt.savefig("graphs/{}_{}.png".format(node_and_gpu, job))
+        plt.savefig("graphs/{}_{}.png".format(node_and_gpu, job.strip(".yaml")))
         plt.close(fig)
 
 
