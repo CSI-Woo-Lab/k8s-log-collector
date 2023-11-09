@@ -7,11 +7,12 @@ model_params:
   beta: 0.25
 
 data_params:
-  data_path: "Data/"
+  data_path_train: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/train_label.json"
+  data_path_test: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/test_label.json"
   train_batch_size: 64
   val_batch_size:  64
   patch_size: 64
-  num_workers: 4
+  num_workers: 16
 
 
 exp_params:
@@ -22,8 +23,8 @@ exp_params:
   manual_seed: 1265
 
 trainer_params:
-  gpus: [1]
-  max_epochs: 10
+  gpus: [0]
+  max_epochs: 100
 
 logging_params:
   save_dir: "logs/"

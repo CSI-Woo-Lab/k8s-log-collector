@@ -17,6 +17,7 @@ gat/cora/
 docs/build
 docs/venv
 *.pt
+*.zip
 Yolov8/datasets/
 dataset/
 # vi backups
