@@ -7,8 +7,8 @@ model_params:
   beta: 0.25
 
 data_params:
-  data_path_train: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/train_label.json"
-  data_path_test: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/test_label.json"
+  data_path_train: "/workspace/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/train_label.json"
+  data_path_test: "/workspace/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/test_label.json"
   train_batch_size: 64
   val_batch_size:  64
   patch_size: 64

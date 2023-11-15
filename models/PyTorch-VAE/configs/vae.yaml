@@ -5,8 +5,8 @@ model_params:
 
 
 data_params:
-  data_path_train: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/train_label.json"
-  data_path_test: "/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/test_label.json"
+  data_path_train: "/workspace/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/train_label.json"
+  data_path_test: "/workspace/datasets/CelebA_spoof/CelebA_Spoof/metas/intra_test/test_label.json"
   # data_path_train: "/home/shjeong/deepops/workloads/examples/k8s/datasets/"
   # data_path_test: "/home/shjeong/deepops/workloads/examples/k8s/datasets/"
   train_batch_size: 64

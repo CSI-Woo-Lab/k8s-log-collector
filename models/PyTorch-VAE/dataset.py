@@ -140,7 +140,7 @@ class CelebASpoof(Dataset):
         with open(self.data_path) as f:
             self.image_list = json.load(f)
         self.image_id_list = list(self.image_list) 
-        self.base_folder = '/home/shjeong/deepops/workloads/examples/k8s/datasets/CelebA_spoof/CelebA_Spoof/'
+        self.base_folder = '/workspace/datasets/CelebA_spoof/CelebA_Spoof/'
         self.len = len(self.image_list)
     def __len__(self):
         # print("first:", len(self.image_list))

@@ -18,7 +18,7 @@ parser.add_argument('--config',  '-c',
                     dest="filename",
                     metavar='FILE',
                     help =  'path to the config file',
-                    default='models/PyTorch-VAE/configs/vae.yaml')
+                    default='models/PyTorch-VAE/configs/vq_vae.yaml')
 
 ############ MINGEUN ############
 parser.add_argument('--batch-size', type=int, default = 64, metavar='N',
@@ -34,7 +34,7 @@ with open(args.filename, 'r') as file:
 
 ########### MINGEUN ############
 from logger import Logger
-x = Logger("Pytorch_VAE", args.batch_size)
+x = Logger("Pytorch_VQVAE", args.batch_size)
 flag = 0
 config['data_params']['train_batch_size'] = args.batch_size
 config['data_params']['val_batch_size'] = args.batch_size

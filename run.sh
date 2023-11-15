@@ -1,8 +1,8 @@
 #!/bin/bash
 # activate virtualenv for torch examples
-. ~/torch_env/bin/activate
+# . ~/torch_env/bin/activate
 
-export PYTHONPATH=~/k8s-log-collector
+export PYTHONPATH=/workspace/k8s-log-collector
 
 # run train code with batch_size parameter
 
