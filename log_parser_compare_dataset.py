@@ -20,7 +20,7 @@ pylab.rcParams.update(params)
 # forth dict keys : "gpu_util", "mem_util", "iter"
 logs = {}
 
-with open("out_nfs_vae_spoof.csv", "r") as f:
+with open("out_nfs_vae_spoof_seed.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:
@@ -29,7 +29,7 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         node_name_split = row[0].split("-")
         node_name = node_name_split[0]
         node_and_gpu = node_name + "_" + row[1].replace(" ","_")
-        job, batch_size, gpu_util, iteration = row[2], int(row[3]), float(row[4]), int(row[7])
+        job, batch_size, gpu_util, iteration = row[2].replace(".yaml",""), int(row[3]), float(row[4]), int(row[7])
         mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
 
         if node_and_gpu not in logs.keys():
@@ -44,6 +44,33 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         logs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
         logs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
         logs[node_and_gpu][job][batch_size]["iter"].append(iteration)
+
+logs_nfs = {}
+with open("out_nfs_vae_spoof.csv", "r") as f:
+    reader = csv.reader(f)
+
+    for row in reader:
+        if len(row) < 1:
+            continue
+        node_name_split = row[0].split("-")
+        node_name = node_name_split[0]
+        node_and_gpu = node_name + "_" + row[1].replace(" ","_")
+        job, batch_size, gpu_util, iteration = row[2].replace(".yaml",""), int(row[3]), float(row[4]), int(row[7])
+        mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
+
+        if node_and_gpu not in logs_nfs.keys():
+            logs_nfs[node_and_gpu] = {}
+        
+        if job not in logs_nfs[node_and_gpu].keys():
+            logs_nfs[node_and_gpu][job] = {}
+        
+        if batch_size not in logs_nfs[node_and_gpu][job].keys():
+            logs_nfs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
+        
+        logs_nfs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
+        logs_nfs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
+        logs_nfs[node_and_gpu][job][batch_size]["iter"].append(iteration)
+
 
 # draw graphs
 for node_and_gpu in logs.keys():
@@ -63,11 +90,24 @@ for node_and_gpu in logs.keys():
         #             wspace=0.25)
 
         x_axis = list(logs[node_and_gpu][job].keys())
+        node_and_gpu_nfs = node_and_gpu
+        if node_and_gpu_nfs  not in logs_nfs.keys():
+            logs_nfs[node_and_gpu_nfs] = {}
+            continue
+        x_axis_nfs = list(logs_nfs[node_and_gpu_nfs][job].keys())
+        # print(x_axis_nfs)
+        x_axis = list(set(x_axis).intersection(x_axis_nfs))
         x_axis.sort()
+
         x_labels = [str(i) for i in x_axis]
         y_axis_gpu_util, y_axis_mem_util, y_axis_iter = [], [], []
         y_axis_gpu_util_min, y_axis_mem_util_min, y_axis_iter_min = [], [], []
         y_axis_gpu_util_max, y_axis_mem_util_max, y_axis_iter_max = [], [], []
+
+        y_axis_gpu_util_nfs, y_axis_mem_util_nfs, y_axis_iter_nfs = [], [], []
+        y_axis_gpu_util_min_nfs, y_axis_mem_util_min_nfs, y_axis_iter_min_nfs = [], [], []
+        y_axis_gpu_util_max_nfs, y_axis_mem_util_max_nfs, y_axis_iter_max_nfs = [], [], []
+
 
         for batch_size in x_axis:
             y_axis_gpu_util.append( np.mean(logs[node_and_gpu][job][batch_size]["gpu_util"]) )
@@ -80,9 +120,29 @@ for node_and_gpu in logs.keys():
             y_axis_iter_min.append( np.min(logs[node_and_gpu][job][batch_size]["iter"]) )
             y_axis_iter_max.append( np.max(logs[node_and_gpu][job][batch_size]["iter"]) )
 
-        ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2)
-        ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2)
-        ax3.plot(range(len(x_axis)), y_axis_iter, 'bo-', linewidth=2)
+
+            y_axis_gpu_util_nfs.append( np.mean(logs_nfs[node_and_gpu_nfs][job][batch_size]["gpu_util"]) )
+            y_axis_gpu_util_min_nfs.append( np.min(logs_nfs[node_and_gpu_nfs][job][batch_size]["gpu_util"]) )
+            y_axis_gpu_util_max_nfs.append( np.max(logs_nfs[node_and_gpu_nfs][job][batch_size]["gpu_util"]) )
+            y_axis_mem_util_nfs.append( np.mean(logs_nfs[node_and_gpu_nfs][job][batch_size]["mem_util"]) )
+            y_axis_mem_util_min_nfs.append( np.min(logs_nfs[node_and_gpu_nfs][job][batch_size]["mem_util"]) )
+            y_axis_mem_util_max_nfs.append( np.max(logs_nfs[node_and_gpu_nfs][job][batch_size]["mem_util"]) )
+            y_axis_iter_nfs.append( np.mean(logs_nfs[node_and_gpu_nfs][job][batch_size]["iter"]) )
+            y_axis_iter_min_nfs.append( np.min(logs_nfs[node_and_gpu_nfs][job][batch_size]["iter"]) )
+            y_axis_iter_max_nfs.append( np.max(logs_nfs[node_and_gpu_nfs][job][batch_size]["iter"]) )
+
+
+        ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2, label='seed_change')
+        ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2, label='seed_change')
+        ax3.plot(range(len(x_axis)), y_axis_iter, 'bo-', linewidth=2, label='seed_change')
+
+        ax1.plot(range(len(x_axis)), y_axis_gpu_util_nfs,'ro-', linewidth=2, label='seed_fix')
+        ax2.plot(range(len(x_axis)), y_axis_mem_util_nfs,'ro-', linewidth=2, label='seed_fix')
+        ax3.plot(range(len(x_axis)), y_axis_iter_nfs, 'ro-', linewidth=2, label='seed_fix')
+
+        ax1.legend()
+        ax2.legend()
+        ax3.legend()
 
         ax1.set_xlabel("Batch size")
         ax1.set_ylabel("Gpu utilization (%)")
