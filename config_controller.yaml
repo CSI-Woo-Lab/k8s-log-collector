@@ -19,10 +19,10 @@ jobs : [
 ]
 
 node_and_gpu : [
-  ["gpu01", "gpu:gpu0:1", "8"],
-  ["gpu01", "gpu:gpu1:1", "24"],
-  ["gpu02", "gpu:gpu0:1", "24"],
-  ["gpu03", "gpu:gpu0:1", "24"],
+  ["gpu01", "gpu01-gpu0", "8"],
+  ["gpu01", "gpu01-gpu1", "24"],
+  ["gpu02", "gpu02-gpu0", "24"],
+  ["gpu03", "gpu02-gpu0", "24"],
 ]
 
 batch_size_for_8 : {

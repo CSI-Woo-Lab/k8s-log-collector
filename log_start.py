@@ -9,7 +9,7 @@ from threading import Thread
 
 
 #################### CONFIGURATION ####################
-with open("config.yaml") as f:
+with open("config_controller.yaml") as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 num_of_jobs = len(cfg["node_and_gpu"])
