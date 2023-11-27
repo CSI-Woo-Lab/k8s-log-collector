@@ -80,6 +80,7 @@ for node_and_gpu in logs.keys():
             y_axis_iter_min.append( np.min(logs[node_and_gpu][job][batch_size]["iter"]) )
             y_axis_iter_max.append( np.max(logs[node_and_gpu][job][batch_size]["iter"]) )
 
+        # make graph
         ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2)
         ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2)
         ax3.plot(range(len(x_axis)), y_axis_iter, 'bo-', linewidth=2)

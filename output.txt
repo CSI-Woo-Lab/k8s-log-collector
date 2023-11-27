@@ -1,2 +1,0 @@
-Device 0: b'NVIDIA GeForce RTX 3070 Ti', Memory : (90.43% free): 8589934592(total), 7767916544 (free), 822018048 (used)
-sent

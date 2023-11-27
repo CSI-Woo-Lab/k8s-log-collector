@@ -1,23 +1,30 @@
+#######################################
+# yaml file for random_job.py
+# control jobs, node_and_gpu, batch_size, python train file.
+#######################################
+
+# possible python jobs
 jobs : [
-  "vae",              # works
-  "yolov8n",          # works
-  "yolov8s",          # works
-  "yolov8m",          # works
-  "yolov8l",          # works
-  "yolov8x",          # works
-  "mnist",            # works
-  "mnist_rnn",        # works
-  "dcgan",            # works
-  "imagenet",         # works
-  "vision_transformer", # works
-  "siamese_net",        # works
-  "super_resolution",   # works
-  "word_language", # work
-  "gat", # works
-  "Pytorch_vae", # works
-  "Pytorch_vqvae", # works
+  "vae",            
+  "yolov8n",        
+  "yolov8s",          
+  "yolov8m",          
+  "yolov8l",         
+  "yolov8x",          
+  "mnist",            
+  "mnist_rnn",       
+  "dcgan",          
+  "imagenet",     
+  "vision_transformer", 
+  "siamese_net",        
+  "super_resolution",   
+  "word_language", 
+  "gat", 
+  "Pytorch_vae", 
+  "Pytorch_vqvae",
 ]
 
+# possible node and gpu
 node_and_gpu : [
   ["gpu01", "gpu:gpu0:1", "8"],
   ["gpu01", "gpu:gpu1:1", "24"],
@@ -25,6 +32,7 @@ node_and_gpu : [
   ["gpu03", "gpu:gpu0:1", "24"],
 ]
 
+# batch size for RTX 3070ti, 4060
 batch_size_for_8 : {
     "dcgan":[32, 64, 128, 256, 512, 1024],
     "imagenet":[128, 256, 512, 1024, 2048, 4096],
@@ -45,7 +53,7 @@ batch_size_for_8 : {
     "Pytorch_vqvae":[8,16,32,64,128,256]
 }
 
-
+# batch size for RTX 3090, 4070, 4080, 4090
 batch_size_for_24 : {
     "dcgan":[32, 64, 128, 256, 512, 1024],
     "imagenet":[128, 256, 512, 1024, 2048, 4096],
@@ -66,6 +74,7 @@ batch_size_for_24 : {
     "Pytorch_vqvae":[8,16,32,64,128,256,512]
 }
 
+# Pytyon train file mapping to jobs
 train_file : {
   "dcgan": "models/dcgan/main.py",
   "imagenet":"models/imagenet/main.py",

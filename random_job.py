@@ -9,9 +9,13 @@ import argparse
 from threading import Thread
 
 
-#################### CONFIGURATION ####################
+'''
+this is python file that decide random jobs and execute in a pod of Kubernetes.
+Jobs, batch_size are in config.yaml.
+'''
+#################### CONFIGURATION #################### 
 with open("config.yaml") as f:
-    cfg = yaml.load(f, Loader=yaml.FullLoader)
+    cfg = yaml.load(f, Loader=yaml.FullLoader) 
 
 parser = argparse.ArgumentParser(description='job select')
 parser.add_argument('--gpu', required=True,
@@ -19,6 +23,7 @@ parser.add_argument('--gpu', required=True,
 args = parser.parse_args()
 #################### CONFIGURATION ####################
 
+# Decide batch size according to gpu specification.
 if args.gpu == "gpu01-gpu0":
     index = 8
 else:
@@ -27,9 +32,8 @@ while True:
 
     _job = random.choice(cfg['jobs'])
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
-
+    # execute run.sh file so that execute python file with batch_size and model.
     _cmd = "./run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
-    # _cmd = "srun --nodelist={} --gres={} -o /dev/null ./run.sh {} {}".format(log[j][0], log[j][1], cfg['train_file'][log[j][2]], log[j][3])
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
     
     _proc.wait()

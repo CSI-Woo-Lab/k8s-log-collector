@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 import csv
 import random
 import numpy as np
@@ -20,7 +29,7 @@ pylab.rcParams.update(params)
 # forth dict keys : "gpu_util", "mem_util", "iter"
 logs = {}
 
-with open("out_nfs_vae_spoof.csv", "r") as f:
+with open("out_nfs_vae_spoof_seed.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:
@@ -30,7 +39,7 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         node_name = node_name_split[0]
         node_and_gpu = node_name + "_" + row[1].replace(" ","_")
         job, batch_size, gpu_util, iteration = row[2].replace(".yaml",""), int(row[3]), float(row[4]), int(row[7])
-        mem_util = float(row[6]) / (1024*1024*1024)       # change unit to GB
+        mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
 
         if node_and_gpu not in logs.keys():
             logs[node_and_gpu] = {}
@@ -46,7 +55,7 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         logs[node_and_gpu][job][batch_size]["iter"].append(iteration)
 
 logs_nfs = {}
-with open("out_celeba_spoof.csv", "r") as f:
+with open("out_nfs_vae_spoof.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:
@@ -54,9 +63,9 @@ with open("out_celeba_spoof.csv", "r") as f:
             continue
         node_name_split = row[0].split("-")
         node_name = node_name_split[0]
-        node_and_gpu = node_name + "_" + row[1].replace(" ","_") + "_nfs"
+        node_and_gpu = node_name + "_" + row[1].replace(" ","_")
         job, batch_size, gpu_util, iteration = row[2].replace(".yaml",""), int(row[3]), float(row[4]), int(row[7])
-        mem_util = float(row[6]) / (1024*1024*1024)       # change unit to GB
+        mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
 
         if node_and_gpu not in logs_nfs.keys():
             logs_nfs[node_and_gpu] = {}
@@ -75,27 +84,28 @@ with open("out_celeba_spoof.csv", "r") as f:
 # draw graphs
 for node_and_gpu in logs.keys():
     for job in logs[node_and_gpu].keys():
-        # fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
-        # plt.subplots_adjust(left=0.1,
-        #             bottom=0.1, 
-        #             right=0.95, 
-        #             top=0.9, 
-        #             wspace=0.2)
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+        plt.subplots_adjust(left=0.1,
+                    bottom=0.1, 
+                    right=0.95, 
+                    top=0.9, 
+                    wspace=0.2)
 
-        fig, (ax1, ax3) = plt.subplots(1, 2, figsize=(10, 5))
-        plt.subplots_adjust(left=0.12,
-                    bottom=0.15, 
-                    right=0.97, 
-                    top=0.95, 
-                    wspace=0.25)
+        # fig, (ax1, ax3) = plt.subplots(1, 2, figsize=(10, 5))
+        # plt.subplots_adjust(left=0.12,
+        #             bottom=0.15, 
+        #             right=0.97, 
+        #             top=0.95, 
+        #             wspace=0.25)
 
         x_axis = list(logs[node_and_gpu][job].keys())
-        node_and_gpu_nfs = node_and_gpu + "_nfs"
+        node_and_gpu_nfs = node_and_gpu
         if node_and_gpu_nfs  not in logs_nfs.keys():
             logs_nfs[node_and_gpu_nfs] = {}
             continue
         x_axis_nfs = list(logs_nfs[node_and_gpu_nfs][job].keys())
-        # print(x_axis_nfs)
+
+        # intersect x_axes between 2 logs.
         x_axis = list(set(x_axis).intersection(x_axis_nfs))
         x_axis.sort()
 
@@ -131,17 +141,17 @@ for node_and_gpu in logs.keys():
             y_axis_iter_min_nfs.append( np.min(logs_nfs[node_and_gpu_nfs][job][batch_size]["iter"]) )
             y_axis_iter_max_nfs.append( np.max(logs_nfs[node_and_gpu_nfs][job][batch_size]["iter"]) )
 
+        # make graph
+        ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2, label='seed_change')
+        ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2, label='seed_change')
+        ax3.plot(range(len(x_axis)), y_axis_iter, 'bo-', linewidth=2, label='seed_change')
 
-        ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2, label='local')
-        # ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2)
-        ax3.plot(range(len(x_axis)), y_axis_iter, 'bo-', linewidth=2, label='local')
-
-        ax1.plot(range(len(x_axis)), y_axis_gpu_util_nfs,'ro-', linewidth=2, label='nfs')
-        # ax2.plot(range(len(x_axis)), y_axis_mem_util_nfs,'bo-', linewidth=2)
-        ax3.plot(range(len(x_axis)), y_axis_iter_nfs, 'ro-', linewidth=2, label='nfs')
+        ax1.plot(range(len(x_axis)), y_axis_gpu_util_nfs,'ro-', linewidth=2, label='seed_fix')
+        ax2.plot(range(len(x_axis)), y_axis_mem_util_nfs,'ro-', linewidth=2, label='seed_fix')
+        ax3.plot(range(len(x_axis)), y_axis_iter_nfs, 'ro-', linewidth=2, label='seed_fix')
 
         ax1.legend()
-        # ax2.legend()
+        ax2.legend()
         ax3.legend()
 
         ax1.set_xlabel("Batch size")
@@ -150,11 +160,11 @@ for node_and_gpu in logs.keys():
         ax1.set_xticklabels(x_labels)
         ax1.set_ylim([0, 100])
 
-        # ax2.set_xlabel("batch size")
-        # ax2.set_ylabel("memory utilization (GiB)")
-        # ax2.set_xticks(range(len(x_axis)))
-        # ax2.set_xticklabels(x_labels)
-        # ax2.set_ylim([0, 25])
+        ax2.set_xlabel("batch size")
+        ax2.set_ylabel("memory utilization (GiB)")
+        ax2.set_xticks(range(len(x_axis)))
+        ax2.set_xticklabels(x_labels)
+        ax2.set_ylim([0, 25])
 
         ax3.set_xlabel("Batch size")
         ax3.set_ylabel("Iterations")
@@ -164,8 +174,3 @@ for node_and_gpu in logs.keys():
 
         plt.savefig("graphs/{}_{}.png".format(node_and_gpu, job.replace(".yaml", "")))
         plt.close(fig)
-
-
-
-
-# print(logs)
