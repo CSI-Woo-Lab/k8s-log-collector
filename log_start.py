@@ -80,7 +80,7 @@ def collecting(num_of_jobs):
     # make TCP communication socket.
     context = zmq.Context()
     socket = context.socket(zmq.ROUTER)
-    socket.bind("tcp://115.145.179.89:9000")
+    socket.bind("tcp://115.145.175.74:9000")
 
     logs = []
     while True:     # Entire logging loop
