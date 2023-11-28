@@ -53,6 +53,7 @@ parser.add_argument('--dry-run', action='store_true',
                     help='verify the code and the model')
 args = parser.parse_args()
 
+# logger model load
 ######### MINGEUN ###########
 from logger import Logger
 x = Logger("word_language_model", args.batch_size) 
@@ -181,9 +182,8 @@ def train(x):
         hidden = model.init_hidden(args.batch_size)
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         
-        ######### MINGEUN ###########
-        x.every_iteration()
-        ######### MINGEUN ###########
+        
+        
         data, targets = get_batch(train_data, i)
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
@@ -203,6 +203,11 @@ def train(x):
             p.data.add_(p.grad, alpha=-lr)
 
         total_loss += loss.item()
+
+        # total iteration increased by one after each iterations ended.
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
 
         # if batch % args.log_interval == 0 and batch > 0:
         #     cur_loss = total_loss / args.log_interval
@@ -231,6 +236,7 @@ best_val_loss = None
 
 # At any point you can hit Ctrl + C to break out of training early.
 
+# logger wait until messeage received from control node. 
 ######### MINGEUN ###########
 x.ready_for_training()
 ######### MINGEUN ###########

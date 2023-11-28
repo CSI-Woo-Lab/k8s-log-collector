@@ -19,7 +19,7 @@ parser.add_argument('--config',  '-c',
                     metavar='FILE',
                     help =  'path to the config file',
                     default='models/PyTorch-VAE/configs/vae.yaml')
-
+# custom batch_size is received
 ############ MINGEUN ############
 parser.add_argument('--batch-size', type=int, default = 64, metavar='N',
                     help = 'batch_size of training and eval')
@@ -32,6 +32,8 @@ with open(args.filename, 'r') as file:
     except yaml.YAMLError as exc:
         print(exc)
 
+# logger model and batch_size load
+# random seed is selected 
 ########### MINGEUN ############
 from logger import Logger
 x = Logger("Pytorch_VAE", args.batch_size)
@@ -41,17 +43,21 @@ config['data_params']['val_batch_size'] = args.batch_size
 config['exp_params']['manual_seed'] = np.random.randint(10000)
 ########### MINGEUN ############
 
+# callbackfunction
 ############# MINGEUN ##################
 from pytorch_lightning.callbacks import Callback
 class MyIterationCallback(Callback):
     def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
         global x
+        # total iteration increased by one after each iterations ended.
         x.every_iteration()
     def on_train_epoch_start(self, trainer, pl_module):
         global x
         global flag
+        # wait training start at first epoch only
         if flag == 0:
             flag += 1
+            # logger wait until messeage received from control node. 
             x.ready_for_training()
             
 ############# MINGEUN ##################
@@ -82,10 +88,10 @@ runner = Trainer(logger=tb_logger,
                  **config['trainer_params'])
 
 
-Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)
-Path(f"{tb_logger.log_dir}/Reconstructions").mkdir(exist_ok=True, parents=True)
+# Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)
+# Path(f"{tb_logger.log_dir}/Reconstructions").mkdir(exist_ok=True, parents=True)
 
 
-print(f"======= Training {config['model_params']['name']} =======")
+# print(f"======= Training {config['model_params']['name']} =======")
 
 runner.fit(experiment, datamodule=data)

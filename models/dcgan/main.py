@@ -38,6 +38,7 @@ parser.add_argument('--mps', action='store_true', default=False, help='enables m
 
 opt = parser.parse_args()
 
+# logger model load
 ######### MINGEUN ###########
 from logger import Logger
 x = Logger("dcgan", opt.batch_size) 
@@ -229,6 +230,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
 # if opt.dry_run:
 #     opt.niter = 1
 
+# logger wait until messeage received from control node. 
 ######### MINGEUN ###########
 x.ready_for_training()
 ######### MINGEUN ###########
@@ -240,11 +242,6 @@ for epoch in range(opt.niter):
         ###########################
         # train with real
         
-        ######### MINGEUN ###########
-        x.every_iteration()
-        ######### MINGEUN ###########
-
-
         netD.zero_grad()
         real_cpu = data[0].to(device)
         batch_size = real_cpu.size(0)
@@ -277,6 +274,11 @@ for epoch in range(opt.niter):
         errG.backward()
         D_G_z2 = output.mean().item()
         optimizerG.step()
+
+        # total iteration increased by one after each iterations ended.
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
 
         # print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'
             #   % (epoch, opt.niter, i, len(dataloader),

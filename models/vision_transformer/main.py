@@ -148,9 +148,7 @@ class TrainEval:
         tk = tqdm(self.train_dataloader, desc="EPOCH" + "[TRAIN]" + str(current_epoch + 1) + "/" + str(self.epoch), disable=True)
         # tk = tqdm(self.train_dataloader)
         for t, data in enumerate(tk):
-            ######### MINGEUN ###########
-            self.x.every_iteration()
-            ######### MINGEUN ###########
+            
             images, labels = data
             images, labels = images.to(self.device), labels.to(self.device)
             self.optimizer.zero_grad()
@@ -163,6 +161,11 @@ class TrainEval:
             tk.set_postfix({"Loss": "%6f" % float(total_loss / (t + 1))})
             if self.args.dry_run:
                 break
+
+            # total iteration increased by one after each iterations ended.
+            ######### MINGEUN ###########
+            self.x.every_iteration()
+            ######### MINGEUN ###########
 
         return total_loss / len(self.train_dataloader)
 
@@ -248,6 +251,7 @@ def main():
                         help='quickly check a single pass')
     args = parser.parse_args()
 
+    # logger model load
     ######### MINGEUN ###########
     from logger import Logger
     x = Logger("vision_transformer", args.batch_size) 
@@ -268,15 +272,11 @@ def main():
     valid_loader = DataLoader(valid_data, batch_size=args.batch_size, shuffle=True)
 
     model = ViT(args).to(device)
-    # log_collect = JobLogging(args.batch_size, 'vision_tranformer') ####################
 
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     criterion = nn.CrossEntropyLoss()
 
-    # input_start_signal()
-    # print(s, flush = True)
-    
-    # init_schedule(log_collect)
+    # logger wait until messeage received from control node. 
     ######### MINGEUN ###########
     x.ready_for_training()
     ######### MINGEUN ###########

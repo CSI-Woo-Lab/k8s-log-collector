@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 import argparse
-# Load a COCO-pretrained YOLOv8n model
+# Load a visdrone-pretrained YOLOv8n model
 
 parser = argparse.ArgumentParser(description='Vision Transformer in PyTorch')
 parser.add_argument('--model', default='yolov8n.pt',

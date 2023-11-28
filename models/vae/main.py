@@ -25,7 +25,7 @@ args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 use_mps = not args.no_mps and torch.backends.mps.is_available()
 
-
+# logger model load
 ######### SHJEONG ###########
 from logger import Logger
 x = Logger("vae", args.batch_size) 
@@ -109,18 +109,19 @@ def train(epoch):
         train_loss += loss.item()
         optimizer.step()
 
+        # no print log in K8S cluster
+        # if batch_idx % args.log_interval == 0:
+        #     print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+        #         epoch, batch_idx * len(data), len(train_loader.dataset),
+        #         100. * batch_idx / len(train_loader),
+        #         loss.item() / len(data)))
+        
+        # total iteration increased by one after each iterations ended.
         ######### SHJEONG ###########
         x.every_iteration()
         ######### SHJEONG ###########
-
-        if batch_idx % args.log_interval == 0:
-            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
-                epoch, batch_idx * len(data), len(train_loader.dataset),
-                100. * batch_idx / len(train_loader),
-                loss.item() / len(data)))
-
-    print('====> Epoch: {} Average loss: {:.4f}'.format(
-          epoch, train_loss / len(train_loader.dataset)))
+    # print('====> Epoch: {} Average loss: {:.4f}'.format(
+    #       epoch, train_loss / len(train_loader.dataset)))
 
 
 def test(epoch):
@@ -142,13 +143,13 @@ def test(epoch):
     print('====> Test set loss: {:.4f}'.format(test_loss))
 
 if __name__ == "__main__":
-
+    # logger wait until messeage received from control node. 
     ######### SHJEONG ###########
     x.ready_for_training()
     ######### SHJEONG ###########
     for epoch in range(1, args.epochs + 1):
         train(epoch)
-        # no test for SLURM CLUSTER
+        # no test for K8S CLUSTER
         # test(epoch)
         # with torch.no_grad():
         #     sample = torch.randn(64, 20).to(device)

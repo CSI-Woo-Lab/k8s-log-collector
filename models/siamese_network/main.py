@@ -195,9 +195,6 @@ def train(args, model, device, train_loader, optimizer, epoch, x):
 
     for batch_idx, (images_1, images_2, targets) in enumerate(train_loader):
         
-        ######### MINGEUN ###########
-        x.every_iteration()
-        ######### MINGEUN ###########
         
         images_1, images_2, targets = images_1.to(device), images_2.to(device), targets.to(device)
         optimizer.zero_grad()
@@ -205,6 +202,11 @@ def train(args, model, device, train_loader, optimizer, epoch, x):
         loss = criterion(outputs, targets)
         loss.backward()
         optimizer.step()
+        
+        # total iteration increased by one after each iterations ended.
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
         # if batch_idx % args.log_interval == 0:
         #     print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
         #         epoch, batch_idx * len(images_1), len(train_loader.dataset),
@@ -271,6 +273,7 @@ def main():
 
     torch.manual_seed(args.seed)
 
+    # logger model load
     ######### MINGEUN ###########
     from logger import Logger
     x = Logger("siamese_net", args.batch_size) 
@@ -302,6 +305,7 @@ def main():
 
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
 
+    # logger wait until messeage received from control node. 
     ######### MINGEUN ###########
     x.ready_for_training()
     ######### MINGEUN ##########

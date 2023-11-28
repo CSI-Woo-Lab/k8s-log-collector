@@ -22,8 +22,7 @@ parser.add_argument('--threads', type=int, default=4, help='number of threads fo
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
 opt = parser.parse_args()
 
-# print(opt)
-
+# logger model load
 ######### MINGEUN ###########
 from logger import Logger
 x = Logger("super_resolution", opt.batch_size) 
@@ -65,9 +64,7 @@ def train(epoch, x):
     epoch_loss = 0
     for iteration, batch in enumerate(training_data_loader, 1):
         
-        ######### MINGEUN ###########
-        x.every_iteration()
-        ######### MINGEUN ###########
+        
 
         input, target = batch[0].to(device), batch[1].to(device)
 
@@ -76,6 +73,11 @@ def train(epoch, x):
         epoch_loss += loss.item()
         loss.backward()
         optimizer.step()
+
+        # total iteration increased by one after each iterations ended.
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
 
         # print("===> Epoch[{}]({}/{}): Loss: {:.4f}".format(epoch, iteration, len(training_data_loader), loss.item()))
 
@@ -100,6 +102,7 @@ def checkpoint(epoch):
     torch.save(model, model_out_path)
     print("Checkpoint saved to {}".format(model_out_path))
 
+# logger wait until messeage received from control node. 
 ######### MINGEUN ###########
 x.ready_for_training()
 ######### MINGEUN ###########

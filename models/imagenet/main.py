@@ -86,6 +86,7 @@ best_acc1 = 0
 def main():
     args = parser.parse_args()
 
+    # logger model load
     ######### MINGEUN ###########
     from logger import Logger
     x = Logger("image_net", args.batch_size) 
@@ -287,7 +288,7 @@ def main_worker(gpu, ngpus_per_node, args, x):
     #     validate(val_loader, model, criterion, args)
     #     return
 
-
+    # logger wait until messeage received from control node. 
     ######### MINGEUN ###########
     x.ready_for_training()
     ######### MINGEUN ###########
@@ -338,9 +339,7 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args, x):
     for i, (images, target) in enumerate(train_loader):
         # measure data loading time
         
-        ######### MINGEUN ###########
-        x.every_iteration()
-        ######### MINGEUN ###########
+        
 
         data_time.update(time.time() - end)
 
@@ -366,7 +365,11 @@ def train(train_loader, model, criterion, optimizer, epoch, device, args, x):
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
-
+        
+        # total iteration increased by one after each iterations ended.       
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
         # if i % args.print_freq == 0:
         #     progress.display(i + 1)
 

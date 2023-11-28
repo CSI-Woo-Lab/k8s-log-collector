@@ -257,9 +257,7 @@ def load_cora(path='../datasets/cora', device='cpu'):
 
 def train_iter(epoch, model, optimizer, criterion, input, target, mask_train, mask_val, x, print_every=10):
     
-    ######### MINGEUN ###########
-    x.every_iteration()
-    ######### MINGEUN ###########
+    
 
     start_t = time.time()
     model.train()
@@ -272,9 +270,14 @@ def train_iter(epoch, model, optimizer, criterion, input, target, mask_train, ma
     loss.backward()
     optimizer.step()
 
+    # total iteration increased by one after each iterations ended.
+    ######### MINGEUN ###########
+    x.every_iteration()
+    ######### MINGEUN ###########
+
     # Evaluate the model performance on training and validation sets
-    loss_train, acc_train = test(model, criterion, input, target, mask_train)
-    loss_val, acc_val = test(model, criterion, input, target, mask_val)
+    # loss_train, acc_train = test(model, criterion, input, target, mask_train)
+    # loss_val, acc_val = test(model, criterion, input, target, mask_val)
 
     # if epoch % print_every == 0:
     #     # Print the training progress at specified intervals
@@ -328,6 +331,7 @@ if __name__ == '__main__':
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
 
+    # logger model load
     ######### MINGEUN ###########
     from logger import Logger
     x = Logger("gat", args.batch_size) 
@@ -378,6 +382,7 @@ if __name__ == '__main__':
     optimizer = Adam(gat_net.parameters(), lr=args.lr, weight_decay=args.l2)
     criterion = nn.NLLLoss()
 
+    # logger wait until messeage received from control node. 
     ######### MINGEUN ###########
     x.ready_for_training()
     ######### MINGEUN ###########

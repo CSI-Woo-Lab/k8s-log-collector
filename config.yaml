@@ -50,7 +50,7 @@ batch_size_for_8 : {
     "word_language" :[20,40,60,80],
     "gat":[4,8,12,16,20],
     "Pytorch_vae":[8,16,32,64,128,256],
-    "Pytorch_vqvae":[8,16,32,64,128,256]
+    "Pytorch_vqvae":[8,16,32,64,128,256],
 }
 
 # batch size for RTX 3090, 4070, 4080, 4090
@@ -94,8 +94,3 @@ train_file : {
   "Pytorch_vae":"models/PyTorch-VAE/run.py",
   "Pytorch_vqvae":"models/PyTorch-VAE/vqvae_run.py",
 }
-
-
-# possible_jobs : {
-
-# }
