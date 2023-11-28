@@ -132,7 +132,7 @@ for node, gpu, mem in cfg['node_and_gpu']:
 process_list = []
 for j in range(num_of_jobs):
     with open("_tmp_job_{}.yml".format(j), "w") as f:
-        f.write(yml_string.format(log[j][0], log[j][0], log[j][1]))
+        f.write(yml_string.format(log[j][2], log[j][0], log[j][1]))
 
     f.close()
     time.sleep(1)
