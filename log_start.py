@@ -90,7 +90,7 @@ def collecting(num_of_jobs):
         while True:     # 1 single log sample
             identi, data = socket.recv_multipart()
             if identi not in connected_procs.keys() and data.decode() == "ready":
-                
+                print("ready received!!")
                 connected_procs[identi] = 0
                 if len(connected_procs) == num_of_jobs:
                     # send logging times, communication_iteration, logging_iteration to gpu nodes.
