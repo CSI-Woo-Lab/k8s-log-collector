@@ -14,7 +14,7 @@ this is python file that decide random jobs and execute in a pod of Kubernetes.
 Jobs, batch_size are in config.yaml.
 '''
 #################### CONFIGURATION #################### 
-with open("config.yaml") as f:
+with open("scripts/config.yaml") as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader) 
 
 parser = argparse.ArgumentParser(description='job select')
@@ -33,7 +33,7 @@ while True:
     _job = random.choice(cfg['jobs'])
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
     # execute run.sh file so that execute python file with batch_size and model.
-    _cmd = "./run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
+    _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
     
     _proc.wait()

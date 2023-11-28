@@ -15,7 +15,7 @@ The number of jobs is the number of gpu nodes in config_controller.yaml.
 
 # configuraion information of TCP communication between control node and gpu_node 
 #################### CONFIGURATION ####################
-with open("config_controller.yaml") as f:
+with open("scripts/config_controller.yaml") as f:
     cfg = yaml.load(f, Loader=yaml.FullLoader)
 
 num_of_jobs = len(cfg["node_and_gpu"])
