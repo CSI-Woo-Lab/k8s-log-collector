@@ -10,9 +10,6 @@ from torch.hub import tqdm
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from job_logging import JobLogging, input_start_signal, init_schedule
-
 class PatchExtractor(nn.Module):
     def __init__(self, patch_size=16):
         super().__init__()
