@@ -41,7 +41,7 @@ spec:
         ports:
         - containerPort: 9000
           protocol: TCP
-        image: jangmingeun/k8s_log_collector:3.0.0
+        image: jangmingeun/k8s_log_collector:3.1.0
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
