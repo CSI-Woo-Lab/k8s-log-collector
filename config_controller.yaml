@@ -4,9 +4,11 @@
 #######################################
 # possible node and gpu
 node_and_gpu : [
-  ["worker1", "gpu01-gpu0"],
-  ["worker2", "gpu01-gpu0"],
-  ["worker3", "gpu01-gpu0"],
-  # ["gpu03", "gpu02-gpu0"],
+  ["worker01", "gpu01-gpu0"],
+  ["worker01", "gpu01-gpu1"],
+  ["worker02", "gpu01-gpu1"],
+  ["worker03", "gpu01-gpu1"],
+  ["worker04", "gpu01-gpu0"],
+  ["worker05", "gpu01-gpu1"],
+  ["worker06", "gpu01-gpu0"],
 ]
-

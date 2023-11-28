@@ -24,14 +24,6 @@ jobs : [
   "Pytorch_vqvae",
 ]
 
-# possible node and gpu
-node_and_gpu : [
-  ["gpu01", "gpu:gpu0:1", "8"],
-  ["gpu01", "gpu:gpu1:1", "24"],
-  ["gpu02", "gpu:gpu0:1", "24"],
-  ["gpu03", "gpu:gpu0:1", "24"],
-]
-
 # batch size for RTX 3070ti, 4060
 batch_size_for_8 : {
     "dcgan":[32, 64, 128, 256, 512, 1024],
