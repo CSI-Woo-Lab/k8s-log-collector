@@ -24,4 +24,5 @@ dataset/
 yolo8*/
 # development
 .vscode
+out.csv
 **/.DS_Store
