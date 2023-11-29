@@ -4,11 +4,11 @@
 #######################################
 # possible node and gpu
 node_and_gpu : [
-  ["worker01", "gpu01-gpu0", 'gpu01'],
-  ["worker01", "gpu01-gpu1", 'gpu02'],
-  ["worker02", "gpu01-gpu1", 'gpu03'],
-  ["worker03", "gpu01-gpu1", 'gpu04'],
-  ["worker04", "gpu01-gpu0", 'gpu05'],
-  ["worker05", "gpu01-gpu1", 'gpu06'],
-  ["worker06", "gpu01-gpu0", 'gpu07'],
+  ["worker01", "memory8", 'gpu01'], # RTX 3070ti
+  ["worker01", "memory24", 'gpu02'], # RTX 3090
+  ["worker02", "memory24", 'gpu03'], # RTX 4090
+  ["worker03", "memory16", 'gpu04'], # RTX 4080
+  ["worker04", "memory8", 'gpu05'], # RTX 4060
+  ["worker05", "memory12", 'gpu06'], # RTX 4070
+  ["worker06", "memory8", 'gpu07'], # RTX 4060
 ]

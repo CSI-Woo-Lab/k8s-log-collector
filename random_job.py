@@ -24,8 +24,12 @@ args = parser.parse_args()
 #################### CONFIGURATION ####################
 
 # Decide batch size according to gpu specification.
-if args.gpu == "gpu01-gpu0":
+if args.gpu == "memory8":
     index = 8
+elif args.gpu == "memory12":
+    index = 12
+elif args.gpu == "memory16":
+    index = 16
 else:
     index = 24
 while True:
