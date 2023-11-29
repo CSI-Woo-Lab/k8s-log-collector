@@ -20,7 +20,7 @@ pylab.rcParams.update(params)
 # forth dict keys : "gpu_util", "mem_util", "iter"
 logs = {}
 
-with open("out_nfs_vae_spoof.csv", "r") as f:
+with open("out.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:

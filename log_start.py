@@ -41,7 +41,7 @@ spec:
         ports:
         - containerPort: 9000
           protocol: TCP
-        image: jangmingeun/k8s_log_collector:4.0.0
+        image: jangmingeun/k8s_log_collector:4.1.0
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
@@ -50,6 +50,7 @@ spec:
         resources:
           limits:
             nvidia.com/gpu: 1
+            nvidia.com/gpu.count: 1
         volumeMounts:
         - name: dshm
           mountPath: /dev/shm

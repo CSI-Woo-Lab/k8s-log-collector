@@ -19,6 +19,7 @@ docs/venv
 *.pt
 *.zip
 Yolov8/datasets/
+graphs/
 dataset/
 # vi backups
 yolo8*/
