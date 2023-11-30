@@ -3,8 +3,9 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
+import os
 
-
+os.makedirs('./graphs', exist_ok=True)
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (15, 5),
          'axes.labelsize': 20,
@@ -101,7 +102,7 @@ for node_and_gpu in logs.keys():
         ax3.set_ylabel("Iterations")
         ax3.set_xticks(range(len(x_axis)))
         ax3.set_xticklabels(x_labels)
-        # ax3.set_ylim([0, 300])
+        ax3.set_ylim([np.min(y_axis_iter_min), np.max(y_axis_iter_max)])
 
         plt.savefig("graphs/{}_{}.png".format(node_and_gpu, job.replace(".yaml", "")))
         plt.close(fig)

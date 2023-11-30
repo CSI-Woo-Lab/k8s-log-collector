@@ -56,7 +56,9 @@ args = parser.parse_args()
 # logger model load
 ######### MINGEUN ###########
 from logger import Logger
+import numpy as np
 x = Logger("word_language_model", args.batch_size) 
+args.seed = np.random.randint(10000)
 ######### MINGEUN ###########
 
 # Set the random seed manually for reproducibility.

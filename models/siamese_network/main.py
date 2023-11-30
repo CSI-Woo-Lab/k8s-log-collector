@@ -271,6 +271,7 @@ def main():
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
 
+    args.seed = np.random.randint(10000)
     torch.manual_seed(args.seed)
 
     # logger model load

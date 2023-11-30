@@ -77,7 +77,7 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'N processes per node, which has N GPUs. This is the '
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
-parser.add_argument('--dummy', action='store_true', help="use fake data to benchmark")
+parser.add_argument('--dummy', default=True, help="use fake data to benchmark")
 
 best_acc1 = 0
 
@@ -236,8 +236,8 @@ def main_worker(gpu, ngpus_per_node, args, x):
 
     if args.dummy:
         print("=> Dummy data is used!")
-        train_dataset = datasets.FakeData(1281167, (3, 224, 224), 1000, transforms.ToTensor())
-        val_dataset = datasets.FakeData(50000, (3, 224, 224), 1000, transforms.ToTensor())
+        train_dataset = datasets.FakeData(1281167, (3, 128, 128), 1000, transforms.ToTensor())
+        val_dataset = datasets.FakeData(50000, (3, 128, 128), 1000, transforms.ToTensor())
     else:
         if os.path.isfile(os.path.join(args.data, 'train', 'n', "Socks-clinton.jpg")):
             print("dataset already downloaded")

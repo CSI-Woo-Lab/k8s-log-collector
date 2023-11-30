@@ -25,5 +25,6 @@ dataset/
 yolo8*/
 # development
 .vscode
-out.csv
+*.csv
 **/.DS_Store
+_tmp_job_*
