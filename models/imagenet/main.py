@@ -27,7 +27,7 @@ model_names = sorted(name for name in models.__dict__
     and callable(models.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('data', metavar='DIR', nargs='?', default='models/imagenet',
+parser.add_argument('data', metavar='DIR', nargs='?', default='../datasets',
                     help='path to dataset (default: imagenet)')
 parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
                     choices=model_names,
@@ -235,18 +235,22 @@ def main_worker(gpu, ngpus_per_node, args, x):
     img_url = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Socks-clinton.jpg"
 
     if args.dummy:
-        print("=> Dummy data is used!")
-        train_dataset = datasets.FakeData(1281167, (3, 128, 128), 1000, transforms.ToTensor())
-        val_dataset = datasets.FakeData(50000, (3, 128, 128), 1000, transforms.ToTensor())
+        # print("=> Dummy data is used!")
+        # train_dataset = datasets.FakeData(1281167, (3, 128, 128), 1000, transforms.ToTensor())
+        # val_dataset = datasets.FakeData(50000, (3, 128, 128), 1000, transforms.ToTensor())
+    
+    
+    
     else:
-        if os.path.isfile(os.path.join(args.data, 'train', 'n', "Socks-clinton.jpg")):
+        if os.path.isfile(os.path.join(args.data, 'celeba/img_align_celeba', '115758.jpg')):
             print("dataset already downloaded")
         else:
             print('Downloading dataset...')
             os.makedirs(os.path.join(args.data, 'train', 'n'))
             wget.download(img_url, out=os.path.join(args.data, 'train', 'n'))
 
-        traindir = os.path.join(args.data, 'train')
+        # traindir = os.path.join(args.data, 'train')
+        traindir = os.path.join(args.data, 'celeba/img_align_celeba')
         # valdir = os.path.join(args.data, 'val')
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])

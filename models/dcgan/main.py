@@ -176,7 +176,7 @@ netG = Generator(ngpu).to(device)
 netG.apply(weights_init)
 if opt.netG != '':
     netG.load_state_dict(torch.load(opt.netG))
-print(netG)
+# print(netG)
 
 class Discriminator(nn.Module):
     def __init__(self, ngpu):

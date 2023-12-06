@@ -378,6 +378,12 @@ if __name__ == '__main__':
         leaky_relu_slope=0.2                    # Alpha (slope) of the leaky relu activation
     ).to(device)
 
+    ######## MINGEUN ###########
+    from torch.nn.parallel import DistributedDataParallel
+    if torch.cuda.device_count() > 1:
+        gat_net = DistributedDataParallel(gat_net, device_ids=[0, 1])
+    ######## MINGEUN ###########
+
     # configure the optimizer and loss function
     optimizer = Adam(gat_net.parameters(), lr=args.lr, weight_decay=args.l2)
     criterion = nn.NLLLoss()
