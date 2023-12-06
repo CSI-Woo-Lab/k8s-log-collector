@@ -77,7 +77,7 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'N processes per node, which has N GPUs. This is the '
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
-parser.add_argument('--dummy', default=True, help="use fake data to benchmark")
+parser.add_argument('--dummy', default=False, help="use fake data to benchmark")
 
 best_acc1 = 0
 
@@ -235,29 +235,19 @@ def main_worker(gpu, ngpus_per_node, args, x):
     img_url = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Socks-clinton.jpg"
 
     if args.dummy:
-        # print("=> Dummy data is used!")
-        # train_dataset = datasets.FakeData(1281167, (3, 128, 128), 1000, transforms.ToTensor())
-        # val_dataset = datasets.FakeData(50000, (3, 128, 128), 1000, transforms.ToTensor())
-    
-    
-    
+        print("=> Dummy data is used!")
+        train_dataset = datasets.FakeData(1281167, (3, 128, 128), 1000, transforms.ToTensor())
+        val_dataset = datasets.FakeData(50000, (3, 128, 128), 1000, transforms.ToTensor())
     else:
-        if os.path.isfile(os.path.join(args.data, 'celeba/img_align_celeba', '115758.jpg')):
-            print("dataset already downloaded")
-        else:
-            print('Downloading dataset...')
-            os.makedirs(os.path.join(args.data, 'train', 'n'))
-            wget.download(img_url, out=os.path.join(args.data, 'train', 'n'))
-
         # traindir = os.path.join(args.data, 'train')
-        traindir = os.path.join(args.data, 'celeba/img_align_celeba')
+        traindir = args.data
         # valdir = os.path.join(args.data, 'val')
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
 
-        train_dataset = datasets.ImageFolder(
-            traindir,
-            transforms.Compose([
+        train_dataset = datasets.CIFAR10(
+            root=traindir, download=True
+            transform=transforms.Compose([
                 transforms.RandomResizedCrop(224),
                 transforms.RandomHorizontalFlip(),
                 transforms.ToTensor(),
