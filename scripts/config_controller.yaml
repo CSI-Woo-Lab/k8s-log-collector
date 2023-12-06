@@ -3,6 +3,16 @@
 # control node_and_gpu.
 #######################################
 # possible node and gpu
+# node_and_gpu : [
+#   ["worker01", "3070ti", 'gpu01'], # RTX 3070ti
+#   ["worker01", "3090", 'gpu02'], # RTX 3090
+#   ["worker02", "4090", 'gpu03'], # RTX 4090
+#   ["worker03", "4080", 'gpu04'], # RTX 4080
+#   ["worker04", "4060_1", 'gpu05'], # RTX 4060
+#   ["worker05", "4070", 'gpu06'], # RTX 4070
+#   ["worker06", "4060_2", 'gpu07'], # RTX 4060
+# ]
+
 node_and_gpu : [
   ["worker01", "8G", 'gpu01'], # RTX 3070ti
   ["worker01", "24G", 'gpu02'], # RTX 3090

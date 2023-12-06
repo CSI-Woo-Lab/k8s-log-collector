@@ -7,7 +7,7 @@ import os
 
 os.makedirs('./graphs', exist_ok=True)
 params = {'legend.fontsize': 'x-large',
-          'figure.figsize': (15, 5),
+          'figure.figsize': (21, 7),
          'axes.labelsize': 20,
          'axes.titlesize':'x-large',
          'axes.labelweight':'bold',
@@ -49,7 +49,7 @@ with open("out.csv", "r") as f:
 # draw graphs
 for node_and_gpu in logs.keys():
     for job in logs[node_and_gpu].keys():
-        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(21, 7))
         plt.subplots_adjust(left=0.1,
                     bottom=0.1, 
                     right=0.95, 
@@ -81,6 +81,10 @@ for node_and_gpu in logs.keys():
             y_axis_iter_min.append( np.min(logs[node_and_gpu][job][batch_size]["iter"]) )
             y_axis_iter_max.append( np.max(logs[node_and_gpu][job][batch_size]["iter"]) )
 
+        # if '3090' in node_and_gpu:
+        #     if job == "vae":
+        #         print(logs[node_and_gpu][job])
+            
         # make graph
         ax1.plot(range(len(x_axis)), y_axis_gpu_util,'bo-', linewidth=2)
         ax2.plot(range(len(x_axis)), y_axis_mem_util,'bo-', linewidth=2)
