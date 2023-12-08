@@ -232,6 +232,7 @@ optimizerG = optim.Adam(netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
 
 # logger wait until messeage received from control node. 
 ######### MINGEUN ###########
+torch.cuda.empty_cache()
 x.ready_for_training()
 ######### MINGEUN ###########
 

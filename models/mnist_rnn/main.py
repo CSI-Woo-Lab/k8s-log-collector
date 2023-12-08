@@ -144,6 +144,7 @@ def main():
     scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
     # logger wait until messeage received from control node. 
     ######### MINGEUN ###########
+    torch.cuda.empty_cache()
     x.ready_for_training()
     ######### MINGEUN ###########
 

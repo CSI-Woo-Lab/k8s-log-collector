@@ -67,9 +67,10 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         if batch_size not in logs_nfs[node_and_gpu][job].keys():
             logs_nfs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
         
-        logs_nfs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
-        logs_nfs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
-        logs_nfs[node_and_gpu][job][batch_size]["iter"].append(iteration)
+        if gpu_util > 0.0:
+            logs_nfs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
+            logs_nfs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
+            logs_nfs[node_and_gpu][job][batch_size]["iter"].append(iteration)
 
 
 # draw graphs

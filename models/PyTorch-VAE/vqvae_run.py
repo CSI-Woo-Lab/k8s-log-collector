@@ -2,6 +2,7 @@ import os
 import yaml
 import argparse
 import numpy as np
+import torch
 from pathlib import Path
 from models import *
 from experiment import VAEXperiment
@@ -58,6 +59,7 @@ class MyIterationCallback(Callback):
         if flag == 0:
             flag += 1
             # logger wait until messeage received from control node. 
+            torch.cuda.empty_cache()
             x.ready_for_training()
             
 ############# MINGEUN ##################

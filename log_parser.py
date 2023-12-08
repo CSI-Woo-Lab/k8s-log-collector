@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.pylab as pylab
 import os
 
-os.makedirs('./graphs', exist_ok=True)
+os.makedirs('./graphs_12.8', exist_ok=True)
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (21, 7),
          'axes.labelsize': 20,
@@ -42,9 +42,10 @@ with open("out.csv", "r") as f:
         if batch_size not in logs[node_and_gpu][job].keys():
             logs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
         
-        logs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
-        logs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
-        logs[node_and_gpu][job][batch_size]["iter"].append(iteration)
+        if gpu_util > 0.0:
+            logs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
+            logs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
+            logs[node_and_gpu][job][batch_size]["iter"].append(iteration)
 
 # draw graphs
 for node_and_gpu in logs.keys():
@@ -108,7 +109,7 @@ for node_and_gpu in logs.keys():
         ax3.set_xticklabels(x_labels)
         ax3.set_ylim([np.min(y_axis_iter_min), np.max(y_axis_iter_max)])
 
-        plt.savefig("graphs/{}_{}.png".format(node_and_gpu, job.replace(".yaml", "")))
+        plt.savefig("graphs_12.8/{}_{}.png".format(node_and_gpu, job.replace(".yaml", "")))
         plt.close(fig)
 
 

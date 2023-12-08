@@ -240,6 +240,7 @@ best_val_loss = None
 
 # logger wait until messeage received from control node. 
 ######### MINGEUN ###########
+torch.cuda.empty_cache()
 x.ready_for_training()
 ######### MINGEUN ###########
 

@@ -310,6 +310,7 @@ class BaseTrainer:
         epoch = self.epochs  # predefine for resume fully trained model edge cases
         
         ############ MINGEUN ##############
+        torch.cuda.empty_cache()
         logger.ready_for_training()
         ############ MINGEUN ##############
 
