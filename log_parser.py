@@ -21,7 +21,7 @@ pylab.rcParams.update(params)
 # forth dict keys : "gpu_util", "mem_util", "iter"
 logs = {}
 
-with open("out.csv", "r") as f:
+with open("out_12.8.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:
@@ -33,16 +33,16 @@ with open("out.csv", "r") as f:
         job, batch_size, gpu_util, iteration = row[2], int(row[3]), float(row[4]), int(row[7])
         mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
 
-        if node_and_gpu not in logs.keys():
-            logs[node_and_gpu] = {}
-        
-        if job not in logs[node_and_gpu].keys():
-            logs[node_and_gpu][job] = {}
-        
-        if batch_size not in logs[node_and_gpu][job].keys():
-            logs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
-        
         if gpu_util > 0.0:
+            if node_and_gpu not in logs.keys():
+                logs[node_and_gpu] = {}
+            
+            if job not in logs[node_and_gpu].keys():
+                logs[node_and_gpu][job] = {}
+            
+            if batch_size not in logs[node_and_gpu][job].keys():
+                logs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
+                
             logs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
             logs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
             logs[node_and_gpu][job][batch_size]["iter"].append(iteration)

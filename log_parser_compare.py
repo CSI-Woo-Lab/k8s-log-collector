@@ -57,17 +57,16 @@ with open("out_nfs_vae_spoof.csv", "r") as f:
         node_and_gpu = node_name + "_" + row[1].replace(" ","_")
         job, batch_size, gpu_util, iteration = row[2].replace(".yaml",""), int(row[3]), float(row[4]), int(row[7])
         mem_util = float(row[5]) / (1024*1024*1024)       # change unit to GB
-
-        if node_and_gpu not in logs_nfs.keys():
-            logs_nfs[node_and_gpu] = {}
-        
-        if job not in logs_nfs[node_and_gpu].keys():
-            logs_nfs[node_and_gpu][job] = {}
-        
-        if batch_size not in logs_nfs[node_and_gpu][job].keys():
-            logs_nfs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
-        
         if gpu_util > 0.0:
+            if node_and_gpu not in logs_nfs.keys():
+                logs_nfs[node_and_gpu] = {}
+            
+            if job not in logs_nfs[node_and_gpu].keys():
+                logs_nfs[node_and_gpu][job] = {}
+            
+            if batch_size not in logs_nfs[node_and_gpu][job].keys():
+                logs_nfs[node_and_gpu][job][batch_size] = {"gpu_util": [], "mem_util" :[], "iter" : []}
+        
             logs_nfs[node_and_gpu][job][batch_size]["gpu_util"].append(gpu_util)
             logs_nfs[node_and_gpu][job][batch_size]["mem_util"].append(mem_util)
             logs_nfs[node_and_gpu][job][batch_size]["iter"].append(iteration)

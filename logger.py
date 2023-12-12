@@ -72,6 +72,7 @@ class Logger():
                 self.socket.recv_multipart()
                 self.gpu_logging_timer.cancel()
                 self.server_send_timer.cancel()
+                torch.cuda.empty_cache()
                 os.kill(os.getpid(), 9)
 
             self.reset_log_buffer()
