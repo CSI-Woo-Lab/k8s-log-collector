@@ -21,7 +21,7 @@ pylab.rcParams.update(params)
 # forth dict keys : "gpu_util", "mem_util", "iter"
 logs = {}
 
-with open("out_12.8.csv", "r") as f:
+with open("out.csv", "r") as f:
     reader = csv.reader(f)
 
     for row in reader:
@@ -111,8 +111,3 @@ for node_and_gpu in logs.keys():
 
         plt.savefig("graphs_12.8/{}_{}.png".format(node_and_gpu, job.replace(".yaml", "")))
         plt.close(fig)
-
-
-
-
-# print(logs)
