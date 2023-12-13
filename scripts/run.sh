@@ -1,5 +1,5 @@
 #!/bin/bash
-# export PYTHONPATH=/workspace/k8s-log-collector
+export PYTHONPATH=/workspace/k8s-log-collector
 # run train code with batch_size parameter
 
 # yolov8 contains model -> 3 inputs.
