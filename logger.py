@@ -33,7 +33,20 @@ class Logger():
         self.socket = self.context.socket(zmq.DEALER)
         self.socket.connect("tcp://115.145.175.74:9000")
 
-    def log_gpu():
+    
+
+    def ready_for_training(self):
+
+        # gpu node sends 'ready' to control node.
+        self.socket.send_string(f"ready")
+        # when control node receive 'ready' from all gpu node, 
+        # it sends logging times, communication_interval, logging_interval.
+        data = self.socket.recv_multipart()  # from msg, we got self.times, communication_interval, logging_interval.
+        self.times = int(data[0].decode("utf-8").split()[1])
+        self.communication_interval = float(data[0].decode("utf-8").split()[2])
+        self.logging_interval = float(data[0].decode("utf-8").split()[3])
+        
+        def log_gpu():
             nvidia_smi.nvmlInit()
             deviceCount = nvidia_smi.nvmlDeviceGetCount()
             handle = nvidia_smi.nvmlDeviceGetHandleByIndex(torch.cuda.current_device())
@@ -48,36 +61,26 @@ class Logger():
             self.gpu_logging_timer = threading.Timer(self.logging_interval, log_gpu)             
             self.gpu_logging_timer.start()
 
-    def send_data():
-        gpu_util = np.mean(self.gpu_util_log)
-        gpu_mem_util = np.mean(self.gpu_mem_log)
-        data = f'%s,%s,%s,%d,%s,%s,%s,%d' \
-            % (self.hostname, self.gpuname, self.job_name, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration)
-        # send log data to control node
-        self.socket.send_string(data)
-        self.times -= 1
-        if self.times == 0:
-            # kill the job
-            self.gpu_logging_timer.cancel()
-            self.server_send_timer.cancel()
-            torch.cuda.empty_cache()
-            os.kill(os.getpid(), 9)
+        def send_data():
+            gpu_util = np.mean(self.gpu_util_log)
+            gpu_mem_util = np.mean(self.gpu_mem_log)
+            data = f'%s,%s,%s,%d,%s,%s,%s,%d' \
+                % (self.hostname, self.gpuname, self.job_name, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration)
+            # send log data to control node
+            self.socket.send_string(data)
+            self.times -= 1
+            if self.times == 0:
+                # kill the job
+                self.socket.recv_multipart()
+                self.gpu_logging_timer.cancel()
+                self.server_send_timer.cancel()
+                torch.cuda.empty_cache()
+                os.kill(os.getpid(), 9)
 
-        self.reset_log_buffer()
-        self.server_send_timer = threading.Timer(self.communication_interval, send_data)
-        self.server_send_timer.start()
+            self.reset_log_buffer()
+            self.server_send_timer = threading.Timer(self.communication_interval, send_data)
+            self.server_send_timer.start()
 
-    def ready_for_training(self):
-
-        # gpu node sends 'ready' to control node.
-        self.socket.send_string(f"ready")
-        # when control node receive 'ready' from all gpu node, 
-        # it sends logging times, communication_interval, logging_interval.
-        data = self.socket.recv_multipart()  # from msg, we got self.times, communication_interval, logging_interval.
-        self.times = int(data[0].decode("utf-8").split()[1])
-        self.communication_interval = float(data[0].decode("utf-8").split()[2])
-        self.logging_interval = float(data[0].decode("utf-8").split()[3])
-        
         self.gpu_logging_timer = threading.Timer(self.logging_interval, log_gpu)
         self.server_send_timer = threading.Timer(self.communication_interval, send_data)
         self.gpu_logging_timer.start()

@@ -9,5 +9,3 @@ if (($# > 2)); then
 else
     python3 "$1" "--batch-size" "$2"
 fi
-
-exit

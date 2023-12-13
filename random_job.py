@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser(description='job select')
 parser.add_argument('--gpu', required=True,
                     help='gpu server name')
 args = parser.parse_args()
+os.environ['PYTHONPATH'] = '/workspace/k8s-log-collector'
 #################### CONFIGURATION ####################
 
 # Decide batch size according to gpu specification.
@@ -37,6 +38,16 @@ while True:
     _job = random.choice(cfg['jobs'])
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
     # execute run.sh file so that execute python file with batch_size and model.
-    _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
+
+    train_file = cfg['train_file'][_job].split()
+    
+    if len(train_file) == 1:
+        _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
+    else:
+        _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
+
+    # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
     _proc.wait()
+
+    time.sleep(5)
