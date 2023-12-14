@@ -41,7 +41,7 @@ spec:
         ports:
         - containerPort: 9000
           protocol: TCP
-        image: jangmingeun/k8s_log_collector:5.7.0
+        image: jangmingeun/k8s_log_collector:5.8.0
         imagePullPolicy: Always
         command: ["/bin/sh", "-c"]
         args:
@@ -109,8 +109,7 @@ def collecting(num_of_jobs):
                     received_times += 1
                     if received_times == times:
                         for proc in connected_procs.keys():
-                        socket.send_multipart([proc, b'kill'])
-            else:
+                          socket.send_multipart([proc, b'kill'])
                         for i in range(len(logs[-1])):
                             print(logs[-1][i])
                         

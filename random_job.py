@@ -51,3 +51,4 @@ while True:
     _proc.wait()
 
     time.sleep(5)
+    _proc.kill()
