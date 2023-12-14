@@ -47,8 +47,6 @@ while True:
         _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
 
     # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
-    _proc = subprocess.Popen(_cmd, shell=True, text=True)
-    _proc.wait()
+    _proc = subprocess.run(_cmd, shell=True, text=True)
 
     time.sleep(5)
-    _proc.kill()

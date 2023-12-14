@@ -246,7 +246,7 @@ def main_worker(gpu, ngpus_per_node, args, x):
                                      std=[0.229, 0.224, 0.225])
 
         train_dataset = datasets.CIFAR10(
-            root=traindir, download=True
+            root=traindir, download=True,
             transform=transforms.Compose([
                 transforms.RandomResizedCrop(224),
                 transforms.RandomHorizontalFlip(),
