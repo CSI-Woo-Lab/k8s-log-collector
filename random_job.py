@@ -5,6 +5,7 @@ import yaml
 import time
 import random
 import subprocess
+import psutil
 import argparse
 from threading import Thread
 
@@ -23,6 +24,18 @@ parser.add_argument('--gpu', required=True,
 args = parser.parse_args()
 os.environ['PYTHONPATH'] = '/workspace/k8s-log-collector'
 #################### CONFIGURATION ####################
+
+def kill(proc_pid):
+    process = psutil.Process(proc_pid)
+    for proc in process.children(recursive=True):
+        proc.kill()
+    process.kill()
+
+def kill_zombie():
+    for proc in psutil.process_iter(['pid', 'status', 'memory_percent']):
+        if proc.info['memory_percent'] is not None and proc.info['memory_percent'] >= 0.0 and proc.info['status'] == psutil.STATUS_SLEEPING:            
+            pid = proc.info['pid']
+            os.kill(pid, 9)
 
 # Decide batch size according to gpu specification.
 if args.gpu == "8G":
@@ -48,6 +61,15 @@ while True:
 
     # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
-    _proc.wait()
+    try:
+        _proc.wait(timeout=100)
+    except subprocess.TimeoutExpired:
+        kill(_proc.pid)
+    
+    try:
+        kill(_proc.pid)
+        time.sleep(5)
+    except:
+        time.sleep(5)
 
-    time.sleep(5)
+    kill_zombie()
