@@ -1,4 +1,0 @@
-gpu02
-GPU 0: NVIDIA GeForce RTX 4090 (UUID: GPU-8d4f1f49-8fec-335c-e99a-8090e8c2d615)
-/home/shjeong/deepops/workloads/examples/slurm/examples/vae
-python3: can't open file '/home/shjeong/main.py': [Errno 2] No such file or directory
