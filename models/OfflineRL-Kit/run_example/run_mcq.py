@@ -151,8 +151,18 @@ def train(args=get_args()):
         eval_episodes=args.eval_episodes
     )
 
+    ######### MINGEUN ###########
+    from logger import Logger as k8s_logger
+    x = k8s_logger("mcq", args.batch_size) 
+    ######### MINGEUN ###########
+
+    ######### MINGEUN ###########
+    torch.cuda.empty_cache()
+    x.ready_for_training()
+    ######### MINGEUN ###########
+    
     # train
-    policy_trainer.train()
+    policy_trainer.train(x)
 
 
 if __name__ == "__main__":

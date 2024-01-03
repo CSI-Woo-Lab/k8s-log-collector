@@ -136,15 +136,11 @@ train_file : {
 }
 
 offlineRL_model: [
-          # "combo",
           "cql",
           "edac",
-          # "iql",
-          # "mcq",
-          # "mobile",
-          # "mopo",
-          # "rambo",
-          # "td3bc"
+          "iql",
+          "mcq",
+          "td3bc"
           ]
 
 mujoco_env: ["halfcheetah-medium-v2", 
@@ -158,13 +154,9 @@ mujoco_env: ["halfcheetah-medium-v2",
             "walker2d-medium-expert-v2"]
 
 offlineRL_train_file: {
-              # "combo": "models/OfflineRL-Kit/run_example/run_combo.py",
               "cql": "models/OfflineRL-Kit/run_example/run_cql.py",
               "edac": "models/OfflineRL-Kit/run_example/run_edac.py",
               "iql": "models/OfflineRL-Kit/run_example/run_iql.py",
               "mcq": "models/OfflineRL-Kit/run_example/run_mcq.py",
-              # "mobile": "models/OfflineRL-Kit/run_example/run_mobile.py",
-              # "mopo": "models/OfflineRL-Kit/run_example/run_mopo.py",
-              # "rambo": "models/OfflineRL-Kit/run_example/run_rambo.py",
               "td3bc": "models/OfflineRL-Kit/run_example/run_td3bc.py",
 }
