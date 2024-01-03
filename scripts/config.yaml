@@ -5,23 +5,23 @@
 
 # possible python jobs
 jobs : [
-  # "vae",            
-  # "yolov8n",        
-  # "yolov8s",          
-  # "yolov8m",          
-  # "yolov8l",         
-  # "yolov8x",          
-  # "mnist",            
-  # "mnist_rnn",       
-  # "dcgan",          
-  # "imagenet",     
-  # "vision_transformer", 
-  # "siamese_net",        
-  # "super_resolution",   
-  # "word_language", 
-  # "gat", 
-  # "Pytorch_vae", 
-  # "Pytorch_vqvae",
+  "vae",            
+  "yolov8n",        
+  "yolov8s",          
+  "yolov8m",          
+  "yolov8l",         
+  "yolov8x",          
+  "mnist",            
+  "mnist_rnn",       
+  "dcgan",          
+  "imagenet",     
+  "vision_transformer", 
+  "siamese_net",        
+  "super_resolution",   
+  "word_language", 
+  "gat", 
+  "Pytorch_vae", 
+  "Pytorch_vqvae",
   "offline_RL"
 ]
 
@@ -135,6 +135,7 @@ train_file : {
   "offline_RL": "offlineRL_train_file",
 }
 
+# model_free offlineRL
 offlineRL_model: [
           "cql",
           "edac",
@@ -152,6 +153,7 @@ mujoco_env: ["halfcheetah-medium-v2",
             "halfcheetah-medium-expert-v2",
             "hopper-medium-expert-v2",
             "walker2d-medium-expert-v2"]
+
 
 offlineRL_train_file: {
               "cql": "models/OfflineRL-Kit/run_example/run_cql.py",
