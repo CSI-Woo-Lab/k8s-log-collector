@@ -58,13 +58,19 @@ while True:
     
     if len(train_file) == 1:
         _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
+    elif _job == "offline_RL":
+        _offlineRL_job = random.choice(cfg['offlineRL_model'])
+        task = random.choice(cfg['mujoco_env'])
+        offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
+        _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
+    
     else:
         _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
 
     # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
     try:
-        _proc.wait(timeout=100)
+        _proc.wait(timeout=1000)
     except subprocess.TimeoutExpired:
         kill(_proc.pid)
     try:
