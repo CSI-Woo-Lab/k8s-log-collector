@@ -56,14 +56,13 @@ while True:
 
     train_file = cfg['train_file'][_job].split()
     
-    if len(train_file) == 1:
-        _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
-    elif _job == "offline_RL":
+    if _job == "offline_RL":
         _offlineRL_job = random.choice(cfg['offlineRL_model'])
         task = random.choice(cfg['mujoco_env'])
         offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
         _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
-    
+    elif len(train_file) == 1:
+        _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
     else:
         _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
 
