@@ -5,23 +5,23 @@
 
 # possible python jobs
 jobs : [
-  "vae",            
-  "yolov8n",        
-  "yolov8s",          
-  "yolov8m",          
-  "yolov8l",         
-  "yolov8x",          
-  "mnist",            
-  "mnist_rnn",       
-  "dcgan",          
-  "imagenet",     
-  "vision_transformer", 
-  "siamese_net",        
-  "super_resolution",   
-  "word_language", 
-  "gat", 
-  "Pytorch_vae", 
-  "Pytorch_vqvae",
+  # "vae",            
+  # "yolov8n",        
+  # "yolov8s",          
+  # "yolov8m",          
+  # "yolov8l",         
+  # "yolov8x",          
+  # "mnist",            
+  # "mnist_rnn",       
+  # "dcgan",          
+  # "imagenet",     
+  # "vision_transformer", 
+  # "siamese_net",        
+  # "super_resolution",   
+  # "word_language", 
+  # "gat", 
+  # "Pytorch_vae", 
+  # "Pytorch_vqvae",
   "offline_RL"
 ]
 
@@ -135,15 +135,17 @@ train_file : {
   "offline_RL": "offlineRL_train_file",
 }
 
-offlineRL_model: ["combo",
-                "cql",
-                "edac",
-                "iql",
-                "mcq",
-                "mobile",
-                "mopo",
-                "td3bc"
-]
+offlineRL_model: [
+          # "combo",
+          "cql",
+          "edac",
+          # "iql",
+          # "mcq",
+          # "mobile",
+          # "mopo",
+          # "rambo",
+          # "td3bc"
+          ]
 
 mujoco_env: ["halfcheetah-medium-v2", 
             "hopper-medium-v2", 
