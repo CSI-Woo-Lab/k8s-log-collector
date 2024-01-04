@@ -39,7 +39,7 @@ class CocoDataset(dset.CocoDetection):
 
     def _load_image(self, id: int) -> Image.Image:
         path = self.coco.loadImgs(id)[0]["file_name"]
-        return Image.open(os.path.join(self.root, path)).convert("RGB")
+        return Image.open(os.path.join(self.root, path))
 
     def _load_target(self, id: int) -> List[Any]:
         return self.coco.loadAnns(self.coco.getAnnIds(id))
@@ -49,8 +49,7 @@ class CocoDataset(dset.CocoDetection):
         image = self._load_image(id)
         target = self._load_target(id)
 
-        image = BytesIO(image)
-        image = Image.open(image)
+        image = image_pil.resize((64,64))
 
         if self.transform is not None:
             image = self.transform(image)
