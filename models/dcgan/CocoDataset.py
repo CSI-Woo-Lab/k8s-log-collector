@@ -62,7 +62,7 @@ class CocoDataset(dset.CocoDetection):
 
 
 
-class CocoCaptions(CocoDetection):
+class CocoCaptions(dset.CocoDetection):
     """`MS Coco Captions <https://cocodataset.org/#captions-2015>`_ Dataset.
 
     It requires the `COCO API to be installed <https://github.com/pdollar/coco/tree/master/PythonAPI>`_.
