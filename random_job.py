@@ -23,6 +23,8 @@ parser.add_argument('--gpu', required=True,
                     help='gpu server name')
 args = parser.parse_args()
 os.environ['PYTHONPATH'] = '/workspace/k8s-log-collector'
+os.environ['PYTHONPATH'] += ':/workspace/k8s-log-collector/models/OfflineRL-Kit'
+os.environ['LD_LIBRARY_PATH'] = '$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin'
 #################### CONFIGURATION ####################
 
 def kill(proc_pid):
@@ -60,7 +62,6 @@ while True:
         _offlineRL_job = random.choice(cfg['offlineRL_model'])
         task = random.choice(cfg['mujoco_env'])
         offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
-        os.environ['PYTHONPATH'] += ':/workspace/k8s-log-collector/models/OfflineRL-Kit'
         _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
     elif len(train_file) == 1:
         _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
