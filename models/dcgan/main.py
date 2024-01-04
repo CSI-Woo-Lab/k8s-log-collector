@@ -15,7 +15,7 @@ import torchvision.utils as vutils
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', required=False, default='mnist', help='cifar10 | lsun | mnist |imagenet | folder | lfw | fake')
+parser.add_argument('--dataset', required=False, default='coco', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
 parser.add_argument('--dataroot', required=False, default='../datasets', help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batch-size', type=int, default=64, help='input batch size')
@@ -97,13 +97,23 @@ elif opt.dataset == 'cifar10':
     nc=3
 
 elif opt.dataset == 'mnist':
-        dataset = dset.MNIST(root=opt.dataroot, download=True,
+    dataset = dset.MNIST(root=opt.dataroot, download=True,
+                        transform=transforms.Compose([
+                            transforms.Resize(opt.imageSize),
+                            transforms.ToTensor(),
+                            transforms.Normalize((0.5,), (0.5,)),
+                        ]))
+    nc=1
+
+elif opt.dataset == 'coco':
+    opt.dataroot = "../dataset/coco/train2017"
+    dataset = dset.CocoDetection(root=opt.dataroot, download=True, annFile = "../dataset/coco/annotations/instances_train2017.json"
                            transform=transforms.Compose([
                                transforms.Resize(opt.imageSize),
                                transforms.ToTensor(),
                                transforms.Normalize((0.5,), (0.5,)),
                            ]))
-        nc=1
+    nc=1
 
 elif opt.dataset == 'fake':
     dataset = dset.FakeData(image_size=(3, opt.imageSize, opt.imageSize),
@@ -215,7 +225,6 @@ netD = Discriminator(ngpu).to(device)
 netD.apply(weights_init)
 if opt.netD != '':
     netD.load_state_dict(torch.load(opt.netD))
-print(netD)
 
 criterion = nn.BCELoss()
 
@@ -245,6 +254,7 @@ for epoch in range(opt.niter):
         
         netD.zero_grad()
         real_cpu = data[0].to(device)
+        print(data[0].size)
         batch_size = real_cpu.size(0)
         label = torch.full((batch_size,), real_label,
                            dtype=real_cpu.dtype, device=device)
