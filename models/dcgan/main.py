@@ -42,6 +42,12 @@ opt = parser.parse_args()
 ######### MINGEUN ###########
 from logger import Logger
 x = Logger("dcgan", opt.batch_size) 
+
+def collate_fn(batch):
+  return {
+      'pixel_values': torch.stack([x['pixel_values'] for x in batch]),
+      'labels': torch.tensor([x['labels'] for x in batch])
+}
 ######### MINGEUN ###########
 
 
@@ -122,7 +128,7 @@ elif opt.dataset == 'fake':
 
 assert dataset
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size,
-                                         shuffle=True, num_workers=int(opt.workers))
+                                         shuffle=True, num_workers=int(opt.workers), collate_fn=collate_fn)
 use_mps = opt.mps and torch.backends.mps.is_available()
 if opt.cuda:
     device = torch.device("cuda:0")
