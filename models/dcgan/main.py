@@ -124,7 +124,7 @@ elif opt.dataset == 'fake':
 
 assert dataset
 dataloader = torch.utils.data.DataLoader(dataset, batch_size=opt.batch_size,
-                                         shuffle=True, num_workers=int(opt.workers))
+                                         shuffle=True, num_workers=int(opt.workers))[0]
 use_mps = opt.mps and torch.backends.mps.is_available()
 if opt.cuda:
     device = torch.device("cuda:0")
@@ -248,7 +248,7 @@ x.ready_for_training()
 ######### MINGEUN ###########
 
 for epoch in range(opt.niter):
-    for i, (data, target) in enumerate(dataloader, 0):
+    for i, data in enumerate(dataloader, 0):
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
