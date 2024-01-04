@@ -107,10 +107,10 @@ elif opt.dataset == 'mnist':
 
 elif opt.dataset == 'coco':
     opt.dataroot = "../datasets/coco/train2017"
+    opt.imageSize = (64,64)
     dataset = dset.CocoDetection(root=opt.dataroot, annFile = "../datasets/coco/annotations/instances_train2017.json",
                            transform=transforms.Compose([
                                transforms.Resize(opt.imageSize),
-                               transforms.CenterCrop(opt.imageSize),
                                transforms.ToTensor(),
                                transforms.Normalize((0.5,), (0.5,)),
                            ])
