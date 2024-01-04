@@ -48,8 +48,8 @@ class CocoDataset(dset.CocoDetection):
         image = self._load_image(id)
         target = self._load_target(id)
 
-        if self.transforms is not None:
-            image = self.transforms(image)
+        if self.transform is not None:
+            image = self.transform(image)
 
         if self.target_transform is not None:
             target = self.target_transform(target)
