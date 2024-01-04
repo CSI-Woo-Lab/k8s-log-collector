@@ -3,10 +3,10 @@ from typing import Any, Callable, List, Optional, Tuple
 
 from PIL import Image
 
-import torchvision.datasets.CocoDetection as CocoDetection
+import torchvision.datasets.VisionDataset as VisionDataset
 
 
-class CocoDataset(CocoDetection):
+class CocoDataset(VisionDataset):
     """`MS Coco Detection <https://cocodataset.org/#detection-2016>`_ Dataset.
 
     It requires the `COCO API to be installed <https://github.com/pdollar/coco/tree/master/PythonAPI>`_.
