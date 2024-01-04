@@ -246,15 +246,15 @@ x.ready_for_training()
 ######### MINGEUN ###########
 
 for epoch in range(opt.niter):
-    for i, data in enumerate(dataloader, 0):
+    for i, (data, target) in enumerate(dataloader, 0):
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
         # train with real
+        print('data:', data)
         
         netD.zero_grad()
         real_cpu = data[0].to(device)
-        print(data[0].size)
         batch_size = real_cpu.size(0)
         label = torch.full((batch_size,), real_label,
                            dtype=real_cpu.dtype, device=device)
