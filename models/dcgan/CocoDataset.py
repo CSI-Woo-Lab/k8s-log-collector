@@ -2,6 +2,7 @@ import os.path
 from typing import Any, Callable, List, Optional, Tuple
 
 from PIL import Image
+from io import BytesIO
 
 import torchvision.datasets as dset
 
@@ -47,6 +48,9 @@ class CocoDataset(dset.CocoDetection):
         id = self.ids[index]
         image = self._load_image(id)
         target = self._load_target(id)
+
+        image = BytesIO(image)
+        image = Image.open(image)
 
         if self.transform is not None:
             image = self.transform(image)
