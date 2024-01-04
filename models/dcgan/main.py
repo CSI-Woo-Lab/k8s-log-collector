@@ -109,9 +109,9 @@ elif opt.dataset == 'coco':
     opt.dataroot = "../datasets/coco/train2017"
     dataset = dset.CocoDetection(root=opt.dataroot, annFile = "../datasets/coco/annotations/instances_train2017.json",
                            transform=transforms.Compose([
-                               # transforms.Resize(opt.imageSize),
+                               transforms.Resize(opt.imageSize),
                                transforms.ToTensor(),
-                            #    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                               transforms.Normalize((0.5,), (0.5,)),
                            ])
                         )
     nc=3
@@ -247,7 +247,7 @@ x.ready_for_training()
 ######### MINGEUN ###########
 
 for epoch in range(opt.niter):
-    for i, data in enumerate(dataloader, 0):
+    for i, (data, target) in enumerate(dataloader, 0):
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
