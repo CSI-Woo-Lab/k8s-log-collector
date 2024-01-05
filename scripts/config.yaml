@@ -5,24 +5,24 @@
 
 # possible python jobs
 jobs : [
-  # "vae",
-  # "yolov8n",
-  # "yolov8s",
-  # "yolov8m",
-  # "yolov8l",
-  # "yolov8x",
-  # "mnist",
-  # "mnist_rnn",
+  "vae",
+  "yolov8n",
+  "yolov8s",
+  "yolov8m",
+  "yolov8l",
+  "yolov8x",
+  "mnist",
+  "mnist_rnn",
   "dcgan",
-  # "imagenet",
-  # "vision_transformer",
-  # "siamese_net",
-  # "super_resolution",
-  # "word_language",
-  # "gat",
-  # "Pytorch_vae",
-  # "Pytorch_vqvae",
-  # "offline_RL"
+  "imagenet",
+  "vision_transformer",
+  "siamese_net",
+  "super_resolution",
+  "word_language",
+  "gat",
+  "Pytorch_vae",
+  "Pytorch_vqvae",
+  "offline_RL"
 ]
 
 # batch size for RTX 3070ti, 4060
