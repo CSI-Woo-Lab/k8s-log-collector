@@ -101,7 +101,7 @@ elif opt.dataset == 'mnist':
                         transform=transforms.Compose([
                             transforms.Resize(opt.imageSize),
                             transforms.ToTensor(),
-                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                            transforms.Normalize((0.5,), (0.5,)),
                         ]))
     nc=1
 
@@ -113,7 +113,7 @@ elif opt.dataset == 'coco':
                            transform=transforms.Compose([
                                transforms.Resize(opt.imageSize),
                                transforms.ToTensor(),
-                               transforms.Normalize((0.5,), (0.5,)),
+                               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                            ])
                         )
     nc=3
@@ -254,7 +254,6 @@ for epoch in range(opt.niter):
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
         # train with real
-        print('data:', data)
         
         netD.zero_grad()
         real_cpu = data[0].to(device)
