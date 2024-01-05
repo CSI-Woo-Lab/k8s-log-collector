@@ -3,6 +3,7 @@ from typing import Any, Callable, List, Optional, Tuple
 
 from PIL import Image
 from io import BytesIO
+import cv2
 
 import torchvision.datasets as dset
 
@@ -49,8 +50,11 @@ class CocoDataset(dset.CocoDetection):
         image = self._load_image(id)
         target = self._load_target(id)
 
-        image = image_pil.resize((64,64))
+        image = np.array(image)
+        print(image.shape)
+        image = cv2.resize(image, (64,64))
 
+        image = Image.fromarray(image)
         if self.transform is not None:
             image = self.transform(image)
 
