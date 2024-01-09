@@ -62,7 +62,6 @@ class CocoDataset(dset.CocoDetection):
 
         return image, 0 
 
-
     def __len__(self) -> int:
         return len(self.ids)
 

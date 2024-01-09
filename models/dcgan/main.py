@@ -15,7 +15,7 @@ import torchvision.utils as vutils
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', required=False, default='coco', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
+parser.add_argument('--dataset', required=False, default='imagenet', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
 parser.add_argument('--dataroot', required=False, default='../datasets', help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batch-size', type=int, default=64, help='input batch size')
@@ -69,6 +69,8 @@ if opt.dataroot is None and str(opt.dataset).lower() != 'fake':
 
 if opt.dataset in ['imagenet', 'folder', 'lfw']:
     # folder dataset
+    opt.dataroot = "../datasets/ImageNet/train"
+    opt.imageSize = (128,128)
     dataset = dset.ImageFolder(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
