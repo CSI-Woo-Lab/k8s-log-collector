@@ -75,12 +75,11 @@ class ImageNetDataset(dset.ImageFolder):
         is_valid_file: Optional[Callable[[str], bool]] = None,
     ):
         super().__init__(
-            root,
-            loader,
-            IMG_EXTENSIONS if is_valid_file is None else None,
+            root = root,
             transform=transform,
             target_transform=target_transform,
             is_valid_file=is_valid_file,
+            loader = loader,
         )
         self.imgs = self.samples
         self.loader = loader
