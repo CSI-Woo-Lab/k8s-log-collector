@@ -8,6 +8,31 @@ import numpy as np
 
 import torchvision.datasets as dset
 
+def pil_loader(path: str) -> Image.Image:
+    # open path as file to avoid ResourceWarning (https://github.com/python-pillow/Pillow/issues/835)
+    with open(path, "rb") as f:
+        img = Image.open(f)
+        return img.convert("RGB")
+
+
+# TODO: specify the return type
+def accimage_loader(path: str) -> Any:
+    import accimage
+
+    try:
+        return accimage.Image(path)
+    except OSError:
+        # Potentially a decoding problem, fall back to PIL.Image
+        return pil_loader(path)
+
+def default_loader(path: str) -> Any:
+    from torchvision import get_image_backend
+
+    if get_image_backend() == "accimage":
+        return accimage_loader(path)
+    else:
+        return pil_loader(path)
+
 
 class ImageNetDataset(dset.ImageFolder):
     """A generic data loader where the images are arranged in this way by default: ::
