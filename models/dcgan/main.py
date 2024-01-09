@@ -15,7 +15,7 @@ import torchvision.utils as vutils
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', required=False, default='imagenet', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
+parser.add_argument('--dataset', required=False, default='lsun', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
 parser.add_argument('--dataroot', required=False, default='../datasets', help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batch-size', type=int, default=64, help='input batch size')
@@ -71,7 +71,9 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
     # folder dataset
     from ImageNetDataset import ImageNetDataset
     opt.dataroot = "../datasets/ImageNet/train"
-    opt.imageSize = (128,128)
+    # opt.imageSize = (128,128)
+    # opt.ndf = 128
+    # opt.ngf = 128
     dataset = ImageNetDataset(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
@@ -81,6 +83,7 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
                                ]))
     nc=3
 elif opt.dataset == 'lsun':
+    opt.classes = 'bedroom, bridge, church_outdoor, conference_room, tower, restaurant, dining_room, classroom, kitchen, living_room'
     classes = [ c + '_train' for c in opt.classes.split(',')]
     dataset = dset.LSUN(root=opt.dataroot, classes=classes,
                         transform=transforms.Compose([
