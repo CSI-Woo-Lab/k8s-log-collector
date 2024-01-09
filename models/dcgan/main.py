@@ -83,7 +83,8 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
                                ]))
     nc=3
 elif opt.dataset == 'lsun':
-    opt.classes = 'bedroom, bridge, church_outdoor, conference_room, tower, restaurant, dining_room, classroom, kitchen, living_room'
+    opt.classes = 'bedroom,bridge,church_outdoor,conference_room,tower,restaurant,dining_room,classroom,kitchen,living_room'
+    opt.dataroot = "../datasets/lsun"
     classes = [ c + '_train' for c in opt.classes.split(',')]
     dataset = dset.LSUN(root=opt.dataroot, classes=classes,
                         transform=transforms.Compose([
