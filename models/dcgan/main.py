@@ -69,9 +69,10 @@ if opt.dataroot is None and str(opt.dataset).lower() != 'fake':
 
 if opt.dataset in ['imagenet', 'folder', 'lfw']:
     # folder dataset
+    from ImageNetDataset import ImageNetDataset
     opt.dataroot = "../datasets/ImageNet/train"
     opt.imageSize = (128,128)
-    dataset = dset.ImageFolder(root=opt.dataroot,
+    dataset = ImageNetDataset(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
                                    transforms.CenterCrop(opt.imageSize),
