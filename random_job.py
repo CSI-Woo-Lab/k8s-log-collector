@@ -54,6 +54,9 @@ while True:
 
     _job = random.choice(cfg['jobs'])
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
+    dataset = random.choice(cfg['datasets'][_job])
+    # num_iteration in epoch
+    epoch = random.choice([0,1,2])
     # execute run.sh file so that execute python file with batch_size and model.
 
     train_file = cfg['train_file'][_job].split()
@@ -64,14 +67,14 @@ while True:
         offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
         _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
     elif len(train_file) == 1:
-        _cmd = "python3 {} --batch-size {}".format(train_file[0], _batch_size)
+        _cmd = "python3 {} --batch-size {} --dataset {} --epoch {}".format(train_file[0], _batch_size, dataset, epoch)
     else:
         _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
 
     # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)
     try:
-        _proc.wait(timeout=1000)
+        _proc.wait()
     except subprocess.TimeoutExpired:
         kill(_proc.pid)
     try:

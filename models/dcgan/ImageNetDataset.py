@@ -1,5 +1,6 @@
 
 import os.path
+import os
 from typing import Any, Callable, List, Optional, Tuple
 
 from PIL import Image
@@ -7,7 +8,7 @@ from io import BytesIO
 import numpy as np
 
 import torchvision.datasets as dset
-
+import torchvision.transforms as T
 IMG_EXTENSIONS = (".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm", ".tif", ".tiff", ".webp")
 
 def pil_loader(path: str) -> Image.Image:
@@ -93,11 +94,18 @@ class ImageNetDataset(dset.ImageFolder):
             tuple: (sample, target) where target is class_index of the target class.
         """
         path, target = self.samples[index]
+        # crop_path = path.split('/')
+        # crop_path[-3] = 'train_crop'
+        # dir_path = crop_path.copy()
+        # dir_path.pop(-1)
+        # os.makedirs(os.path.join(*dir_path), exist_ok=True)
         sample = self.loader(path)
         if self.transform is not None:
             sample = self.transform(sample)
         if self.target_transform is not None:
             target = self.target_transform(target)
-
+        
+        # save_sample = T.ToPILImage()(sample)
+        # save_sample.save(os.path.join(*crop_path))
         return sample, 0
 

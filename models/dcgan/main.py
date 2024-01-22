@@ -15,7 +15,7 @@ import torchvision.utils as vutils
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', required=False, default='lsun', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
+parser.add_argument('--dataset', required=False, default='imagenet', help='cifar10 | lsun | mnist |imagenet | folder | lfw | coco | fake ')
 parser.add_argument('--dataroot', required=False, default='../datasets', help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batch-size', type=int, default=64, help='input batch size')
@@ -23,7 +23,7 @@ parser.add_argument('--imageSize', type=int, default=64, help='the height / widt
 parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
 parser.add_argument('--ngf', type=int, default=64)
 parser.add_argument('--ndf', type=int, default=64)
-parser.add_argument('--niter', type=int, default=25, help='number of epochs to train for')
+parser.add_argument('--niter', type=int, default=100, help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.0002, help='learning rate, default=0.0002')
 parser.add_argument('--beta1', type=float, default=0.5, help='beta1 for adam. default=0.5')
 parser.add_argument('--cuda', action='store_true', default=True, help='enables cuda')
@@ -35,13 +35,15 @@ parser.add_argument('--outf', default='.', help='folder to output images and mod
 parser.add_argument('--manualSeed', type=int, help='manual seed')
 parser.add_argument('--classes', default='bedroom', help='comma separated list of classes for the lsun data set')
 parser.add_argument('--mps', action='store_true', default=False, help='enables macOS GPU training')
-
+parser.add_argument('--epoch', type=int, default=0, help='num_iteration in epoch')
 opt = parser.parse_args()
+
+opt.workers=16
 
 # logger model load
 ######### MINGEUN ###########
 from logger import Logger
-x = Logger("dcgan", opt.batch_size) 
+x = Logger("dcgan", opt.batch_size, opt.dataset, opt.epoch, opt.workers) 
 ######### MINGEUN ###########
 
 
@@ -71,9 +73,6 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
     # folder dataset
     from ImageNetDataset import ImageNetDataset
     opt.dataroot = "../datasets/ImageNet/train"
-    # opt.imageSize = (128,128)
-    # opt.ndf = 128
-    # opt.ngf = 128
     dataset = ImageNetDataset(root=opt.dataroot,
                                transform=transforms.Compose([
                                    transforms.Resize(opt.imageSize),
@@ -82,9 +81,20 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                ]))
     nc=3
+
+elif opt.dataset == 'imagenet_preprocess':
+    from ImageNetDataset import ImageNetDataset
+    opt.dataroot = "../datasets/ImageNet/train_crop"
+    dataset = ImageNetDataset(root=opt.dataroot,
+                              transform=transforms.Compose([
+                                  transforms.ToTensor(),
+                              ]))
+    nc=3
+
 elif opt.dataset == 'lsun':
     opt.classes = 'bedroom,bridge,church_outdoor,conference_room,tower,restaurant,dining_room,classroom,kitchen,living_room'
-    opt.dataroot = "../datasets/lsun"
+    # opt.classes = 'tower'
+    opt.dataroot = "../datasets/ImageNet/lsun"
     classes = [ c + '_train' for c in opt.classes.split(',')]
     dataset = dset.LSUN(root=opt.dataroot, classes=classes,
                         transform=transforms.Compose([
@@ -95,12 +105,24 @@ elif opt.dataset == 'lsun':
                         ]))
     nc=3
 elif opt.dataset == 'cifar10':
-    dataset = dset.CIFAR10(root=opt.dataroot, download=True,
+    from ImageNetDataset import ImageNetDataset
+    from CIFAR10Dataset import CIFAR10Dataset
+    # dataset = dset.CIFAR10(root=opt.dataroot, download=True,
+    dataset = CIFAR10Dataset(root=opt.dataroot, download=True,
                            transform=transforms.Compose([
                                transforms.Resize(opt.imageSize),
                                transforms.ToTensor(),
                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                            ]))
+    nc=3
+
+elif opt.dataset == 'cifar10_preprocess':
+    from ImageNetDataset import ImageNetDataset
+    opt.dataroot = '../datasets/CIFAR10/train'
+    dataset = ImageNetDataset(root=opt.dataroot,
+                              transform=transforms.Compose([
+                                  transforms.ToTensor(),
+                              ]))
     nc=3
 
 elif opt.dataset == 'mnist':
@@ -115,6 +137,7 @@ elif opt.dataset == 'mnist':
 elif opt.dataset == 'coco':
     from CocoDataset import CocoDataset
     opt.dataroot = "../datasets/coco/train2017"
+    # opt.dataroot = "../datasets/ImageNet/coco/train2017"
     opt.imageSize = (64, 64)
     dataset = CocoDataset(root=opt.dataroot, annFile = "../datasets/coco/annotations/instances_train2017.json",
                            transform=transforms.Compose([
@@ -123,6 +146,15 @@ elif opt.dataset == 'coco':
                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                            ])
                         )
+    nc=3
+
+elif opt.dataset == 'coco_preprocess':
+    from ImageNetDataset import ImageNetDataset
+    opt.dataroot='../datasets/coco/train2017_crop'
+    dataset = ImageNetDataset(root=opt.dataroot,
+                              transform=transforms.Compose([
+                                  transforms.ToTensor(),
+                              ]))
     nc=3
 
 elif opt.dataset == 'fake':
@@ -253,10 +285,31 @@ optimizerG = optim.Adam(netG.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
 ######### MINGEUN ###########
 torch.cuda.empty_cache()
 x.ready_for_training()
-######### MINGEUN ###########
+num_iteration = 0
 
+should_break = False
+def exit_program():
+    import time
+    global should_break
+    should_break = True
+    print("exit the program.")
+    print("num_iteration :", num_iteration)
+    x.terminate()
+    
+######### MINGEUN ###########
+import threading
+from tqdm import tqdm
 for epoch in range(opt.niter):
-    for i, data in enumerate(dataloader, 0):
+    print("epoch:", epoch)
+    print("terminate_epoch:", opt.epoch)
+    if epoch == opt.epoch:
+        print("timer start!")
+        timer = threading.Timer(10, exit_program)
+        timer.start()
+
+    if should_break:
+        break
+    for i, data in enumerate(tqdm(dataloader)):
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
         ###########################
@@ -297,7 +350,9 @@ for epoch in range(opt.niter):
 
         # total iteration increased by one after each iterations ended.
         ######### MINGEUN ###########
-        x.every_iteration()
+        if epoch >= opt.epoch:
+            x.every_iteration()
+            num_iteration += 1
         ######### MINGEUN ###########
 
         # print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'

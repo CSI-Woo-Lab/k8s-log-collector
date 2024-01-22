@@ -28,3 +28,4 @@ yolo8*/
 *.csv
 **/.DS_Store
 _tmp_job_*
+_cache*

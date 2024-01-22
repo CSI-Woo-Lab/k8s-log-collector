@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 
 import torchvision.datasets as dset
+import torchvision.transforms as T
 
 
 class CocoDataset(dset.CocoDetection):
@@ -56,9 +57,13 @@ class CocoDataset(dset.CocoDetection):
 
         if self.transform is not None:
             image = self.transform(image)
-
+        
+        # save_image = T.ToPILImage()(image)
+        # save_image.save("../datasets/coco/train2017_crop/coco/{}.jpg".format(id))
         if self.target_transform is not None:
             target = self.target_transform(target)
+        
+        
 
         return image, 0 
 

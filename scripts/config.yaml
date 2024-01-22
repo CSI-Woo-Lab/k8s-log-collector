@@ -5,24 +5,24 @@
 
 # possible python jobs
 jobs : [
-  "vae",
-  "yolov8n",
-  "yolov8s",
-  "yolov8m",
-  "yolov8l",
-  "yolov8x",
-  "mnist",
-  "mnist_rnn",
+  # "vae",
+  # "yolov8n",
+  # "yolov8s",
+  # "yolov8m",
+  # "yolov8l",
+  # "yolov8x",
+  # "mnist",
+  # "mnist_rnn",
   "dcgan",
-  "imagenet",
-  "vision_transformer",
-  "siamese_net",
-  "super_resolution",
-  "word_language",
-  "gat",
-  "Pytorch_vae",
-  "Pytorch_vqvae",
-  "offline_RL"
+  # "imagenet",
+  # "vision_transformer",
+  # "siamese_net",
+  # "super_resolution",
+  # "word_language",
+  # "gat",
+  # "Pytorch_vae",
+  # "Pytorch_vqvae",
+  # "offline_RL"
 ]
 
 # batch size for RTX 3070ti, 4060
@@ -72,6 +72,7 @@ batch_size_for_12 : {
 # batch size for RTX 4080
 batch_size_for_16 : {
     "dcgan":[16, 32, 64, 128, 256, 512, 1024],
+    # "dcgan":[512],
     "imagenet":[8, 16, 32, 64, 128, 256],
     "vae":[64, 128, 256, 512, 1024, 2048], 
     "vision_transformer":[2, 4, 8, 12, 16], 
@@ -161,4 +162,8 @@ offlineRL_train_file: {
               "iql": "models/OfflineRL-Kit/run_example/run_iql.py",
               "mcq": "models/OfflineRL-Kit/run_example/run_mcq.py",
               "td3bc": "models/OfflineRL-Kit/run_example/run_td3bc.py",
+}
+
+datasets: {
+        "dcgan":["imagenet_preprocess", "coco_preprocess", "cifar10_preprocess"],
 }
