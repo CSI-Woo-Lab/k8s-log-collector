@@ -129,8 +129,7 @@ def main():
     parser.add_argument('--workers', type=int, default=16)
     parser.add_argument('--gpu_ids', nargs="+", default=['0'])
     parser.add_argument('--port', type=int, default=2024)
-    parser.add_argument('--world_size', type=int, default=24)
-    parser.add_argument('--local_rank', type=int, default=0, help = 'Necessary for using the torch.distributed.launch utility')
+    # parser.add_argument('--world_size', type=int, default=24)
     parser.add_argument('--global_rank', type=int, default=0)
     ######### MINGEUN ###########
 

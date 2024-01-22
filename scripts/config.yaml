@@ -11,9 +11,9 @@ jobs : [
   # "yolov8m",
   # "yolov8l",
   # "yolov8x",
-  # "mnist",
+  "mnist",
   # "mnist_rnn",
-  "dcgan",
+  # "dcgan",
   # "imagenet",
   # "vision_transformer",
   # "siamese_net",
@@ -166,4 +166,5 @@ offlineRL_train_file: {
 
 datasets: {
         "dcgan":["imagenet_preprocess", "coco_preprocess", "cifar10_preprocess"],
+        "mnist":["mnist"],
 }
