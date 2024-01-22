@@ -51,7 +51,7 @@ elif args.gpu == "16G":
 else:
     index = 24
 while True:
-
+    addr = "115.145.175.74"
     _job = random.choice(cfg['jobs'])
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
     dataset = random.choice(cfg['datasets'][_job])
@@ -66,6 +66,14 @@ while True:
         task = random.choice(cfg['mujoco_env'])
         offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
         _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
+    
+    elif _job == "mnist":
+        if args.gpu == "8G":
+            rank = 0
+        else:
+            rank = 1
+        _cmd = "python3 -m torch.distributed.launch --nnodes {} --nproc_per_node {} --node_rank {} --master_addr {} --master_port {} {}".format(
+            2, 1, rank, addr, 2024, train_file[0])
     elif len(train_file) == 1:
         _cmd = "python3 {} --batch-size {} --dataset {} --epoch {}".format(train_file[0], _batch_size, dataset, epoch)
     else:

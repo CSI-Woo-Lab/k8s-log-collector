@@ -126,6 +126,7 @@ def main():
     ######### MINGEUN ###########
     parser.add_argument('--dataset', default='mnist', help='used dataset')
     parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argument('--workers', type=int, default=16)
     parser.add_argument('--gpu_ids', nargs="+", default=['0'])
     parser.add_argument('--port', type=int, default=2024)
     parser.add_argument('--world_size', type=int, default=24)
@@ -134,16 +135,17 @@ def main():
     ######### MINGEUN ###########
 
     args = parser.parse_args()
+    init_for_distributed(args)
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
-
+    args.seed = np.random.randint(1,10000)
     torch.manual_seed(args.seed)
 
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
     args.image_size = 28
-    x = Logger("mnist_cnn", args.batch_size, args.dataset, args.image_size) 
+    x = Logger("mnist_cnn", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     if use_cuda:
@@ -156,7 +158,7 @@ def main():
     train_kwargs = {'batch_size': args.batch_size}
     test_kwargs = {'batch_size': args.test_batch_size}
     if use_cuda:
-        cuda_kwargs = {'num_workers': 1,
+        cuda_kwargs = {'num_workers': 16,
                        'pin_memory': True,
                        'shuffle': True}
         train_kwargs.update(cuda_kwargs)
