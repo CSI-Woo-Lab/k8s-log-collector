@@ -69,11 +69,11 @@ while True:
     
     elif _job == "mnist":
         if args.gpu == "8G":
-            rank = 0
+            rank = '0'
         else:
-            rank = 1
+            rank = '1'
         _cmd = "python3 -m torch.distributed.launch --nnodes {} --nproc_per_node {} --node_rank {} --master_addr {} --master_port {} {}".format(
-            2, 1, rank, addr, 2024, train_file[0])
+            '2', '1', rank, addr, '2024', train_file[0])
     elif len(train_file) == 1:
         _cmd = "python3 {} --batch-size {} --dataset {} --epoch {}".format(train_file[0], _batch_size, dataset, epoch)
     else:
