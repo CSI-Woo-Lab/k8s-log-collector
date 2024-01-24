@@ -192,7 +192,7 @@ class BaseTrainer:
 
         else:
             ############ MINGEUN ##############
-            x = Logger(self.args.project, self.args.batch) 
+            x = Logger(self.args.project, self.args.batch, self.args.data.split('.')[0], self.args.imgsz, self.args.workers) 
             ############ MINGEUN ##############
             
             self._do_train(world_size, x)

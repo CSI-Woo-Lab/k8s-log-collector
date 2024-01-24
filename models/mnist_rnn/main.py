@@ -110,6 +110,12 @@ def main():
                         help='how many batches to wait before logging training status')
     parser.add_argument('--save-model', action='store_true', default=False,
                         help='for Saving the current Model')
+
+    ######### MINGEUN ###########
+    parser.add_argument('--dataset', default='mnist', help='used dataset')
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ######### MINGEUN ###########
     args = parser.parse_args()
     use_cuda = not args.no_cuda and torch.cuda.is_available()
 
@@ -118,12 +124,13 @@ def main():
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
-    x = Logger("mnist_rnn", args.batch_size) 
+    args.image_size = 28
+    x = Logger("mnist_rnn", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     device = torch.device("cuda" if use_cuda else "cpu")
 
-    kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
+    kwargs = {'num_workers': args.workers, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST('../datasets', train=True, download=True,
                        transform=transforms.Compose([

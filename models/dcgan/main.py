@@ -19,7 +19,7 @@ parser.add_argument('--dataset', required=False, default='imagenet', help='cifar
 parser.add_argument('--dataroot', required=False, default='../datasets', help='path to dataset')
 parser.add_argument('--workers', type=int, help='number of data loading workers', default=2)
 parser.add_argument('--batch-size', type=int, default=64, help='input batch size')
-parser.add_argument('--imageSize', type=int, default=64, help='the height / width of the input image to network')
+parser.add_argument('--image-size', type=int, default=64, help='the height / width of the input image to network')
 parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
 parser.add_argument('--ngf', type=int, default=64)
 parser.add_argument('--ndf', type=int, default=64)
@@ -43,7 +43,8 @@ opt.workers=16
 # logger model load
 ######### MINGEUN ###########
 from logger import Logger
-x = Logger("dcgan", opt.batch_size, opt.dataset, opt.epoch, opt.workers) 
+opt.image_size = 64
+x = Logger("dcgan", opt.batch_size, opt.dataset, opt.image_size, opt.workers) 
 ######### MINGEUN ###########
 
 
@@ -75,8 +76,8 @@ if opt.dataset in ['imagenet', 'folder', 'lfw']:
     opt.dataroot = "../datasets/ImageNet/train"
     dataset = ImageNetDataset(root=opt.dataroot,
                                transform=transforms.Compose([
-                                   transforms.Resize(opt.imageSize),
-                                   transforms.CenterCrop(opt.imageSize),
+                                   transforms.Resize(opt.image_size),
+                                   transforms.CenterCrop(opt.image_size),
                                    transforms.ToTensor(),
                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                                ]))
@@ -98,8 +99,8 @@ elif opt.dataset == 'lsun':
     classes = [ c + '_train' for c in opt.classes.split(',')]
     dataset = dset.LSUN(root=opt.dataroot, classes=classes,
                         transform=transforms.Compose([
-                            transforms.Resize(opt.imageSize),
-                            transforms.CenterCrop(opt.imageSize),
+                            transforms.Resize(opt.image_size),
+                            transforms.CenterCrop(opt.image_size),
                             transforms.ToTensor(),
                             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                         ]))
@@ -107,10 +108,10 @@ elif opt.dataset == 'lsun':
 elif opt.dataset == 'cifar10':
     from ImageNetDataset import ImageNetDataset
     from CIFAR10Dataset import CIFAR10Dataset
-    # dataset = dset.CIFAR10(root=opt.dataroot, download=True,
+    # dataset = dset.CIFAR10(root=opt.dataroot, download=True,)
     dataset = CIFAR10Dataset(root=opt.dataroot, download=True,
                            transform=transforms.Compose([
-                               transforms.Resize(opt.imageSize),
+                               transforms.Resize(opt.image_size),
                                transforms.ToTensor(),
                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                            ]))
@@ -128,7 +129,7 @@ elif opt.dataset == 'cifar10_preprocess':
 elif opt.dataset == 'mnist':
     dataset = dset.MNIST(root=opt.dataroot, download=True,
                         transform=transforms.Compose([
-                            transforms.Resize(opt.imageSize),
+                            transforms.Resize(opt.image_size),
                             transforms.ToTensor(),
                             transforms.Normalize((0.5,), (0.5,)),
                         ]))
@@ -138,10 +139,10 @@ elif opt.dataset == 'coco':
     from CocoDataset import CocoDataset
     opt.dataroot = "../datasets/coco/train2017"
     # opt.dataroot = "../datasets/ImageNet/coco/train2017"
-    opt.imageSize = (64, 64)
+    opt.image_size = (64, 64)
     dataset = CocoDataset(root=opt.dataroot, annFile = "../datasets/coco/annotations/instances_train2017.json",
                            transform=transforms.Compose([
-                               transforms.Resize(opt.imageSize),
+                               transforms.Resize(opt.image_size),
                                transforms.ToTensor(),
                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
                            ])
@@ -158,7 +159,7 @@ elif opt.dataset == 'coco_preprocess':
     nc=3
 
 elif opt.dataset == 'fake':
-    dataset = dset.FakeData(image_size=(3, opt.imageSize, opt.imageSize),
+    dataset = dset.FakeData(image_size=(3, opt.image_size, opt.image_size),
                             transform=transforms.ToTensor())
     nc=3
 
@@ -300,10 +301,10 @@ def exit_program():
 import threading
 from tqdm import tqdm
 for epoch in range(opt.niter):
-    print("epoch:", epoch)
-    print("terminate_epoch:", opt.epoch)
+    # print("epoch:", epoch)
+    # print("terminate_epoch:", opt.epoch)
     if epoch == opt.epoch:
-        print("timer start!")
+        # print("timer start!")
         timer = threading.Timer(10, exit_program)
         timer.start()
 

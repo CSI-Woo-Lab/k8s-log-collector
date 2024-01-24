@@ -78,6 +78,10 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
 parser.add_argument('--dummy', default=False, help="use fake data to benchmark")
+######### MINGEUN ###########
+parser.add_argument('--dataset', default='cora', help='used dataset')
+parser.add_argument('--image-size', default='64', help='size of image for training if used')
+######### MINGEUN ###########
 
 best_acc1 = 0
 
@@ -89,7 +93,8 @@ def main():
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
-    x = Logger("image_net", args.batch_size) 
+    args.image_size = 224
+    x = Logger("image_net", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     if args.seed is not None:

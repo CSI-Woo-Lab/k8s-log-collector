@@ -35,7 +35,7 @@ walker2d-medium-expert-v2: num-critics=10, eta=5.0
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--algo-name", type=str, default="edac")
-    parser.add_argument("--task", type=str, default="hopper-medium-v2")
+    parser.add_argument("--dataset", type=str, default="hopper-medium-v2")
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--actor-lr", type=float, default=1e-4)
     parser.add_argument("--critic-lr", type=float, default=3e-4)
@@ -51,19 +51,22 @@ def get_args():
     parser.add_argument("--deterministic-backup", type=bool, default=False)
     parser.add_argument("--eta", type=float, default=1.0)
     parser.add_argument("--normalize-reward", type=bool, default=False)
-
     parser.add_argument("--epoch", type=int, default=3000)
     parser.add_argument("--step-per-epoch", type=int, default=1000)
     parser.add_argument("--eval_episodes", type=int, default=10)
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
+    ######### MINGEUN ###########
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ######### MINGEUN ###########
 
     return parser.parse_args()
 
 
 def train(args=get_args()):
     # create env and dataset
-    env = gym.make(args.task)
+    env = gym.make(args.dataset)
     dataset = qlearning_dataset(env)
     if args.normalize_reward:
         mu, std = dataset["rewards"].mean(), dataset["rewards"].std()
@@ -139,7 +142,7 @@ def train(args=get_args()):
     buffer.load_dataset(dataset)
 
     # log
-    log_dirs = make_log_dirs(args.task, args.algo_name, args.seed, vars(args), record_params=["num_critics", "eta"])
+    log_dirs = make_log_dirs(args.dataset, args.algo_name, args.seed, vars(args), record_params=["num_critics", "eta"])
     # key: output file name, value: output handler type
     output_config = {
         "consoleout_backup": "stdout",
@@ -163,7 +166,9 @@ def train(args=get_args()):
     )
     ######### MINGEUN ###########
     from logger import Logger as k8s_logger
-    x = k8s_logger("edac", args.batch_size) 
+    args.image_size = "sensor"
+    args.workers = "none"
+    x = k8s_logger("edac", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     ######### MINGEUN ###########

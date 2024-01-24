@@ -51,13 +51,20 @@ parser.add_argument('--nhead', type=int, default=2,
                     help='the number of heads in the encoder/decoder of the transformer model')
 parser.add_argument('--dry-run', action='store_true',
                     help='verify the code and the model')
+############ MINGEUN ############
+parser.add_argument('--dataset', default='corpus', help='used dataset')
+parser.add_argument('--image-size', default='64', help='size of image for training if used')
+parser.add_argumnet('--workers', type=int, default=16)
+############ MINGEUN ############
 args = parser.parse_args()
 
 # logger model load
 ######### MINGEUN ###########
 from logger import Logger
 import numpy as np
-x = Logger("word_language_model", args.batch_size) 
+args.image_size = "none"
+args.workers = "none"
+x = Logger("word_language_model", args.batch_size, args.dataset, args.image_size, args.workers) 
 args.seed = np.random.randint(10000)
 ######### MINGEUN ###########
 

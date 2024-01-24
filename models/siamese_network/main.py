@@ -266,6 +266,11 @@ def main():
                         help='how many batches to wait before logging training status')
     parser.add_argument('--save-model', action='store_true', default=False,
                         help='For Saving the current Model')
+    ############ MINGEUN ############
+    parser.add_argument('--dataset', default='mnist', help='used dataset')
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ############ MINGEUN ############
     args = parser.parse_args()
     
     use_cuda = not args.no_cuda and torch.cuda.is_available()
@@ -277,7 +282,8 @@ def main():
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
-    x = Logger("siamese_net", args.batch_size) 
+    args.image_size = 28
+    x = Logger("siamese_net", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     if use_cuda:
@@ -290,7 +296,7 @@ def main():
     train_kwargs = {'batch_size': args.batch_size}
     test_kwargs = {'batch_size': args.test_batch_size}
     if use_cuda:
-        cuda_kwargs = {'num_workers': 1,
+        cuda_kwargs = {'num_workers': args.workers,
                        'pin_memory': True,
                        'shuffle': True}
         train_kwargs.update(cuda_kwargs)

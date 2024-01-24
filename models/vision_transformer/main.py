@@ -246,12 +246,18 @@ def main():
                         help='batch size (default : 4)')
     parser.add_argument('--dry-run', action='store_true', default=False,
                         help='quickly check a single pass')
+    
+    ############ MINGEUN ############
+    parser.add_argument('--dataset', default='cifar10', help='used dataset')
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ############ MINGEUN ############
     args = parser.parse_args()
 
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
-    x = Logger("vision_transformer", args.batch_size) 
+    x = Logger("vision_transformer", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
 

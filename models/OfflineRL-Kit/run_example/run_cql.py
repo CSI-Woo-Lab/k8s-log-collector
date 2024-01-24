@@ -26,7 +26,7 @@ cql-weight=5.0, temperature=1.0 for all D4RL-Gym tasks
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--algo-name", type=str, default="cql")
-    parser.add_argument("--task", type=str, default="hopper-medium-v2")
+    parser.add_argument("--dataset", type=str, default="hopper-medium-v2")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--hidden-dims", type=int, nargs='*', default=[256, 256, 256])
     parser.add_argument("--actor-lr", type=float, default=1e-4)
@@ -46,22 +46,24 @@ def get_args():
     parser.add_argument("--lagrange-threshold", type=float, default=10.0)
     parser.add_argument("--cql-alpha-lr", type=float, default=3e-4)
     parser.add_argument("--num-repeat-actions", type=int, default=10)
-    
     parser.add_argument("--epoch", type=int, default=1000)
     parser.add_argument("--step-per-epoch", type=int, default=1000)
     parser.add_argument("--eval_episodes", type=int, default=10)
     parser.add_argument("--batch-size", type=int, default=256)
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
-
+    ######### MINGEUN ###########
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ######### MINGEUN ###########
     return parser.parse_args()
 
 
 def train(args=get_args()):
     # create env and dataset
-    env = gym.make(args.task)
+    env = gym.make(args.dataset)
     dataset = qlearning_dataset(env)
     # See https://github.com/aviralkumar2907/CQL/blob/master/d4rl/examples/cql_antmaze_new.py#L22
-    if 'antmaze' in args.task:
+    if 'antmaze' in args.dataset:
         dataset["rewards"] = (dataset["rewards"] - 0.5) * 4.0
     args.obs_shape = env.observation_space.shape
     args.action_dim = np.prod(env.action_space.shape)
@@ -138,7 +140,7 @@ def train(args=get_args()):
     buffer.load_dataset(dataset)
 
     # log
-    log_dirs = make_log_dirs(args.task, args.algo_name, args.seed, vars(args))
+    log_dirs = make_log_dirs(args.dataset, args.algo_name, args.seed, vars(args))
     # key: output file name, value: output handler type
     output_config = {
         "consoleout_backup": "stdout",
@@ -161,7 +163,9 @@ def train(args=get_args()):
     )
     ######### MINGEUN ###########
     from logger import Logger as k8s_logger
-    x = k8s_logger("cql", args.batch_size) 
+    args.image_size = "sensor"
+    args.workers = "none"
+    x = k8s_logger("cql", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     ######### MINGEUN ###########

@@ -157,7 +157,7 @@ def main():
     train_kwargs = {'batch_size': args.batch_size}
     test_kwargs = {'batch_size': args.test_batch_size}
     if use_cuda:
-        cuda_kwargs = {'num_workers': 16,
+        cuda_kwargs = {'num_workers': args.workers,
                        'pin_memory': True,
                        'shuffle': True}
         train_kwargs.update(cuda_kwargs)
@@ -178,11 +178,11 @@ def main():
     test_sampler = DistributedSampler(dataset=dataset2, shuffle=True)
 
     DDP_kwargs1 = {
-        'sampler' : train_sampler
+        'sampler' : train_sampler,
         'shuffle' : False
     }
     DDP_kwargs2 = {
-        'sampler' : test_sampler
+        'sampler' : test_sampler,
         'shuffle' : False
     }
     train_kwargs.update(DDP_kwargs1)

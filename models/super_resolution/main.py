@@ -18,14 +18,20 @@ parser.add_argument('--nEpochs', type=int, default=100, help='number of epochs t
 parser.add_argument('--lr', type=float, default=0.01, help='Learning Rate. Default=0.01')
 parser.add_argument('--cuda', action='store_true', default=True, help='use cuda?')
 parser.add_argument('--mps', action='store_true', default=True, help='enables macOS GPU training')
-parser.add_argument('--threads', type=int, default=4, help='number of threads for data loader to use')
+parser.add_argument('--workers', type=int, default=4, help='number of workers for data loader to use')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
+############ MINGEUN ############
+parser.add_argument('--dataset', default='bsd300', help='used dataset')
+parser.add_argument('--image-size', default='64', help='size of image for training if used')
+############ MINGEUN ############
+
 opt = parser.parse_args()
 
 # logger model load
 ######### MINGEUN ###########
 from logger import Logger
-x = Logger("super_resolution", opt.batch_size) 
+opt.upscale_factor = int(256 // opt.image_size)
+x = Logger("super_resolution", opt.batch_size, opt.dataset, opt.image_size, opt.workers) 
 ######### MINGEUN ###########
 
 
@@ -49,8 +55,8 @@ else:
 print('===> Loading datasets')
 train_set = get_training_set(opt.upscale_factor)
 test_set = get_test_set(opt.upscale_factor)
-training_data_loader = DataLoader(dataset=train_set, num_workers=opt.threads, batch_size=opt.batch_size, shuffle=True)
-# testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.threads, batch_size=opt.testBatchSize, shuffle=False)
+training_data_loader = DataLoader(dataset=train_set, num_workers=opt.workers, batch_size=opt.batch_size, shuffle=True)
+# testing_data_loader = DataLoader(dataset=test_set, num_workers=opt.workers, batch_size=opt.testBatchSize, shuffle=False)
 
 print('===> Building model')
 print('device:', device)

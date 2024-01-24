@@ -5,7 +5,6 @@
 
 # possible python jobs
 jobs : [
-  # "vae",
   # "yolov8n",
   # "yolov8s",
   # "yolov8m",
@@ -22,14 +21,17 @@ jobs : [
   # "gat",
   # "Pytorch_vae",
   # "Pytorch_vqvae",
-  # "offline_RL"
+  # "cql",
+  # "edac",
+  # "iql",
+  # "mcq",
+  # "td3bc"
 ]
 
 # batch size for RTX 3070ti, 4060
 batch_size_for_8 : {
     "dcgan":[16, 32, 64, 128, 256, 512],
     "imagenet":[8, 16, 32, 64, 128],
-    "vae":[64, 128, 256, 512], 
     "vision_transformer":[2, 4, 8], 
     "yolov8n":[2, 4, 8, 16],
     "yolov8s":[2, 4, 8, 16],
@@ -44,14 +46,19 @@ batch_size_for_8 : {
     "gat":[4, 8, 12, 16],
     "Pytorch_vae":[8, 16, 32, 64, 128, 256],
     "Pytorch_vqvae":[8, 16, 32, 64, 128, 256],
-    "offline_RL" : [16, 32, 64, 128, 256, 512],
+    "cql":[16, 32, 64, 128, 256, 512],
+    "edac":[16, 32, 64, 128, 256, 512],
+    "iql":[16, 32, 64, 128, 256, 512],
+    "mcq":[16, 32, 64, 128, 256, 512],
+    "td3bc":[16, 32, 64, 128, 256, 512],
+    "image_size":[64, 128],
+    "workers":[8],
 }
 
 # batch size for RTX 4070
 batch_size_for_12 : {
     "dcgan":[16, 32, 64, 128, 256, 512],
     "imagenet":[8, 16, 32, 64, 128, 256],
-    "vae":[64, 128, 256, 512, 1024], 
     "vision_transformer":[2, 4, 8, 12], 
     "yolov8n":[2, 4, 8, 16, 32],
     "yolov8s":[2, 4, 8, 16, 32],
@@ -66,15 +73,19 @@ batch_size_for_12 : {
     "gat":[4, 8, 12, 16, 20],
     "Pytorch_vae":[8, 16, 32, 64, 128, 256],
     "Pytorch_vqvae":[8, 16, 32, 64, 128, 256],
-    "offline_RL" : [16, 32, 64, 128, 256, 512]
+    "cql":[16, 32, 64, 128, 256, 512],
+    "edac":[16, 32, 64, 128, 256, 512],
+    "iql":[16, 32, 64, 128, 256, 512],
+    "mcq":[16, 32, 64, 128, 256, 512],
+    "td3bc":[16, 32, 64, 128, 256, 512],
+    "image_size":[64, 128],
+    "workers":[8],
 }
 
 # batch size for RTX 4080
 batch_size_for_16 : {
     "dcgan":[16, 32, 64, 128, 256, 512, 1024],
-    # "dcgan":[512],
     "imagenet":[8, 16, 32, 64, 128, 256],
-    "vae":[64, 128, 256, 512, 1024, 2048], 
     "vision_transformer":[2, 4, 8, 12, 16], 
     "yolov8n":[2, 4, 8, 16, 32],
     "yolov8s":[2, 4, 8, 16, 32],
@@ -89,14 +100,18 @@ batch_size_for_16 : {
     "gat":[8, 12, 16, 20, 24],
     "Pytorch_vae":[8, 16, 32, 64, 128, 256, 512],
     "Pytorch_vqvae":[8, 16, 32, 64, 128, 256, 512],
-    "offline_RL" : [16, 32, 64, 128, 256, 512, 1024]
+    "cql":[16, 32, 64, 128, 256, 512, 1024],
+    "edac":[16, 32, 64, 128, 256, 512, 1024],
+    "iql":[16, 32, 64, 128, 256, 512, 1024],
+    "mcq":[16, 32, 64, 128, 256, 512, 1024],
+    "image_size":[64, 128, 256],
+    "workers":[16],
 }
 
 # batch size for RTX 3090, 4090
 batch_size_for_24 : {
     "dcgan":[16, 32, 64, 128, 256, 512, 1024],
     "imagenet":[8, 16, 32, 64, 128, 256, 512],
-    "vae":[64, 128, 256, 512, 1024, 2048, 4096], 
     "vision_transformer":[2, 4, 8, 12, 16, 32],  
     "yolov8n":[2, 4, 8, 16, 32],
     "yolov8s":[2, 4, 8, 16, 32],
@@ -111,14 +126,19 @@ batch_size_for_24 : {
     "gat":[8, 12, 16, 20, 24, 28],
     "Pytorch_vae":[8, 16, 32, 64, 128, 256, 512],
     "Pytorch_vqvae":[8, 16, 32, 64, 128, 256, 512],
-    "offline_RL" : [16, 32, 64, 128, 256, 512, 1024]
+    "cql":[16, 32, 64, 128, 256, 512, 1024],
+    "edac":[16, 32, 64, 128, 256, 512, 1024],
+    "iql":[16, 32, 64, 128, 256, 512, 1024],
+    "mcq":[16, 32, 64, 128, 256, 512, 1024],
+    "td3bc":[16, 32, 64, 128, 256, 512, 1024],
+    "image_size":[64, 128, 256],
+    "workers":[16],
 }
 
 # Pytyon train file mapping to jobs
 train_file : {
   "dcgan": "models/dcgan/main.py",
   "imagenet":"models/imagenet/main.py",
-  "vae" : "models/vae/main.py",
   "vision_transformer" : "models/vision_transformer/main.py",
   "yolov8n": "models/Yolov8/main.py yolov8n.pt",
   "yolov8s": "models/Yolov8/main.py yolov8s.pt",
@@ -133,17 +153,12 @@ train_file : {
   "gat": "models/gat/main.py",
   "Pytorch_vae":"models/PyTorch-VAE/run.py",
   "Pytorch_vqvae":"models/PyTorch-VAE/vqvae_run.py",
-  "offline_RL": "offlineRL_train_file",
+  "cql": "models/OfflineRL-Kit/run_example/run_cql.py",
+  "edac": "models/OfflineRL-Kit/run_example/run_edac.py",
+  "iql": "models/OfflineRL-Kit/run_example/run_iql.py",
+  "mcq": "models/OfflineRL-Kit/run_example/run_mcq.py",
+  "td3bc": "models/OfflineRL-Kit/run_example/run_td3bc.py",
 }
-
-# model_free offlineRL
-offlineRL_model: [
-          "cql",
-          "edac",
-          "iql",
-          "mcq",
-          "td3bc"
-          ]
 
 mujoco_env: ["halfcheetah-medium-v2", 
             "hopper-medium-v2", 
@@ -155,16 +170,26 @@ mujoco_env: ["halfcheetah-medium-v2",
             "hopper-medium-expert-v2",
             "walker2d-medium-expert-v2"]
 
-
-offlineRL_train_file: {
-              "cql": "models/OfflineRL-Kit/run_example/run_cql.py",
-              "edac": "models/OfflineRL-Kit/run_example/run_edac.py",
-              "iql": "models/OfflineRL-Kit/run_example/run_iql.py",
-              "mcq": "models/OfflineRL-Kit/run_example/run_mcq.py",
-              "td3bc": "models/OfflineRL-Kit/run_example/run_td3bc.py",
-}
-
 datasets: {
-        "dcgan":["imagenet_preprocess", "coco_preprocess", "cifar10_preprocess"],
-        "mnist":["mnist"],
+  "dcgan":["imagenet_preprocess", "coco_preprocess", "cifar10_preprocess"],
+  "imagenet":["cifar10"],
+  "vision_transformer" : ["cifar10"],
+  "yolov8n": ["VOC","VisDrone", "coco"],
+  "yolov8s": ["VOC","VisDrone", "coco"],
+  "yolov8m": ["VOC","VisDrone", "coco"],
+  "yolov8l": ["VOC","VisDrone", "coco"],
+  "yolov8x": ["VOC","VisDrone", "coco"],
+  "mnist" : ["mnist"],
+  "mnist_rnn" : ["mnist"],
+  "siamese_net": ["mnist"],
+  "super_resolution": ["bsd300"],
+  "word_language": ["corpus"],
+  "gat": ["cora"],
+  "Pytorch_vae":["celeba_spoof", "celeba", "imagenet", "coco"],
+  "Pytorch_vqvae":["celeba_spoof", "celeba", "imagenet", "coco"],
+  "cql": ["mujoco_env"],
+  "edac": ["mujoco_env"],
+  "iql": ["mujoco_env"],
+  "mcq": ["mujoco_env"],
+  "td3bc": ["mujoco_env"],
 }

@@ -325,16 +325,24 @@ if __name__ == '__main__':
                         help='quickly check a single pass')
     parser.add_argument('--seed', type=int, default=13, metavar='S',
                         help='random seed (default: 13)')
+    ######### MINGEUN ###########
+    parser.add_argument('--dataset', default='cora', help='used dataset')
+    parser.add_argument('--image-size', default='64', help='size of image for training if used')
+    parser.add_argumnet('--workers', type=int, default=16)
+    ######### MINGEUN ###########
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
     use_cuda = not args.no_cuda and torch.cuda.is_available()
     use_mps = not args.no_mps and torch.backends.mps.is_available()
 
+    
+
     # logger model load
     ######### MINGEUN ###########
     from logger import Logger
-    x = Logger("gat", args.batch_size) 
+    args.image_size = "none"
+    x = Logger("gat", args.batch_size, args.dataset, args.image_size, args.workers) 
     ######### MINGEUN ###########
 
     # Set the device to run on

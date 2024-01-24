@@ -46,20 +46,22 @@ class VAEXperiment(pl.LightningModule):
         return train_loss['loss']
 
     def validation_step(self, batch, batch_idx, optimizer_idx = 0):
-        real_img, labels = batch
-        self.curr_device = real_img.device
+        # real_img, labels = batch
+        # self.curr_device = real_img.device
 
-        results = self.forward(real_img, labels = labels)
-        val_loss = self.model.loss_function(*results,
-                                            M_N = 1.0, #real_img.shape[0]/ self.num_val_imgs,
-                                            optimizer_idx = optimizer_idx,
-                                            batch_idx = batch_idx)
+        # results = self.forward(real_img, labels = labels)
+        # val_loss = self.model.loss_function(*results,
+        #                                     M_N = 1.0, #real_img.shape[0]/ self.num_val_imgs,
+        #                                     optimizer_idx = optimizer_idx,
+        #                                     batch_idx = batch_idx)
 
-        self.log_dict({f"val_{key}": val.item() for key, val in val_loss.items()}, sync_dist=True)
+        # self.log_dict({f"val_{key}": val.item() for key, val in val_loss.items()}, sync_dist=True)
+        pass
 
         
     def on_validation_end(self) -> None:
-        self.sample_images()
+        # self.sample_images()
+        pass
         
     def sample_images(self):
         # Get sample reconstruction image            

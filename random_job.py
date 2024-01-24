@@ -56,18 +56,14 @@ while True:
     _batch_size = random.choice(cfg['batch_size_for_{}'.format(index)][_job])
     dataset = random.choice(cfg['datasets'][_job])
     # num_iteration in epoch
-    epoch = random.choice([0,1,2])
+    # epoch = random.choice([0,1,2])
+    image_size = random.choice(cfg['batch_size_for_{}'.format(index)]['image_size'])
+    workers = random.choice(cfg['batch_size_for_{}'.format(index)]['workers'])
     # execute run.sh file so that execute python file with batch_size and model.
 
     train_file = cfg['train_file'][_job].split()
     
-    if _job == "offline_RL":
-        _offlineRL_job = random.choice(cfg['offlineRL_model'])
-        task = random.choice(cfg['mujoco_env'])
-        offlineRL_train_file = cfg[train_file[0]][_offlineRL_job]
-        _cmd = "python3 {} --task {} --batch-size {}".format(offlineRL_train_file, task, _batch_size)
-    
-    elif _job == "mnist":
+    if _job == "mnist":
         if args.gpu == "8G":
             rank = '0'
         else:
@@ -75,9 +71,11 @@ while True:
         _cmd = "python3 -m torch.distributed.launch --nnodes {} --nproc_per_node {} --node_rank {} --master_addr {} --master_port {} {}".format(
             '2', '1', rank, addr, '2024', train_file[0])
     elif len(train_file) == 1:
-        _cmd = "python3 {} --batch-size {} --dataset {} --epoch {}".format(train_file[0], _batch_size, dataset, epoch)
+        if dataset == 'mujoco_env':
+            dataset = random.choice(cfg["mujoco_env"])
+        _cmd = "python3 {} --batch-size {} --dataset {} --image-size {} --workers {}".format(train_file[0], _batch_size, dataset, image_size, workers)
     else:
-        _cmd = "python3 {} --model {} --batch-size {}".format(train_file[0], train_file[1], _batch_size)
+        _cmd = "python3 {} --model {} --batch-size {} --dataset {} --image-size {} --workers {}".format(train_file[0], train_file[1], _batch_size)
 
     # _cmd = "./scripts/run.sh {} {}".format(cfg['train_file'][_job], _batch_size)
     _proc = subprocess.Popen(_cmd, shell=True, text=True)

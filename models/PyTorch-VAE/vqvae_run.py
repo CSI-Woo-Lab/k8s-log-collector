@@ -24,6 +24,9 @@ parser.add_argument('--config',  '-c',
 ############ MINGEUN ############
 parser.add_argument('--batch-size', type=int, default = 64, metavar='N',
                     help = 'batch_size of training and eval')
+parser.add_argument('--dataset', default='celeba_spoof', help='used dataset')
+parser.add_argument('--image-size', default='64', help='size of image for training if used')
+parser.add_argumnet('--workers', type=int, default=16)
 ############ MINGEUN ############
 args = parser.parse_args()
 
@@ -37,10 +40,13 @@ with open(args.filename, 'r') as file:
 # random seed is selected 
 ########### MINGEUN ############
 from logger import Logger
-x = Logger("Pytorch_VQVAE", args.batch_size)
+x = Logger("Pytorch_VQVAE", args.batch_size, args.dataset, args.image_size, args.workers)
 flag = 0
+config['data_params']['dataset'] = args.dataset
 config['data_params']['train_batch_size'] = args.batch_size
 config['data_params']['val_batch_size'] = args.batch_size
+config['data_params']['num_workers'] = args.workers
+config['data_params']['patch_size'] = args.image_size
 config['exp_params']['manual_seed'] = np.random.randint(10000)
 ########### MINGEUN ############
 

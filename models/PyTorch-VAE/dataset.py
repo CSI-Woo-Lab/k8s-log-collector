@@ -218,6 +218,7 @@ class VAEDataset(LightningDataModule):
 
     def __init__(
         self,
+        dataset: str,
         data_path_train: str,
         data_path_test: str,
         train_batch_size: int = 8,
@@ -228,7 +229,7 @@ class VAEDataset(LightningDataModule):
         **kwargs,
     ):
         super().__init__()
-
+        self.dataset = dataset
         self.data_dir_train = data_path_train
         self.data_dir_test = data_path_test
         self.train_batch_size = train_batch_size
@@ -276,7 +277,65 @@ class VAEDataset(LightningDataModule):
                                             transforms.Resize(self.patch_size),
                                             transforms.ToTensor(),])
         
+        if self.dataset == "celeba_spoof":
+            self.train_dataset = CelebASpoof(
+                self.data_dir_train,
+                transform=train_transforms,
+            )
+            self.val_dataset = CelebASpoof(
+                self.data_dir_test,
+                transform=test_transforms
+
+            )
         
+        elif self.dataset == "celeba":
+            self.data_dir_train = "/workspace/datasets/"
+            self.data_dir_test = "/worksapce/datasets/"
+
+            self.train_dataset = MyCelebA(
+                self.data_dir_train,
+                split='train',
+                transform=train_transforms,
+                download=False,
+            )
+            
+            self.val_dataset = MyCelebA(
+                self.data_dir_test,
+                split='test',
+                transform=val_transforms,
+                download=False,
+            )
+        
+        elif self.dataset == "imagenet":
+            from ImageNetDataset import ImageNetDataset
+            self.data_dir_train = "/workspace/datasets/ImageNet/train"
+            self.data_dir_test = "/worksapce/datasets/ImageNet/train"
+
+            self.train_dataset = ImageNetDataset(
+                root=self.data_dir_train,
+                transform=train_transforms
+            )
+
+            self.val_dataset = ImageNetDataset(
+                root=self.data_dir_test,
+                transform=val_transforms
+            )
+        
+        
+        else : # coco dataset 
+            from CocoDataset import CocoDataset
+            self.data_dir_train = "/workspace/datasets/coco/train2017"
+            self.data_dir_test = "/workspace/datasets/coco/val2017"
+            self.train_dataset = CocoDataset(
+                root=self.data_dir_train, 
+                annFile = "/workspace/datasets/coco/annotations/instances_train2017.json",
+                transform = train_transforms
+            )
+            self.val_dataset = CocoDataset(
+                root=self.data_dir_test, 
+                annFile = "/workspace/datasets/coco/annotations/instances_val2017.json",
+                transform = train_transforms
+            )
 
         # self.train_dataset = MyCelebA(
         #     self.data_dir_train,
@@ -293,16 +352,16 @@ class VAEDataset(LightningDataModule):
         #     download=False,
         # )
         
-        self.train_dataset = CelebASpoof(
-            self.data_dir_train,
-            transform=train_transforms,
-        )
+        # self.train_dataset = CelebASpoof(
+        #     self.data_dir_train,
+        #     transform=train_transforms,
+        # )
         
-        # Replace CelebA with your dataset
-        self.val_dataset = CelebASpoof(
-            self.data_dir_test,
-            transform=val_transforms,
-        )
+        # # Replace CelebA with your dataset
+        # self.val_dataset = CelebASpoof(
+        #     self.data_dir_test,
+        #     transform=val_transforms,
+        # )
 #       ===============================================================
         
     def train_dataloader(self) -> DataLoader:

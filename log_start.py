@@ -69,8 +69,6 @@ spec:
         #   claimName: datasets
       restartPolicy: Never
   ttlSecondsAfterFinished: 20
-      
-      
 """
 # persistentVolumeClaim:
 #   claimName: datasets
