@@ -31,16 +31,19 @@ class L3DAS22(Dataset):
         self._walker = []
         if subset not in _SUBSETS:
             raise ValueError(f"Expect subset to be one of ('train360', 'train100', 'dev', 'test'). Found {subset}.")
-        for sub_dir in _SUBSETS[subset]:
-            path = Path(root) / f"{_PREFIX}{sub_dir}" / "data"
-            files = [str(p) for p in path.glob("*_A.wav") if torchaudio.info(p).num_frames >= min_len]
-            if len(files) == 0:
-                raise RuntimeError(
-                    f"Directory {path} is not found. Please check if the zip file has been downloaded and extracted."
-                )
-            self._walker += files
-        with open(Path(root) / f"{_PREFIX}{sub_dir}" / "file.json", 'w') as json_file:
-            json.dump(self._walker, json_file)
+        with open(Path(root) / f"{_PREFIX}{sub_dir}" / "file.json", 'r') as json_file:
+            self._walker = json.load(json_file)
+        
+        # for sub_dir in _SUBSETS[subset]:
+        #     path = Path(root) / f"{_PREFIX}{sub_dir}" / "data"
+        #     files = [str(p) for p in path.glob("*_A.wav") if torchaudio.info(p).num_frames >= min_len]
+        #     if len(files) == 0:
+        #         raise RuntimeError(
+        #             f"Directory {path} is not found. Please check if the zip file has been downloaded and extracted."
+        #         )
+        #     self._walker += files
+        # with open(Path(root) / f"{_PREFIX}{sub_dir}" / "file.json", 'w') as json_file:
+        #     json.dump(self._walker, json_file)
         
 
     def __len__(self):
