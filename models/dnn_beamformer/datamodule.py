@@ -9,6 +9,8 @@ from torch import Tensor
 from torch.utils.data import Dataset
 from utils import CollateFnL3DAS22
 
+import json
+
 _PREFIX = "L3DAS22_Task1_"
 _SUBSETS = {
     # "train360": ["train360_1", "train360_2"],
@@ -37,6 +39,9 @@ class L3DAS22(Dataset):
                     f"Directory {path} is not found. Please check if the zip file has been downloaded and extracted."
                 )
             self._walker += files
+        with open(Path(root) / f"{_PREFIX}{sub_dir}") as json_file:
+            json.dump(self._walker, json_file)
+        
 
     def __len__(self):
         return len(self._walker)
