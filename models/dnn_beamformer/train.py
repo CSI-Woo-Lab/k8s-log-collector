@@ -26,7 +26,6 @@ parser.add_argument(
     type=pathlib.Path,
     help="Path to L3DAS22 datasets.",
     default = "../datasets/L3DAS22/",
-    required=True,
 )
 parser.add_argument(
     "--batch_size",
