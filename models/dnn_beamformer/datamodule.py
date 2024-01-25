@@ -61,24 +61,27 @@ class L3DAS22DataModule(pl.LightningDataModule):
         self,
         dataset_path: str,
         batch_size: int,
+        workers: int,
     ):
         super().__init__()
         self.dataset_path = dataset_path
         self.batch_size = batch_size
+        self.workers = workers
 
     def train_dataloader(self):
-        dataset = torch.utils.data.ConcatDataset(
-            [
-                L3DAS22(self.dataset_path, "train360"),
-                L3DAS22(self.dataset_path, "train100"),
-            ]
-        )
+        # dataset = torch.utils.data.ConcatDataset(
+        #     [
+        #         # L3DAS22(self.dataset_path, "train360"),
+        #         L3DAS22(self.dataset_path, "train100"),
+        #     ]
+        #)
+        dataset = L3DAS22(self.dataset_path, "train100")
         return torch.utils.data.DataLoader(
             dataset,
             batch_size=self.batch_size,
             collate_fn=CollateFnL3DAS22(audio_length=64000, rand_crop=True),
             shuffle=True,
-            num_workers=20,
+            num_workers=self.workers,
         )
 
     def val_dataloader(self):
