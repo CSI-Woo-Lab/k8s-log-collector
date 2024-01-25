@@ -206,5 +206,5 @@ datasets: {
   "mcq": ["mujoco_env"],
   "td3bc": ["mujoco_env"],
   "dnn_beamformer":["L3DAS22"],
-  "video_classification":["kinetic400"],
+  "video_classification":["kinetics400"],
 }

@@ -15,7 +15,7 @@ from torch.utils.data.dataloader import default_collate
 from torchvision.datasets.samplers import DistributedSampler, RandomClipSampler, UniformClipSampler
 
 
-def train_one_epoch(model, criterion, optimizer, lr_scheduler, data_loader, device, epoch, print_freq, scaler=None):
+def train_one_epoch(model, criterion, optimizer, lr_scheduler, data_loader, device, epoch, print_freq, logger, scaler=None):
     model.train()
     metric_logger = utils.MetricLogger(delimiter="  ")
     metric_logger.add_meter("lr", utils.SmoothedValue(window_size=1, fmt="{value}"))
@@ -46,6 +46,9 @@ def train_one_epoch(model, criterion, optimizer, lr_scheduler, data_loader, devi
         metric_logger.meters["acc5"].update(acc5.item(), n=batch_size)
         metric_logger.meters["clips/s"].update(batch_size / (time.time() - start_time))
         lr_scheduler.step()
+        ######### MINGEUN ###########
+        logger.every_iteration()
+        ######### MINGEUN ###########
 
 
 def evaluate(model, criterion, data_loader, device):
@@ -133,11 +136,17 @@ def collate_fn(batch):
 
 
 def main(args):
+    args.image_size = args.train_resize_size
+    ########### MINGEUN ############
+    from logger import Logger
+    x = Logger("dnn_beamformer", args.batch_size, args.dataset, args.image_size, args.workers)
+    ########### MINGEUN ############
+
     if args.output_dir:
         utils.mkdir(args.output_dir)
 
     utils.init_distributed_mode(args)
-    print(args)
+    # print(args)
 
     device = torch.device(args.device)
 
@@ -151,7 +160,7 @@ def main(args):
     print("Loading data")
     val_resize_size = tuple(args.val_resize_size)
     val_crop_size = tuple(args.val_crop_size)
-    train_resize_size = tuple(args.train_resize_size)
+    image_size = tuple(args.image_size)
     train_crop_size = tuple(args.train_crop_size)
 
     traindir = os.path.join(args.data_path, "train")
@@ -160,7 +169,7 @@ def main(args):
     print("Loading training data")
     st = time.time()
     cache_path = _get_cache_path(traindir, args)
-    transform_train = presets.VideoClassificationPresetTrain(crop_size=train_crop_size, resize_size=train_resize_size)
+    transform_train = presets.VideoClassificationPresetTrain(crop_size=train_crop_size, resize_size=image_size)
 
     if args.cache_dataset and os.path.exists(cache_path):
         print(f"Loading dataset_train from {cache_path}")
@@ -312,11 +321,16 @@ def main(args):
 
     print("Start training")
     start_time = time.time()
+    ######### MINGEUN ###########
+    torch.cuda.empty_cache()
+    x.ready_for_training()
+    ######### MINGEUN ##########
+
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             train_sampler.set_epoch(epoch)
-        train_one_epoch(model, criterion, optimizer, lr_scheduler, data_loader, device, epoch, args.print_freq, scaler)
-        evaluate(model, criterion, data_loader_test, device=device)
+        train_one_epoch(model, criterion, optimizer, lr_scheduler, data_loader, device, epoch, args.print_freq, x, scaler)
+        # evaluate(model, criterion, data_loader_test, device=device)
         if args.output_dir:
             checkpoint = {
                 "model": model_without_ddp.state_dict(),
@@ -327,8 +341,12 @@ def main(args):
             }
             if args.amp:
                 checkpoint["scaler"] = scaler.state_dict()
-            utils.save_on_master(checkpoint, os.path.join(args.output_dir, f"model_{epoch}.pth"))
-            utils.save_on_master(checkpoint, os.path.join(args.output_dir, "checkpoint.pth"))
+            # utils.save_on_master(checkpoint, os.path.join(args.output_dir, f"model_{epoch}.pth"))
+            # utils.save_on_master(checkpoint, os.path.join(args.output_dir, "checkpoint.pth"))
+        
+        ######### MINGEUN ###########
+        x.every_iteration()
+        ######### MINGEUN ###########
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
@@ -340,7 +358,7 @@ def get_args_parser(add_help=True):
 
     parser = argparse.ArgumentParser(description="PyTorch Video Classification Training", add_help=add_help)
 
-    parser.add_argument("--data-path", default="/datasets01_101/kinetics/070618/", type=str, help="dataset path")
+    parser.add_argument("--data-path", default="../datasets/kinetics400/", type=str, help="dataset path")
     parser.add_argument(
         "--kinetics-version", default="400", type=str, choices=["400", "600"], help="Select kinetics version"
     )
@@ -375,7 +393,7 @@ def get_args_parser(add_help=True):
     parser.add_argument("--lr-warmup-method", default="linear", type=str, help="the warmup method (default: linear)")
     parser.add_argument("--lr-warmup-decay", default=0.001, type=float, help="the decay for lr")
     parser.add_argument("--print-freq", default=10, type=int, help="print frequency")
-    parser.add_argument("--output-dir", default=".", type=str, help="path to save outputs")
+    parser.add_argument("--output-dir", default=False, type=str, help="path to save outputs")
     parser.add_argument("--resume", default="", type=str, help="path of checkpoint")
     parser.add_argument("--start-epoch", default=0, type=int, metavar="N", help="start epoch")
     parser.add_argument(
@@ -383,6 +401,7 @@ def get_args_parser(add_help=True):
         dest="cache_dataset",
         help="Cache the datasets for quicker initialization. It also serializes the transforms",
         action="store_true",
+        default=False,
     )
     parser.add_argument(
         "--sync-bn",
@@ -437,7 +456,14 @@ def get_args_parser(add_help=True):
 
     # Mixed precision training parameters
     parser.add_argument("--amp", action="store_true", help="Use torch.cuda.amp for mixed precision training")
-
+    
+    ######### MINGEUN ###########
+    parser.add_argument('--dataset', default='kinetics400', help='used dataset')
+    parser.add_argument('--image-size', default=64, help='size of image for training if used')
+    parser.add_argument('--workers', type=int, default=16)
+    parser.add_argument('--distributed', default=False)
+    ######### MINGEUN ###########
+    
     return parser
 
 
