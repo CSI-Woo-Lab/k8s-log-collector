@@ -39,7 +39,7 @@ class L3DAS22(Dataset):
                     f"Directory {path} is not found. Please check if the zip file has been downloaded and extracted."
                 )
             self._walker += files
-        with open(Path(root) / f"{_PREFIX}{sub_dir}") as json_file:
+        with open(Path(root) / f"{_PREFIX}{sub_dir}" / "file.json") as json_file:
             json.dump(self._walker, json_file)
         
 
