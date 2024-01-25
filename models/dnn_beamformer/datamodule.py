@@ -11,10 +11,10 @@ from utils import CollateFnL3DAS22
 
 _PREFIX = "L3DAS22_Task1_"
 _SUBSETS = {
-    "train360": ["train360_1", "train360_2"],
+    # "train360": ["train360_1", "train360_2"],
     "train100": ["train100"],
-    "dev": ["dev"],
-    "test": ["test"],
+    # "dev": ["dev"],
+    # "test": ["test"],
 }
 _SAMPLE_RATE = 16000
 
