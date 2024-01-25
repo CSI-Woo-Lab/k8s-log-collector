@@ -56,6 +56,7 @@ args.image_size = 'audio'
 ########### MINGEUN ############
 from logger import Logger
 x = Logger("dnn_beamformer", args.batch_size, args.dataset, args.image_size, args.workers)
+flag = 0
 ########### MINGEUN ############
 
 
