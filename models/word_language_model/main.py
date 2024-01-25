@@ -54,7 +54,7 @@ parser.add_argument('--dry-run', action='store_true',
 ############ MINGEUN ############
 parser.add_argument('--dataset', default='corpus', help='used dataset')
 parser.add_argument('--image-size', default='64', help='size of image for training if used')
-parser.add_argumnet('--workers', type=int, default=16)
+parser.add_argument('--workers', type=int, default=16)
 ############ MINGEUN ############
 args = parser.parse_args()
 

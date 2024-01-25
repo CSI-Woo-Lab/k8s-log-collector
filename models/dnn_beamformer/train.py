@@ -49,7 +49,7 @@ parser.add_argument(
 ######### MINGEUN ###########
 parser.add_argument('--dataset', default='L3DAS22', help='used dataset')
 parser.add_argument('--image-size', default=None, help='size of image for training if used')
-parser.add_argumnet('--workers', type=int, default=16)
+parser.add_argument('--workers', type=int, default=16)
 ######### MINGEUN ###########
 
 args = parser.parse_args()
