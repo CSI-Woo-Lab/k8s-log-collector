@@ -460,7 +460,6 @@ def get_args_parser(add_help=True):
     ######### MINGEUN ###########
     parser.add_argument('--dataset', default='kinetics400', help='used dataset')
     parser.add_argument('--image-size', default=64, help='size of image for training if used')
-    parser.add_argument('--workers', type=int, default=16)
     parser.add_argument('--distributed', default=False)
     ######### MINGEUN ###########
     
