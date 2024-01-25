@@ -31,7 +31,7 @@ class L3DAS22(Dataset):
         self._walker = []
         if subset not in _SUBSETS:
             raise ValueError(f"Expect subset to be one of ('train360', 'train100', 'dev', 'test'). Found {subset}.")
-        with open(Path(root) / f"{_PREFIX}{sub_dir}" / "file.json", 'r') as json_file:
+        with open(Path(root) / f"{_PREFIX}{subset}" / "file.json", 'r') as json_file:
             self._walker = json.load(json_file)
         
         # for sub_dir in _SUBSETS[subset]:
