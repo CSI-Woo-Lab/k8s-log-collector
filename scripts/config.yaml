@@ -10,7 +10,7 @@ jobs : [
   # "yolov8m",
   # "yolov8l",
   # "yolov8x",
-  "mnist",
+  # "mnist",
   # "mnist_rnn",
   # "dcgan",
   # "imagenet",
@@ -26,6 +26,8 @@ jobs : [
   # "iql",
   # "mcq",
   # "td3bc"
+  "dnn_beamformer"
+  # "video_classification"
 ]
 
 # batch size for RTX 3070ti, 4060
@@ -51,6 +53,8 @@ batch_size_for_8 : {
     "iql":[16, 32, 64, 128, 256, 512],
     "mcq":[16, 32, 64, 128, 256, 512],
     "td3bc":[16, 32, 64, 128, 256, 512],
+    "dnn_beamformer":[4, 8, 16, 32],
+    "video_classification":[4, 8, 12, 16],
     "image_size":[64, 128],
     "workers":[8],
 }
@@ -78,6 +82,8 @@ batch_size_for_12 : {
     "iql":[16, 32, 64, 128, 256, 512],
     "mcq":[16, 32, 64, 128, 256, 512],
     "td3bc":[16, 32, 64, 128, 256, 512],
+    "dnn_beamformer":[4, 8, 16, 32],
+    "video_classification":[4, 8, 12, 16],
     "image_size":[64, 128],
     "workers":[8],
 }
@@ -104,6 +110,9 @@ batch_size_for_16 : {
     "edac":[16, 32, 64, 128, 256, 512, 1024],
     "iql":[16, 32, 64, 128, 256, 512, 1024],
     "mcq":[16, 32, 64, 128, 256, 512, 1024],
+    "td3bc":[16, 32, 64, 128, 256, 512],
+    "dnn_beamformer":[4, 8, 16, 32, 64],
+    "video_classification":[4, 8, 12, 16, 24],
     "image_size":[64, 128, 256],
     "workers":[16],
 }
@@ -131,6 +140,8 @@ batch_size_for_24 : {
     "iql":[16, 32, 64, 128, 256, 512, 1024],
     "mcq":[16, 32, 64, 128, 256, 512, 1024],
     "td3bc":[16, 32, 64, 128, 256, 512, 1024],
+    "dnn_beamformer":[4, 8, 16, 32, 64],
+    "video_classification":[4, 8, 12, 16, 24, 32],
     "image_size":[64, 128, 256],
     "workers":[16],
 }
@@ -158,6 +169,8 @@ train_file : {
   "iql": "models/OfflineRL-Kit/run_example/run_iql.py",
   "mcq": "models/OfflineRL-Kit/run_example/run_mcq.py",
   "td3bc": "models/OfflineRL-Kit/run_example/run_td3bc.py",
+  "dnn_beamformer":"models/dnn_beamformer/train.py",
+  "video_classification":"models/video_classification/train.py",
 }
 
 mujoco_env: ["halfcheetah-medium-v2", 
@@ -192,4 +205,6 @@ datasets: {
   "iql": ["mujoco_env"],
   "mcq": ["mujoco_env"],
   "td3bc": ["mujoco_env"],
+  "dnn_beamformer":["L3DAS22"],
+  "video_classification":["kinetic400"],
 }
