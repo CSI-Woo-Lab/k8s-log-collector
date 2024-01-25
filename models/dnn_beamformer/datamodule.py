@@ -14,7 +14,7 @@ _SUBSETS = {
     # "train360": ["train360_1", "train360_2"],
     "train100": ["train100"],
     # "dev": ["dev"],
-    # "test": ["test"],
+    "test": ["test"],
 }
 _SAMPLE_RATE = 16000
 
