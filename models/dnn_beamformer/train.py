@@ -28,7 +28,7 @@ parser.add_argument(
     default = "../datasets/L3DAS22/",
 )
 parser.add_argument(
-    "--batch_size",
+    "--batch-size",
     default=4,
     type=int,
     help="Batch size for training. (Default: 4)",
