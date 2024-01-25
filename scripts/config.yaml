@@ -26,8 +26,8 @@ jobs : [
   # "iql",
   # "mcq",
   # "td3bc"
-  "dnn_beamformer"
-  # "video_classification"
+  # "dnn_beamformer"
+  "video_classification"
 ]
 
 # batch size for RTX 3070ti, 4060
