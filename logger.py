@@ -16,7 +16,7 @@ class Logger():
         When it comes time to communicate with control node, it sends logs and terminates jobs. 
     """
 
-    def __init__(self, job_name, batch_size, dataset, epoch, worker):
+    def __init__(self, job_name, batch_size, dataset, image_size, worker):
         self.gpu_util_log = []
         self.gpu_mem_log = []
         self.gpu_mem_total = 0
@@ -24,8 +24,8 @@ class Logger():
         self.job_name = job_name
         self.batch_size = batch_size
         self.dataset = dataset
-        self.epoch = epoch
-        self.worker = worker
+        self.image_size = str(image_size)
+        self.worker = str(worker)
         self.logging_interval = 0
         self.communication_interval = 0
         self.times = 0
@@ -68,8 +68,8 @@ class Logger():
         def send_data():
             gpu_util = np.mean(self.gpu_util_log)
             gpu_mem_util = np.mean(self.gpu_mem_log)
-            data = f'%s,%s,%s,%d,%d,%s,%s,%s,%d' \
-                % (self.hostname, self.gpuname, self.job_name, self.epoch, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration)
+            data = f'%s,%s,%s,%s,%s,%d,%s,%s,%s,%d,%s' \
+                % (self.hostname, self.gpuname, self.job_name, self.dataset, self.image_size, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration, self.worker)
             # send log data to control node
             self.socket.send_string(data)
             self.times -= 1
@@ -105,7 +105,7 @@ class Logger():
         gpu_util = np.mean(self.gpu_util_log)
         gpu_mem_util = np.mean(self.gpu_mem_log)
         data = f'%s,%s,%s,%s,%d,%d,%s,%s,%s,%d,%d' \
-                % (self.hostname, self.gpuname, self.job_name, self.dataset, self.epoch, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration, self.worker)
+                % (self.hostname, self.gpuname, self.job_name, self.dataset, self.image_size, self.batch_size, gpu_util, gpu_mem_util, self.gpu_mem_total, self.iteration, self.worker)
         # send log data to control node
         self.socket.send_string(data)
         # kill the job

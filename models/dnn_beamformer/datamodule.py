@@ -85,7 +85,7 @@ class L3DAS22DataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
-        dataset = L3DAS22(self.dataset_path, "dev")
+        dataset = L3DAS22(self.dataset_path, "test")
         return torch.utils.data.DataLoader(
             dataset,
             batch_size=self.batch_size,
