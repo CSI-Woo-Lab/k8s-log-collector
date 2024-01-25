@@ -6,6 +6,7 @@ from datamodule import L3DAS22DataModule
 from lightning.pytorch.callbacks import ModelCheckpoint, Callback
 from lightning.pytorch.loggers import TensorBoardLogger
 from model import DNNBeamformer, DNNBeamformerLightningModule
+import torch
 
 
 parser = ArgumentParser()
