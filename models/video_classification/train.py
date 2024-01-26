@@ -178,6 +178,7 @@ def main(args):
     else:
         if args.distributed:
             print("It is recommended to pre-compute the dataset cache on a single-gpu first, as it will be faster")
+        print("dataset loading complete")
         dataset = datasets.KineticsWithVideoId(
             args.data_path,
             frames_per_clip=args.clip_len,
