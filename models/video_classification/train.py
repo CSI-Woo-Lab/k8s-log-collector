@@ -124,7 +124,7 @@ def _get_cache_path(filepath, args):
 
     value = f"{filepath}-{args.clip_len}-{args.kinetics_version}-{args.frame_rate}"
     h = hashlib.sha1(value.encode()).hexdigest()
-    cache_path = os.path.join("~", ".torch", "vision", "datasets", "kinetics", h[:10] + ".pt")
+    cache_path = os.path.join("..", "datasets", "kinetics400_cache", h[:10] + ".pt")
     cache_path = os.path.expanduser(cache_path)
     return cache_path
 
@@ -402,7 +402,7 @@ def get_args_parser(add_help=True):
         dest="cache_dataset",
         help="Cache the datasets for quicker initialization. It also serializes the transforms",
         action="store_true",
-        default=False,
+        default=True,
     )
     parser.add_argument(
         "--sync-bn",
