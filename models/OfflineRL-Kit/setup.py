@@ -16,7 +16,7 @@ setup(
             "matplotlib",
             "numpy",
             "pandas",
-            "ray==1.13.0",
+            "ray==2.8.1",
             "torch",
             "tensorboard",
             "tqdm",
